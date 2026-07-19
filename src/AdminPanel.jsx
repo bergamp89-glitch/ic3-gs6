@@ -160,10 +160,10 @@ function AdminPanel({
                             <div key={lvl} className="flex justify-between items-center p-3 border border-gray-200 rounded-sm bg-white shadow-sm hover:border-gray-300 transition-colors">
                                <div className="font-semibold text-gray-800 text-[13px] md:text-[15px]">{lvl}</div>
                               <button 
-                                onClick={() => {
+                                onClick={async () => {
                                   const newStatuses = {...levelsStatus, [lvl]: !levelsStatus[lvl]};
                                   setLevelsStatus(newStatuses);
-                                  localStorage.setItem('ic3_levels_status', JSON.stringify(newStatuses));
+                                  await supabase.from('settings').update({ value: newStatuses }).eq('key', 'levels_status');
                                 }}
                                  className={`px-3 py-1.5 md:px-5 md:py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider border transition-all ${levelsStatus[lvl] ? 'bg-[#ecfdf5] border-[#059669] text-[#059669] hover:bg-[#d1fae5]' : 'bg-[#fff1f2] border-[#e11d48] text-[#e11d48] hover:bg-[#ffe4e6]'}`}
                                >
@@ -201,8 +201,8 @@ function AdminPanel({
                          />
                       </div>
                       <button 
-                        onClick={() => {
-                          localStorage.setItem('ic3_admin_creds', JSON.stringify(adminCreds));
+                        onClick={async () => {
+                          await supabase.from('settings').update({ value: adminCreds }).eq('key', 'admin_creds');
                           alert('Admin credentials updated successfully!');
                         }}
                         className="bg-[#1a446b] text-white px-4 py-3 rounded-sm text-sm font-semibold hover:bg-[#153655] w-full mt-2 transition-colors shadow-sm"

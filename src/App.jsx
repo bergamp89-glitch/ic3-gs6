@@ -2,47 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from './supabase';
 import AdminPanel from './AdminPanel';
 function App() {
-  const [questions, setQuestions] = useState(() => {
-    const saved = localStorage.getItem('ic3_exam_session_questions');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [currentIndex, setCurrentIndex] = useState(() => {
-    const saved = localStorage.getItem('ic3_exam_session_currentIndex');
-    return saved ? JSON.parse(saved) : 0;
-  });
+  const [sessionId, setSessionId] = useState(null);
+  const [questions, setQuestions] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('INSTRUCTIONS'); 
   const [openDropdownId, setOpenDropdownId] = useState(null); 
-  const [appState, setAppState] = useState(() => {
-    const saved = localStorage.getItem('ic3_exam_session_appState');
-    return saved ? JSON.parse(saved) : 'HOME';
-  }); // 'HOME', 'WAITING', 'ADMIN', 'EXAM', 'RESULT'
-  const [registration, setRegistration] = useState(() => {
-    const saved = localStorage.getItem('ic3_exam_session_registration');
-    return saved ? JSON.parse(saved) : { firstName: '', lastName: '', email: '', level: '' };
-  });
-
-  useEffect(() => {
-    localStorage.setItem('ic3_exam_session_questions', JSON.stringify(questions));
-  }, [questions]);
-
-  useEffect(() => {
-    localStorage.setItem('ic3_exam_session_currentIndex', JSON.stringify(currentIndex));
-  }, [currentIndex]);
-
-  useEffect(() => {
-    localStorage.setItem('ic3_exam_session_appState', JSON.stringify(appState));
-  }, [appState]);
-
-  useEffect(() => {
-    localStorage.setItem('ic3_exam_session_registration', JSON.stringify(registration));
-  }, [registration]);
+  const [appState, setAppState] = useState('HOME'); // 'HOME', 'WAITING', 'ADMIN', 'EXAM', 'RESULT'
+  const [registration, setRegistration] = useState({ firstName: '', lastName: '', email: '', level: '' });
+  
   const [registrationErrors, setRegistrationErrors] = useState({ firstName: false, lastName: false, email: false, level: false });
   const [requestId, setRequestId] = useState(null);
 
-  const [adminCreds, setAdminCreds] = useState(() => {
-    const saved = localStorage.getItem('ic3_admin_creds');
-    return saved ? JSON.parse(saved) : { firstName: 'admin', lastName: 'Doe', email: '0807' };
-  });
+  const [adminCreds, setAdminCreds] = useState({ firstName: 'admin', lastName: 'Doe', email: '0807' });
 
   // Anti-screenshot / Anti-copy protection
   useEffect(() => {
@@ -97,15 +68,35 @@ function App() {
     };
   }, []);
 
-  const [levelsStatus, setLevelsStatus] = useState(() => {
-    const saved = localStorage.getItem('ic3_levels_status');
-    return saved ? JSON.parse(saved) : { '1-Level': true, '2-Level': true, '3-Level': true };
-  });
+  const [levelsStatus, setLevelsStatus] = useState({ '1-Level': true, '2-Level': true, '3-Level': true });
+  const [requests, setRequests] = useState([]);
 
-  const [requests, setRequests] = useState(() => {
-    const saved = localStorage.getItem('ic3_exam_requests');
-    return saved ? JSON.parse(saved) : [];
-  });
+  useEffect(() => {
+    async function loadSettings() {
+      const { data } = await supabase.from('settings').select('*');
+      if (data) {
+        const levels = data.find(d => d.key === 'levels_status');
+        const admin = data.find(d => d.key === 'admin_creds');
+        if (levels) setLevelsStatus(levels.value);
+        if (admin) setAdminCreds(admin.value);
+      }
+    }
+    loadSettings();
+  }, []);
+
+  useEffect(() => {
+    if (sessionId && appState !== 'HOME' && appState !== 'ADMIN') {
+      const updateSession = async () => {
+        await supabase.from('exam_sessions').update({
+          questions,
+          current_index: currentIndex,
+          app_state: appState,
+          registration
+        }).eq('id', sessionId);
+      };
+      updateSession();
+    }
+  }, [questions, currentIndex, appState, registration, sessionId]);
   
   useEffect(() => {
     const handleContextMenu = (e) => {
@@ -237,8 +228,15 @@ function App() {
           
         if (data) {
           if (data.status === 'approved') {
-            setAppState('EXAM');
             clearInterval(intervalId);
+            const { data: newSession } = await supabase
+              .from('exam_sessions')
+              .insert([{ email: registration.email, registration, app_state: 'EXAM' }])
+              .select();
+            if (newSession && newSession.length > 0) {
+              setSessionId(newSession[0].id);
+            }
+            setAppState('EXAM');
           } else if (data.status === 'rejected') {
             alert('Your request has been rejected.');
             setAppState('HOME');
@@ -250,7 +248,7 @@ function App() {
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [appState, requestId]);
+  }, [appState, requestId, registration]);
 
   if (appState === 'EXAM' && questions.length === 0) return <div>Loading...</div>;
 
@@ -426,11 +424,10 @@ function App() {
   const firstUnansweredIndex = questions.findIndex(q => q.status !== 'Correct' && q.status !== 'Review');
   const maxAllowedIndex = firstUnansweredIndex === -1 ? questions.length - 1 : firstUnansweredIndex;
 
-  const handleRestartExam = () => {
-    localStorage.removeItem('ic3_exam_session_questions');
-    localStorage.removeItem('ic3_exam_session_currentIndex');
-    localStorage.removeItem('ic3_exam_session_appState');
-    localStorage.removeItem('ic3_exam_session_registration');
+  const handleRestartExam = async () => {
+    if (sessionId) {
+      await supabase.from('exam_sessions').delete().eq('id', sessionId);
+    }
     window.location.reload();
   };
 
@@ -468,7 +465,28 @@ function App() {
         if (data && data.length > 0) {
           const approved = data.find(r => r.status === 'approved');
           if (approved) {
-            setAppState('EXAM');
+            const { data: sessionData } = await supabase
+              .from('exam_sessions')
+              .select('*')
+              .eq('email', registration.email)
+              .order('updated_at', { ascending: false })
+              .limit(1);
+              
+            if (sessionData && sessionData.length > 0 && sessionData[0].app_state !== 'RESULT') {
+               setSessionId(sessionData[0].id);
+               setQuestions(sessionData[0].questions || []);
+               setCurrentIndex(sessionData[0].current_index || 0);
+               setAppState(sessionData[0].app_state || 'EXAM');
+            } else {
+               const { data: newSession } = await supabase
+                 .from('exam_sessions')
+                 .insert([{ email: registration.email, registration, app_state: 'EXAM' }])
+                 .select();
+               if (newSession && newSession.length > 0) {
+                 setSessionId(newSession[0].id);
+               }
+               setAppState('EXAM');
+            }
             return;
           }
           const pending = data.find(r => r.status === 'pending');
@@ -494,7 +512,7 @@ function App() {
           setRequestId(insertData[0].id);
           setAppState('WAITING');
         } else {
-          alert('So\\'rov yuborishda xatolik yuz berdi. Iltimos, qaytadan urinib ko\\'ring.');
+          alert('So\'rov yuborishda xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.');
         }
       };
 
@@ -656,7 +674,13 @@ function App() {
            <p className="text-gray-600 font-medium leading-relaxed">
               <strong className="text-[#1a446b]">{registration.level}</strong> uchun ruxsat so'rovi adminga jo'natildi.
            </p>
-           <p className="text-sm text-gray-400 mt-6 bg-gray-50 py-2 rounded-sm border border-gray-100">Iltimos, tasdiqlanishini kuting. Sahifani yangilamang.</p>
+           <p className="text-sm text-gray-400 mt-6 bg-gray-50 py-2 rounded-sm border border-gray-100 mb-6">Iltimos, tasdiqlanishini kuting. Sahifani yangilamang.</p>
+           <button 
+             onClick={() => setAppState('HOME')} 
+             className="bg-transparent border border-[#1a446b] text-[#1a446b] px-6 py-2 rounded-sm font-semibold hover:bg-blue-50 transition-colors w-full"
+           >
+             Bosh sahifaga qaytish
+           </button>
         </div>
       </div>
     );
