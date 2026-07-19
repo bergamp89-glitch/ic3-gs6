@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { supabase } from './supabase';
 
 function AdminPanel({ 
   setAppState, 
@@ -12,6 +13,30 @@ function AdminPanel({
   setAdminCreds 
 }) {
   const [activeTab, setActiveTab] = useState('dashboard');
+
+  useEffect(() => {
+    fetchRequests();
+  }, []);
+
+  const fetchRequests = async () => {
+    const { data, error } = await supabase
+      .from('requests')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (data) {
+      setRequests(data);
+    }
+  };
+
+  const updateRequestStatus = async (id, newStatus) => {
+    const { error } = await supabase
+      .from('requests')
+      .update({ status: newStatus })
+      .eq('id', id);
+    if (!error) {
+      fetchRequests();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#e6ebf0] p-6">
@@ -69,10 +94,7 @@ function AdminPanel({
                   <div className="mb-12">
                      <h2 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2 flex items-center justify-between">
                        Pending Exam Requests
-                       <button onClick={() => {
-                         const saved = localStorage.getItem('ic3_exam_requests');
-                         if (saved) setRequests(JSON.parse(saved));
-                       }} className="text-xs font-semibold text-[#1a446b] border border-[#1a446b]/20 px-3 py-1 rounded-sm hover:bg-blue-50 transition-colors">
+                       <button onClick={fetchRequests} className="text-xs font-semibold text-[#1a446b] border border-[#1a446b]/20 px-3 py-1 rounded-sm hover:bg-blue-50 transition-colors">
                          Refresh List
                        </button>
                      </h2>
@@ -88,19 +110,11 @@ function AdminPanel({
                               </div>
                               <div className="flex flex-col sm:flex-row gap-1.5 md:gap-2 flex-shrink-0">
                                  <button 
-                                   onClick={() => {
-                                     const newReqs = requests.map(r => r.id === req.id ? {...r, status: 'approved'} : r);
-                                     setRequests(newReqs);
-                                     localStorage.setItem('ic3_exam_requests', JSON.stringify(newReqs));
-                                   }}
+                                   onClick={() => updateRequestStatus(req.id, 'approved')}
                                    className="bg-[#059669] hover:bg-[#047857] text-white px-3 py-1.5 md:px-5 md:py-2 rounded-sm text-[11px] md:text-sm font-semibold transition-colors shadow-sm"
                                  >Approve</button>
                                  <button 
-                                   onClick={() => {
-                                     const newReqs = requests.map(r => r.id === req.id ? {...r, status: 'rejected'} : r);
-                                     setRequests(newReqs);
-                                     localStorage.setItem('ic3_exam_requests', JSON.stringify(newReqs));
-                                   }}
+                                   onClick={() => updateRequestStatus(req.id, 'rejected')}
                                    className="bg-white border border-[#e11d48] text-[#e11d48] hover:bg-[#fff1f2] px-3 py-1.5 md:px-5 md:py-2 rounded-sm text-[11px] md:text-sm font-semibold transition-colors"
                                  >Reject</button>
                               </div>
@@ -127,11 +141,7 @@ function AdminPanel({
                               </div>
                               <div className="flex gap-2 flex-shrink-0">
                                  <button 
-                                   onClick={() => {
-                                     const newReqs = requests.map(r => r.id === req.id ? {...r, status: 'revoked'} : r);
-                                     setRequests(newReqs);
-                                     localStorage.setItem('ic3_exam_requests', JSON.stringify(newReqs));
-                                   }}
+                                   onClick={() => updateRequestStatus(req.id, 'revoked')}
                                    className="bg-white border border-[#e11d48] text-[#e11d48] hover:bg-[#fff1f2] px-3 py-1.5 md:px-5 md:py-2 rounded-sm text-[11px] md:text-sm font-semibold transition-colors"
                                  >Revoke</button>
                               </div>

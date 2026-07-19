@@ -228,18 +228,21 @@ function App() {
   useEffect(() => {
     let intervalId;
     if (appState === 'WAITING' && requestId) {
-      intervalId = setInterval(() => {
-        const saved = localStorage.getItem('ic3_exam_requests');
-        if (saved) {
-          const reqs = JSON.parse(saved);
-          const myReq = reqs.find(r => r.id === requestId);
-          if (myReq && myReq.status === 'approved') {
+      intervalId = setInterval(async () => {
+        const { data, error } = await supabase
+          .from('requests')
+          .select('status')
+          .eq('id', requestId)
+          .single();
+          
+        if (data) {
+          if (data.status === 'approved') {
             setAppState('EXAM');
             clearInterval(intervalId);
-          } else if (myReq && myReq.status === 'rejected') {
-             alert('Your request has been rejected.');
-             setAppState('HOME');
-             clearInterval(intervalId);
+          } else if (data.status === 'rejected') {
+            alert('Your request has been rejected.');
+            setAppState('HOME');
+            clearInterval(intervalId);
           }
         }
       }, 2000);
@@ -363,12 +366,25 @@ function App() {
   };
 
   // --- Navigation & Submission ---
-  const handleNext = () => {
+  const handleNext = async () => {
     setOpenDropdownId(null);
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
       setAppState('RESULT'); 
+      
+      const finalCorrectCount = questions.filter(q => q.status === 'Correct').length;
+      const finalScore = Math.round((finalCorrectCount / questions.length) * 100);
+      let levelNum = 1;
+      if (registration.level === '1-Level') levelNum = 1;
+      if (registration.level === '2-Level') levelNum = 2;
+      if (registration.level === '3-Level') levelNum = 3;
+      
+      await supabase.from('leaderboard').insert([{
+        username: `${registration.firstName} ${registration.lastName}`,
+        level_num: levelNum,
+        score: finalScore
+      }]);
     }
   };
 
@@ -439,50 +455,50 @@ function App() {
         return;
       }
 
-      const saved = localStorage.getItem('ic3_exam_requests');
-      const reqs = saved ? JSON.parse(saved) : [];
+      const checkRequests = async () => {
+        const { data, error } = await supabase
+          .from('requests')
+          .select('id, status')
+          .eq('firstName', registration.firstName)
+          .eq('lastName', registration.lastName)
+          .eq('email', registration.email)
+          .eq('level', registration.level)
+          .in('status', ['pending', 'approved']);
+          
+        if (data && data.length > 0) {
+          const approved = data.find(r => r.status === 'approved');
+          if (approved) {
+            setAppState('EXAM');
+            return;
+          }
+          const pending = data.find(r => r.status === 'pending');
+          if (pending) {
+            setRequestId(pending.id);
+            setAppState('WAITING');
+            return;
+          }
+        }
 
-      const existingApproved = reqs.find(r => 
-        r.firstName === registration.firstName && 
-        r.lastName === registration.lastName && 
-        r.email === registration.email && 
-        r.level === registration.level && 
-        r.status === 'approved'
-      );
+        const { data: insertData, error: insertError } = await supabase
+          .from('requests')
+          .insert([{
+            firstName: registration.firstName,
+            lastName: registration.lastName,
+            email: registration.email,
+            level: registration.level,
+            status: 'pending'
+          }])
+          .select();
+        
+        if (insertData && insertData.length > 0) {
+          setRequestId(insertData[0].id);
+          setAppState('WAITING');
+        } else {
+          alert('So\\'rov yuborishda xatolik yuz berdi. Iltimos, qaytadan urinib ko\\'ring.');
+        }
+      };
 
-      if (existingApproved) {
-        setAppState('EXAM');
-        return;
-      }
-
-      const existingPending = reqs.find(r => 
-        r.firstName === registration.firstName && 
-        r.lastName === registration.lastName && 
-        r.email === registration.email && 
-        r.level === registration.level && 
-        r.status === 'pending'
-      );
-
-      let currentReqId;
-      if (existingPending) {
-        currentReqId = existingPending.id;
-      } else {
-        const newReq = {
-          id: Date.now().toString(),
-          firstName: registration.firstName,
-          lastName: registration.lastName,
-          email: registration.email,
-          level: registration.level,
-          status: 'pending'
-        };
-        reqs.push(newReq);
-        localStorage.setItem('ic3_exam_requests', JSON.stringify(reqs));
-        setRequests(reqs);
-        currentReqId = newReq.id;
-      }
-      
-      setRequestId(currentReqId);
-      setAppState('WAITING');
+      checkRequests();
     } else {
       setRegistrationErrors({ firstName: !isFirstNameValid, lastName: !isLastNameValid, email: !isEmailValid, level: !isLevelValid });
     }
