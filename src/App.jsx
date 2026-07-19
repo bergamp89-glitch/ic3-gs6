@@ -444,7 +444,7 @@ function App() {
       <div className="min-h-screen flex items-center justify-center bg-[#e6ebf0] p-4">
         <div className="w-full max-w-4xl bg-white rounded-sm shadow-md overflow-hidden">
           {/* Header */}
-          <div className="bg-[#1a446b] text-white px-10 py-10 relative overflow-hidden">
+          <div className="bg-[#1a446b] text-white px-6 py-8 md:px-10 md:py-10 relative overflow-hidden">
             <div className="absolute top-0 right-0 opacity-10 transform translate-x-4 -translate-y-4">
                <svg width="240" height="240" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
@@ -452,38 +452,38 @@ function App() {
             </div>
             <div className="relative z-10">
                <div className="text-[12px] font-bold text-[#8baecf] uppercase tracking-widest mb-2">Practice Test / Assessment</div>
-               <h1 className="text-4xl font-bold tracking-wide mb-3">IC3 Digital Literacy Certification</h1>
-               <h2 className="text-xl text-blue-100 font-medium">Global Standard 6 (GS6)</h2>
+               <h1 className="text-3xl md:text-4xl font-bold tracking-wide mb-3">IC3 Digital Literacy Certification</h1>
+               <h2 className="text-lg md:text-xl text-blue-100 font-medium">Global Standard 6 (GS6)</h2>
             </div>
           </div>
           
           {/* Content */}
-          <div className="p-10">
-            <div className="grid grid-cols-3 gap-6 mb-10">
-              <div className="border border-gray-200 rounded-sm p-6 bg-gray-50/50">
-                <div className="text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2">Total Tasks</div>
-                <div className="text-4xl font-bold text-[#1a446b]">{questions.length}</div>
-                <div className="text-xs text-gray-500 mt-2 font-medium">Interactive exam items</div>
+          <div className="p-3 md:p-10">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-6 mb-4 md:mb-10">
+              <div className="border border-gray-200 rounded-sm p-3 md:p-6 bg-gray-50/50 flex flex-col justify-center items-center sm:items-start text-center sm:text-left">
+                <div className="text-[9px] md:text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1 md:mb-2">Total Tasks</div>
+                <div className="text-2xl md:text-4xl font-bold text-[#1a446b] leading-none">{questions.length}</div>
+                <div className="text-[10px] md:text-xs text-gray-500 mt-1 md:mt-2 font-medium">Interactive exam items</div>
               </div>
-              <div className="border border-gray-200 rounded-sm p-6 bg-gray-50/50">
-                <div className="text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2">Format</div>
-                <div className="text-4xl font-bold text-[#1a446b]">Mixed</div>
-                <div className="text-xs text-gray-500 mt-2 font-medium">Multiple Choice & Matching</div>
+              <div className="border border-gray-200 rounded-sm p-3 md:p-6 bg-gray-50/50 flex flex-col justify-center items-center sm:items-start text-center sm:text-left">
+                <div className="text-[9px] md:text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1 md:mb-2">Format</div>
+                <div className="text-2xl md:text-4xl font-bold text-[#1a446b] leading-none">Mixed</div>
+                <div className="text-[10px] md:text-xs text-gray-500 mt-1 md:mt-2 font-medium">Multiple Choice & Matching</div>
               </div>
-              <div className="border border-gray-200 rounded-sm p-6 bg-gray-50/50">
-                <div className="text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2">Passing Score</div>
-                <div className="text-4xl font-bold text-[#1a446b]">700</div>
-                <div className="text-xs text-gray-500 mt-2 font-medium">Out of 1000 points</div>
+              <div className="border border-gray-200 rounded-sm p-3 md:p-6 bg-gray-50/50 flex flex-col justify-center items-center sm:items-start text-center sm:text-left">
+                <div className="text-[9px] md:text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1 md:mb-2">Passing Score</div>
+                <div className="text-2xl md:text-4xl font-bold text-[#1a446b] leading-none">700</div>
+                <div className="text-[10px] md:text-xs text-gray-500 mt-1 md:mt-2 font-medium">Out of 1000 points</div>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-8 mb-10">
-              <div className="bg-blue-50/50 border border-blue-100 p-6 rounded-sm">
-                <h3 className="text-[13px] font-bold text-[#1a446b] uppercase tracking-widest mb-4 flex items-center gap-2">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-8 mb-6 md:mb-10">
+              <div className="bg-blue-50/50 border border-blue-100 p-3 md:p-6 rounded-sm">
+                <h3 className="text-[11px] md:text-[13px] font-bold text-[#1a446b] uppercase tracking-widest mb-2 md:mb-4 flex items-center gap-1.5 md:gap-2">
+                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                   Important Instructions
                 </h3>
-                <ul className="list-disc pl-5 space-y-2.5 text-[14px] text-gray-700 font-medium leading-relaxed">
+                <ul className="list-disc pl-4 md:pl-5 space-y-1 md:space-y-2.5 text-[12px] md:text-[14px] text-gray-700 font-medium leading-relaxed">
                    <li>Read each task carefully. Some tasks may have multiple requirements or items to match.</li>
                    <li>You <strong className="text-[#e11d48]">must submit your response</strong> to each task before you are allowed to move to the next one.</li>
                    <li>Skipping tasks is not allowed in this strict practice mode.</li>
@@ -491,15 +491,15 @@ function App() {
                 </ul>
               </div>
 
-              <div className="border border-gray-200 p-6 rounded-sm bg-white shadow-sm flex flex-col justify-center">
-                 <h3 className="text-[13px] font-bold text-[#1a446b] uppercase tracking-widest mb-4 flex items-center gap-2">
+              <div className="border border-gray-200 p-3 md:p-6 rounded-sm bg-white shadow-sm flex flex-col justify-center">
+                 <h3 className="text-[11px] md:text-[13px] font-bold text-[#1a446b] uppercase tracking-widest mb-2 md:mb-4 flex items-center gap-1.5 md:gap-2">
                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                    Registration & Test Setup
                  </h3>
                  <div className="space-y-4">
                    <div>
                       <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Select Test Level</label>
-                      <div className="grid grid-cols-3 gap-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                         {['1-Level', '2-Level', '3-Level'].map(lvl => (
                           <button
                             key={lvl}
@@ -515,7 +515,7 @@ function App() {
                       </div>
                       {registrationErrors.level && <p className="text-[#e11d48] text-[10px] mt-1.5 font-medium">Please select a test level.</p>}
                    </div>
-                   <div className="grid grid-cols-2 gap-4">
+                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                      <div>
                        <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">ISMINGIZNI KIRITING</label>
                        <input 
@@ -525,7 +525,7 @@ function App() {
                            setRegistration({...registration, firstName: e.target.value});
                            if (registrationErrors.firstName) setRegistrationErrors({...registrationErrors, firstName: false});
                          }}
-                         className={`w-full border ${registrationErrors.firstName ? 'border-[#e11d48]' : 'border-gray-300'} rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:border-[#1a446b]`} 
+                         className={`w-full border ${registrationErrors.firstName ? 'border-[#e11d48]' : 'border-gray-300'} rounded-sm px-2.5 py-1.5 md:px-3 md:py-2.5 text-xs md:text-sm focus:outline-none focus:border-[#1a446b]`} 
                          placeholder="John"
                        />
                        {registrationErrors.firstName && <p className="text-[#e11d48] text-[10px] mt-1.5 font-medium">Required.</p>}
@@ -539,7 +539,7 @@ function App() {
                            setRegistration({...registration, lastName: e.target.value});
                            if (registrationErrors.lastName) setRegistrationErrors({...registrationErrors, lastName: false});
                          }}
-                         className={`w-full border ${registrationErrors.lastName ? 'border-[#e11d48]' : 'border-gray-300'} rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:border-[#1a446b]`} 
+                         className={`w-full border ${registrationErrors.lastName ? 'border-[#e11d48]' : 'border-gray-300'} rounded-sm px-2.5 py-1.5 md:px-3 md:py-2.5 text-xs md:text-sm focus:outline-none focus:border-[#1a446b]`} 
                          placeholder="Doe"
                        />
                        {registrationErrors.lastName && <p className="text-[#e11d48] text-[10px] mt-1.5 font-medium">Required.</p>}
@@ -554,7 +554,7 @@ function App() {
                          setRegistration({...registration, email: e.target.value});
                          if (registrationErrors.email) setRegistrationErrors({...registrationErrors, email: false});
                        }}
-                       className={`w-full border ${registrationErrors.email ? 'border-[#e11d48]' : 'border-gray-300'} rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:border-[#1a446b]`} 
+                       className={`w-full border ${registrationErrors.email ? 'border-[#e11d48]' : 'border-gray-300'} rounded-sm px-2.5 py-1.5 md:px-3 md:py-2.5 text-xs md:text-sm focus:outline-none focus:border-[#1a446b]`} 
                        placeholder="example@gmail.com"
                      />
                      {registrationErrors.email && <p className="text-[#e11d48] text-[11px] mt-1.5 font-medium">Please enter a valid @gmail.com address.</p>}
@@ -566,7 +566,7 @@ function App() {
             <div className="flex justify-center pt-2">
                <button 
                  onClick={handleStartExam} 
-                 className="bg-[#1a446b] text-white px-12 py-4 rounded-sm font-bold tracking-widest text-[15px] hover:bg-[#153655] transition-all hover:shadow-lg hover:-translate-y-0.5"
+                 className="bg-[#1a446b] text-white px-8 py-3 md:px-12 md:py-4 rounded-sm font-bold tracking-widest text-[13px] md:text-[15px] hover:bg-[#153655] transition-all hover:shadow-lg hover:-translate-y-0.5"
                >
                  START PRACTICE EXAM
                </button>
@@ -628,8 +628,8 @@ function App() {
           </div>
           
           {/* Content */}
-          <div className="p-8">
-            <div className="grid grid-cols-3 gap-6 mb-6">
+          <div className="p-6 md:p-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6">
               {/* Score Box */}
               <div className="border border-gray-200 rounded-sm p-6">
                 <div className="text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-4">Score</div>
@@ -670,12 +670,12 @@ function App() {
       }
     }}>
       {/* Header */}
-      <header className="h-[60px] bg-[#1a446b] text-white flex justify-between items-center px-6 flex-shrink-0">
-        <div>
+      <header className="min-h-[60px] py-3 md:py-0 bg-[#1a446b] text-white flex flex-col md:flex-row justify-between items-center px-4 md:px-6 flex-shrink-0 gap-3 md:gap-0">
+        <div className="text-center md:text-left">
           <div className="text-[10px] text-[#8baecf] font-bold tracking-widest uppercase mb-[2px]">Testing Workspace</div>
-          <h1 className="text-[17px] font-semibold tracking-wide">IC3 Test Session {registration.level ? `- ${registration.level}` : ''}</h1>
+          <h1 className="text-[15px] md:text-[17px] font-semibold tracking-wide">IC3 Test Session {registration.level ? `- ${registration.level}` : ''}</h1>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4">
           <div className="bg-[#153655] rounded-sm px-4 py-1.5 border border-[#1a446b] flex flex-col items-center">
             <div className="text-[#8baecf] text-[9px] font-bold tracking-widest uppercase mb-[2px]">Current Task</div>
             <div className="text-[13px] font-semibold tracking-wide">Question {currentIndex + 1} of {questions.length}</div>
@@ -695,10 +695,10 @@ function App() {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-[1500px] w-full mx-auto p-4 flex gap-4 overflow-hidden">
+      <main className="flex-1 max-w-[1500px] w-full mx-auto p-2 sm:p-4 flex flex-col lg:flex-row gap-4 overflow-y-auto lg:overflow-hidden">
         
         {/* Left Sidebar - Task Navigation */}
-        <aside className="w-[280px] bg-white border border-gray-200 rounded-sm shadow-sm flex flex-col flex-shrink-0 overflow-hidden">
+        <aside className="w-full lg:w-[280px] bg-white border border-gray-200 rounded-sm shadow-sm flex flex-col flex-shrink-0 lg:overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100">
             <h3 className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest">Task Navigation</h3>
           </div>
@@ -770,7 +770,7 @@ function App() {
 
         {/* Center Workspace */}
         <section className="flex-1 flex flex-col gap-4 min-w-0">
-          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-6 py-4 flex justify-between items-center">
+          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-4 md:px-6 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
              <div>
                 <div className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1">Exam Workspace</div>
                 <h2 className="text-lg font-semibold text-gray-800">Question {currentQ.id}</h2>
@@ -924,7 +924,7 @@ function App() {
 
                {/* 3. MATCHING TASK */}
                {currentQ.type === 'MATCHING TASK' && (
-                 <div className="flex gap-6 mt-4 h-full">
+                 <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 mt-4 h-full">
                    {/* Left Column - Source Items */}
                    <div className="flex-1 border border-gray-200 rounded-sm p-5 flex flex-col">
                      <div className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest mb-4">Source Items</div>
@@ -1099,18 +1099,18 @@ function App() {
              </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-6 py-4 flex justify-between items-center h-[76px]">
+          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-4 md:px-6 py-4 flex flex-col md:flex-row justify-between items-center min-h-[76px] gap-4 md:gap-0 mt-auto">
              {isEvaluated ? (
-                <span className="text-[13px] text-gray-600 font-medium w-1/2">
+                <span className="text-[12px] md:text-[13px] text-gray-600 font-medium md:w-1/2 text-center md:text-left">
                    Task submitted. Review the highlighted response before moving on.
                 </span>
              ) : (
-                <span className="text-[13px] text-gray-500 font-medium">
+                <span className="text-[12px] md:text-[13px] text-gray-500 font-medium text-center md:text-left">
                    Answer the task and use Submit Task when ready.
                 </span>
              )}
              
-             <div className="flex gap-3">
+             <div className="flex flex-wrap justify-center gap-2 md:gap-3">
                 <button className="action-btn" onClick={handlePrev} disabled={currentIndex === 0}>PREVIOUS</button>
                 
                 {!isEvaluated ? (
@@ -1131,7 +1131,7 @@ function App() {
         </section>
 
         {/* Right Sidebar - Instructions & Review */}
-        <aside className="w-[300px] flex flex-col gap-4 flex-shrink-0">
+        <aside className="w-full lg:w-[300px] flex flex-col gap-4 flex-shrink-0">
           <div className="flex gap-2 h-[42px]">
             <button 
               onClick={() => setActiveTab('INSTRUCTIONS')}
