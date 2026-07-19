@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-[#e6ebf0] text-[#333333] font-sans antialiased m-0 p-0;
+    @apply bg-[#e6ebf0] text-[#333333] font-sans antialiased m-0 p-0 select-none;
     font-family: 'Inter', sans-serif;
   }
 }

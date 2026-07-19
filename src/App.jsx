@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { examQuestions as level1Questions } from './1-level';
-import { examQuestions as level2Questions } from './2-level';
-import { examQuestions as level3Questions } from './3-level';
+import { supabase } from './supabase';
 import AdminPanel from './AdminPanel';
 function App() {
   const [questions, setQuestions] = useState(() => {
@@ -45,6 +43,59 @@ function App() {
     const saved = localStorage.getItem('ic3_admin_creds');
     return saved ? JSON.parse(saved) : { firstName: 'admin', lastName: 'Doe', email: '0807' };
   });
+
+  // Anti-screenshot / Anti-copy protection
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Prevent F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+P, Ctrl+S, Ctrl+C
+      if (
+        e.key === 'F12' || 
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J')) || 
+        (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.key === 'p' || e.key === 'P' || e.key === 's' || e.key === 'S' || e.key === 'c' || e.key === 'C'))
+      ) {
+        e.preventDefault();
+      }
+      
+      // Clear clipboard if PrintScreen is pressed
+      if (e.key === 'PrintScreen') {
+        navigator.clipboard.writeText('');
+      }
+    };
+
+    const handleContextMenu = (e) => e.preventDefault();
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('contextmenu', handleContextMenu);
+    
+    // Optional: Blur the app when window loses focus (helps against snipping tools)
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        document.body.style.filter = 'blur(10px)';
+      } else {
+        document.body.style.filter = 'none';
+      }
+    };
+    
+    const handleWindowBlur = () => {
+      document.body.style.filter = 'blur(10px)';
+    };
+    
+    const handleWindowFocus = () => {
+      document.body.style.filter = 'none';
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('blur', handleWindowBlur);
+    window.addEventListener('focus', handleWindowFocus);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleWindowBlur);
+      window.removeEventListener('focus', handleWindowFocus);
+    };
+  }, []);
 
   const [levelsStatus, setLevelsStatus] = useState(() => {
     const saved = localStorage.getItem('ic3_levels_status');
@@ -95,85 +146,84 @@ function App() {
   }, [appState]);
 
   useEffect(() => {
-    if (appState === 'EXAM' || appState === 'RESULT') return;
+    async function loadQuestions() {
+      if (appState === 'EXAM' && questions.length === 0) {
+        let levelNum = 1;
+        if (registration.level === '1-Level') levelNum = 1;
+        if (registration.level === '2-Level') levelNum = 2;
+        if (registration.level === '3-Level') levelNum = 3;
 
-    let selectedQuestions = [];
-    if (registration.level === '1-Level') selectedQuestions = level1Questions;
-    if (registration.level === '2-Level') selectedQuestions = level2Questions;
-    if (registration.level === '3-Level') selectedQuestions = level3Questions;
+        const { data, error } = await supabase
+          .from('questions')
+          .select('*')
+          .eq('level_num', levelNum)
+          .order('id', { ascending: true });
 
-    if (selectedQuestions.length > 0) {
-      const initial = selectedQuestions.map(q => {
-        let normalizedQ = { ...q };
-        
-        if (normalizedQ.type === 'SINGLE CHOICE') {
-          normalizedQ.type = 'MULTIPLE CHOICE';
+        if (error || !data || data.length === 0) {
+          console.error("Savollarni bazadan olishda xatolik:", error);
+          return;
         }
 
-        if (normalizedQ.type === 'MATCHING') {
-          // If the matching options contain "->", we can convert them into a visual drag-and-drop MATCHING TASK
-          if (normalizedQ.options && normalizedQ.options.some(opt => opt.text && opt.text.includes('->'))) {
-            normalizedQ.type = 'MATCHING TASK';
-            normalizedQ.sourceItems = [];
-            normalizedQ.targetAreas = [];
-            
-            // Create target areas (in original order)
-            normalizedQ.options.forEach((opt) => {
-              const parts = opt.text.split('->');
-              const leftText = parts[0].trim();
-              const rightText = parts.slice(1).join('->').trim();
-              
-              const srcId = `src_${opt.id}`;
-              const tgtId = `tgt_${opt.id}`;
-              
-              normalizedQ.targetAreas.push({ 
-                id: tgtId, 
-                label: rightText || leftText, 
-                correctAnswer: srcId 
-              });
-            });
-
-            // Create shuffled source items
-            const shuffledOptions = [...normalizedQ.options].sort(() => Math.random() - 0.5);
-            shuffledOptions.forEach((opt) => {
-              const parts = opt.text.split('->');
-              const leftText = parts[0].trim();
-              const srcId = `src_${opt.id}`;
-              
-              normalizedQ.sourceItems.push({ id: srcId, text: leftText });
-            });
-
-            delete normalizedQ.options;
-            delete normalizedQ.correctAnswers;
-          } else {
+        const initial = data.map(dbQ => {
+          const q = { id: dbQ.id, prompt: dbQ.prompt, type: dbQ.type, ...dbQ.data };
+          let normalizedQ = { ...q };
+          
+          if (normalizedQ.type === 'SINGLE CHOICE') {
             normalizedQ.type = 'MULTIPLE CHOICE';
           }
-        }
-        
-        // Normalize matrices to INSTRUCTION SET
-        if (normalizedQ.type === 'TRUE_FALSE_MATRIX' || normalizedQ.type === 'YES_NO_MATRIX') {
-          normalizedQ.type = 'INSTRUCTION SET';
-          normalizedQ.statements = (normalizedQ.options || []).map((opt, i) => ({
-            id: opt.id || `s${i}`,
-            text: opt.text,
-            options: q.type === 'TRUE_FALSE_MATRIX' ? ['True', 'False'] : ['Yes', 'No'],
-            correctAnswer: opt.answer
-          }));
-        }
 
-        return {
-          ...normalizedQ,
-          userAnswers: (normalizedQ.type === 'INSTRUCTION SET' || normalizedQ.type === 'MATCHING TASK') ? {} : [],
-          status: 'Not Started' 
-        };
-      });
-      setQuestions(initial);
-      setCurrentIndex(0);
-    } else {
-      setQuestions([]);
+          if (normalizedQ.type === 'MATCHING') {
+            if (normalizedQ.options && normalizedQ.options.some(opt => opt.text && opt.text.includes('->'))) {
+              normalizedQ.type = 'MATCHING TASK';
+              normalizedQ.sourceItems = [];
+              normalizedQ.targetAreas = [];
+              
+              normalizedQ.options.forEach((opt) => {
+                const parts = opt.text.split('->');
+                const leftText = parts[0].trim();
+                const rightText = parts.slice(1).join('->').trim();
+                const srcId = `src_${opt.id}`;
+                const tgtId = `tgt_${opt.id}`;
+                normalizedQ.targetAreas.push({ id: tgtId, label: rightText || leftText, correctAnswer: srcId });
+              });
+
+              const shuffledOptions = [...normalizedQ.options].sort(() => Math.random() - 0.5);
+              shuffledOptions.forEach((opt) => {
+                const parts = opt.text.split('->');
+                const leftText = parts[0].trim();
+                const srcId = `src_${opt.id}`;
+                normalizedQ.sourceItems.push({ id: srcId, text: leftText });
+              });
+
+              delete normalizedQ.options;
+              delete normalizedQ.correctAnswers;
+            } else {
+              normalizedQ.type = 'MULTIPLE CHOICE';
+            }
+          }
+          
+          if (normalizedQ.type === 'TRUE_FALSE_MATRIX' || normalizedQ.type === 'YES_NO_MATRIX') {
+            normalizedQ.type = 'INSTRUCTION SET';
+            normalizedQ.statements = (normalizedQ.options || []).map((opt, i) => ({
+              id: opt.id || `s${i}`,
+              text: opt.text,
+              options: q.type === 'TRUE_FALSE_MATRIX' ? ['True', 'False'] : ['Yes', 'No'],
+              correctAnswer: opt.answer
+            }));
+          }
+
+          return {
+            ...normalizedQ,
+            userAnswers: (normalizedQ.type === 'INSTRUCTION SET' || normalizedQ.type === 'MATCHING TASK') ? {} : [],
+            status: 'Not Started' 
+          };
+        });
+        setQuestions(initial);
+        setCurrentIndex(0);
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [registration.level]);
+    loadQuestions();
+  }, [appState, registration.level, questions.length]);
 
   useEffect(() => {
     let intervalId;
@@ -664,7 +714,7 @@ function App() {
 
   // --- Render Main Exam Screen ---
   return (
-    <div className="h-screen flex flex-col bg-[#e6ebf0] overflow-hidden select-none" onClick={(e) => {
+    <div className="min-h-screen flex flex-col font-sans select-none selection:bg-[#1a446b] selection:text-white" onClick={(e) => {
       if (!e.target.closest('.dropdown-container')) {
         setOpenDropdownId(null);
       }
