@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#e6ebf0] text-[#333333] font-sans antialiased m-0 p-0;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@media print {
+  body {
+    display: none !important;
+  }
+}
+
+.select-none {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+@layer components {
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1; 
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; 
+  }
+
+  /* Grid Buttons */
+  .grid-btn {
+    @apply h-9 border rounded-sm flex items-center justify-center text-[13px] font-medium bg-white text-gray-600 border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer;
+  }
+  .grid-btn.current {
+    @apply bg-[#1a446b] text-white border-[#1a446b] hover:bg-[#153655];
+  }
+  .grid-btn.completed {
+    @apply bg-green-50 border-green-200 text-green-700;
+  }
+  
+  /* Status Badges */
+  .badge-outline {
+    @apply border px-3 py-1 rounded-sm text-[10px] font-bold tracking-wider uppercase;
+  }
+  .badge-outline.multiple-choice {
+    @apply border-gray-300 text-gray-500 bg-white;
+  }
+  .badge-outline.not-started {
+    @apply border-gray-300 text-gray-500 bg-white;
+  }
+  
+  /* Options */
+  .option-btn {
+    @apply w-full text-left p-4 bg-white border border-gray-200 rounded-sm mb-3 flex items-center gap-4 hover:border-gray-300 transition-all cursor-pointer;
+  }
+  .option-btn.selected {
+    @apply border-[#1a446b] bg-blue-50/30;
+  }
+  .option-letter {
+    @apply w-7 h-7 rounded-sm border border-gray-300 flex items-center justify-center bg-white text-gray-500 text-sm font-medium flex-shrink-0;
+  }
+  .option-btn.selected .option-letter {
+    @apply border-[#1a446b] text-[#1a446b] font-bold;
+  }
+
+  /* Right Sidebar Section Titles */
+  .rs-title {
+    @apply text-[10px] font-bold text-[#6f93b5] uppercase tracking-wider mb-2;
+  }
+  
+  /* Main Action Buttons */
+  .action-btn {
+    @apply px-6 py-2.5 rounded-sm text-[13px] font-bold tracking-wider uppercase transition-all duration-200 border cursor-pointer bg-[#1a446b] border-[#1a446b] text-white hover:bg-[#153655] shadow-sm hover:shadow-md;
+  }
+  .action-btn:disabled {
+    @apply bg-white border-gray-200 text-gray-400 cursor-not-allowed shadow-none hover:shadow-none hover:bg-white;
+  }
+  .action-btn.evaluated {
+    @apply cursor-default hover:shadow-sm hover:bg-opacity-100;
+  }
+  .action-btn.evaluated.correct {
+    @apply bg-[#059669] border-[#059669] text-white;
+  }
+  .action-btn.evaluated.review {
+    @apply bg-[#e11d48] border-[#e11d48] text-white;
+  }
+}
