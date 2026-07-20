@@ -2,13 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from './supabase';
 import AdminPanel from './AdminPanel';
 function App() {
-  const [sessionId, setSessionId] = useState(null);
-  const [questions, setQuestions] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [sessionId, setSessionId] = useState(() => localStorage.getItem('sessionId') || null);
+  const [questions, setQuestions] = useState(() => {
+    const saved = localStorage.getItem('questions');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [currentIndex, setCurrentIndex] = useState(() => {
+    const saved = localStorage.getItem('currentIndex');
+    return saved ? Number(saved) : 0;
+  });
   const [activeTab, setActiveTab] = useState('INSTRUCTIONS'); 
   const [openDropdownId, setOpenDropdownId] = useState(null); 
-  const [appState, setAppState] = useState('HOME'); // 'HOME', 'WAITING', 'ADMIN', 'EXAM', 'RESULT'
-  const [registration, setRegistration] = useState({ firstName: '', lastName: '', email: '', level: '' });
+  const [appState, setAppState] = useState(() => localStorage.getItem('appState') || 'HOME'); // 'HOME', 'WAITING', 'ADMIN', 'EXAM', 'RESULT'
+  const [registration, setRegistration] = useState(() => {
+    const saved = localStorage.getItem('registration');
+    return saved ? JSON.parse(saved) : { firstName: '', lastName: '', email: '', level: '' };
+  });
   
   const [registrationErrors, setRegistrationErrors] = useState({ firstName: false, lastName: false, email: false, level: false });
   const [requestId, setRequestId] = useState(null);
@@ -16,6 +25,7 @@ function App() {
   const [adminCreds, setAdminCreds] = useState({ firstName: 'admin', lastName: 'Doe', email: '0807' });
   const [showInactiveModal, setShowInactiveModal] = useState(false);
   const [mobileSidebar, setMobileSidebar] = useState(null);
+  const [selectedSourceId, setSelectedSourceId] = useState(null);
 
   // Anti-screenshot / Anti-copy protection
   useEffect(() => {
@@ -85,6 +95,22 @@ function App() {
     }
     loadSettings();
   }, []);
+
+  useEffect(() => {
+    if (appState === 'HOME' || appState === 'ADMIN') {
+      localStorage.removeItem('appState');
+      localStorage.removeItem('sessionId');
+      localStorage.removeItem('questions');
+      localStorage.removeItem('currentIndex');
+      localStorage.removeItem('registration');
+    } else {
+      localStorage.setItem('appState', appState);
+      if (sessionId) localStorage.setItem('sessionId', sessionId);
+      localStorage.setItem('questions', JSON.stringify(questions));
+      localStorage.setItem('currentIndex', currentIndex);
+      localStorage.setItem('registration', JSON.stringify(registration));
+    }
+  }, [appState, sessionId, questions, currentIndex, registration]);
 
   useEffect(() => {
     if (sessionId && appState !== 'HOME' && appState !== 'ADMIN') {
@@ -312,6 +338,42 @@ function App() {
   };
 
   // --- Handlers for MATCHING TASK ---
+  const handleSourceClick = (sourceId) => {
+    if (currentQ.status === 'Correct' || currentQ.status === 'Review') return;
+    if (selectedSourceId === sourceId) {
+      setSelectedSourceId(null);
+    } else {
+      setSelectedSourceId(sourceId);
+    }
+  };
+
+  const handleTargetClick = (targetId) => {
+    if (currentQ.status === 'Correct' || currentQ.status === 'Review') return;
+    if (!selectedSourceId) return;
+
+    const newAnswers = { ...currentQ.userAnswers };
+    for (const [key, val] of Object.entries(newAnswers)) {
+      if (val === selectedSourceId) {
+        delete newAnswers[key];
+      }
+    }
+    newAnswers[targetId] = selectedSourceId;
+    
+    const answeredCount = Object.keys(newAnswers).length;
+    setQuestions(prev => prev.map((q, i) => {
+      if (i === currentIndex) {
+        return {
+          ...q,
+          userAnswers: newAnswers,
+          status: answeredCount > 0 ? 'In Progress' : 'Not Started'
+        };
+      }
+      return q;
+    }));
+    
+    setSelectedSourceId(null);
+  };
+
   const handleDragStart = (e, sourceId) => {
     if (currentQ.status === 'Correct' || currentQ.status === 'Review') {
       e.preventDefault();
@@ -369,6 +431,7 @@ function App() {
   const handleNext = async () => {
     setOpenDropdownId(null);
     setMobileSidebar(null);
+    setSelectedSourceId(null);
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
@@ -392,6 +455,7 @@ function App() {
   const handlePrev = () => {
     setOpenDropdownId(null);
     setMobileSidebar(null);
+    setSelectedSourceId(null);
     if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
   };
 
@@ -432,6 +496,7 @@ function App() {
     if (sessionId) {
       await supabase.from('exam_sessions').delete().eq('id', sessionId);
     }
+    localStorage.clear();
     window.location.reload();
   };
 
@@ -866,6 +931,7 @@ function App() {
                       setCurrentIndex(idx);
                       setOpenDropdownId(null);
                       setMobileSidebar(null);
+                      setSelectedSourceId(null);
                     }}
                     disabled={idx > maxAllowedIndex}
                     className={`grid-btn ${statusClass} ${idx > maxAllowedIndex ? 'opacity-50 cursor-not-allowed hover:bg-white text-gray-300' : ''}`}
@@ -1072,7 +1138,8 @@ function App() {
                               key={src.id}
                               draggable={!isEvaluated}
                               onDragStart={(e) => handleDragStart(e, src.id)}
-                              className={`border border-gray-200 rounded-md p-4 bg-white transition-all duration-200 ${!isEvaluated ? 'cursor-grab active:cursor-grabbing hover:shadow-md hover:border-[#1a446b]/40 hover:-translate-y-0.5' : ''} ${placedTarget ? 'opacity-50 scale-95' : ''}`}
+                              onClick={() => handleSourceClick(src.id)}
+                              className={`border border-gray-200 rounded-md p-4 bg-white transition-all duration-200 ${!isEvaluated ? 'cursor-grab active:cursor-grabbing hover:shadow-md hover:border-[#1a446b]/40 hover:-translate-y-0.5' : ''} ${placedTarget ? 'opacity-50 scale-95' : ''} ${selectedSourceId === src.id ? 'ring-2 ring-[#1a446b] border-[#1a446b] bg-blue-50/20 transform scale-[1.02]' : ''}`}
                             >
                               <div className="text-[13px] text-gray-800 font-medium">{src.text}</div>
                               {placedTarget && (
@@ -1117,7 +1184,8 @@ function App() {
                               <div 
                                 onDragOver={(e) => { e.preventDefault(); }}
                                 onDrop={(e) => handleDrop(e, tgt.id)}
-                                className={`border rounded-md p-4 transition-all duration-300 min-h-[76px] flex flex-col justify-center ${dropZoneClass}`}
+                                onClick={() => handleTargetClick(tgt.id)}
+                                className={`border rounded-md p-4 transition-all duration-300 min-h-[76px] flex flex-col justify-center ${dropZoneClass} ${selectedSourceId && !isEvaluated ? 'cursor-pointer hover:ring-2 hover:ring-[#1a446b]/50' : ''}`}
                               >
                                 {!placedSource ? (
                                   <div className="text-[13px]">{isEvaluated ? "No item placed" : "Drop an item here"}</div>
