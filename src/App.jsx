@@ -14,6 +14,8 @@ function App() {
   const [requestId, setRequestId] = useState(null);
 
   const [adminCreds, setAdminCreds] = useState({ firstName: 'admin', lastName: 'Doe', email: '0807' });
+  const [showInactiveModal, setShowInactiveModal] = useState(false);
+  const [mobileSidebar, setMobileSidebar] = useState(null);
 
   // Anti-screenshot / Anti-copy protection
   useEffect(() => {
@@ -366,6 +368,7 @@ function App() {
   // --- Navigation & Submission ---
   const handleNext = async () => {
     setOpenDropdownId(null);
+    setMobileSidebar(null);
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
@@ -388,6 +391,7 @@ function App() {
 
   const handlePrev = () => {
     setOpenDropdownId(null);
+    setMobileSidebar(null);
     if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
   };
 
@@ -448,7 +452,7 @@ function App() {
 
     if (isFirstNameValid && isLastNameValid && isEmailValid && isLevelValid) {
       if (!levelsStatus[registration.level]) {
-        alert("Hozir bu exam mavjud emas.");
+        setShowInactiveModal(true);
         return;
       }
 
@@ -456,9 +460,7 @@ function App() {
         const { data, error } = await supabase
           .from('requests')
           .select('id, status')
-          .eq('firstName', registration.firstName)
-          .eq('lastName', registration.lastName)
-          .eq('email', registration.email)
+          .ilike('email', registration.email)
           .eq('level', registration.level)
           .in('status', ['pending', 'approved']);
           
@@ -468,7 +470,7 @@ function App() {
             const { data: sessionData } = await supabase
               .from('exam_sessions')
               .select('*')
-              .eq('email', registration.email)
+              .ilike('email', registration.email)
               .order('updated_at', { ascending: false })
               .limit(1);
               
@@ -657,6 +659,28 @@ function App() {
             </div>
           </div>
         </div>
+
+        {showInactiveModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-sm shadow-xl p-6 max-w-sm w-full text-center transform transition-all border-t-4 border-[#e11d48]">
+              <div className="w-16 h-16 bg-[#fff1f2] rounded-full flex items-center justify-center mx-auto mb-4 border border-[#e11d48]/20">
+                <svg className="w-8 h-8 text-[#e11d48]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">Bu level mavjud emas</h3>
+              <p className="text-gray-600 text-[13px] mb-6 leading-relaxed font-medium">
+                Hozirgi vaqtda siz tanlagan daraja (level) bo'yicha test o'chirilgan yoki mavjud emas. Iltimos, boshqa levelni tanlang.
+              </p>
+              <button 
+                onClick={() => setShowInactiveModal(false)}
+                className="bg-[#e11d48] text-white hover:bg-[#be123c] px-6 py-2.5 rounded-sm font-semibold w-full transition-colors tracking-wide text-sm"
+              >
+                TUSHUNARLI
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -784,11 +808,30 @@ function App() {
         </div>
       </header>
 
+      {/* Mobile Sidebar Toggle */}
+      <div className="lg:hidden flex bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm flex-shrink-0">
+        <button 
+          onClick={() => setMobileSidebar(mobileSidebar === 'nav' ? null : 'nav')}
+          className={`flex-1 py-3 text-[11px] font-bold uppercase tracking-wider flex justify-center items-center gap-2 transition-colors ${mobileSidebar === 'nav' ? 'text-[#1a446b] border-b-2 border-[#1a446b] bg-blue-50/30' : 'text-gray-500 hover:bg-gray-50'}`}
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          Navigatsiya
+        </button>
+        <div className="w-px bg-gray-200"></div>
+        <button 
+          onClick={() => setMobileSidebar(mobileSidebar === 'instructions' ? null : 'instructions')}
+          className={`flex-1 py-3 text-[11px] font-bold uppercase tracking-wider flex justify-center items-center gap-2 transition-colors ${mobileSidebar === 'instructions' ? 'text-[#1a446b] border-b-2 border-[#1a446b] bg-blue-50/30' : 'text-gray-500 hover:bg-gray-50'}`}
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Yo'riqnoma
+        </button>
+      </div>
+
       {/* Main Content Area */}
       <main className="flex-1 max-w-[1500px] w-full mx-auto p-2 sm:p-4 flex flex-col lg:flex-row gap-4 overflow-y-auto lg:overflow-hidden">
         
         {/* Left Sidebar - Task Navigation */}
-        <aside className="w-full lg:w-[280px] bg-white border border-gray-200 rounded-sm shadow-sm flex flex-col flex-shrink-0 lg:overflow-hidden">
+        <aside className={`w-full lg:w-[280px] bg-white border border-gray-200 rounded-sm shadow-sm flex-col flex-shrink-0 lg:overflow-hidden ${mobileSidebar === 'nav' ? 'flex' : 'hidden lg:flex'}`}>
           <div className="px-5 py-4 border-b border-gray-100">
             <h3 className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest">Task Navigation</h3>
           </div>
@@ -822,6 +865,7 @@ function App() {
                     onClick={() => {
                       setCurrentIndex(idx);
                       setOpenDropdownId(null);
+                      setMobileSidebar(null);
                     }}
                     disabled={idx > maxAllowedIndex}
                     className={`grid-btn ${statusClass} ${idx > maxAllowedIndex ? 'opacity-50 cursor-not-allowed hover:bg-white text-gray-300' : ''}`}
@@ -859,7 +903,7 @@ function App() {
         </aside>
 
         {/* Center Workspace */}
-        <section className="flex-1 flex flex-col gap-4 min-w-0">
+        <section className={`flex-1 flex flex-col gap-4 min-w-0 ${mobileSidebar !== null ? 'hidden lg:flex' : 'flex'}`}>
           <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-4 md:px-6 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
              <div>
                 <div className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1">Exam Workspace</div>
@@ -1221,7 +1265,7 @@ function App() {
         </section>
 
         {/* Right Sidebar - Instructions & Review */}
-        <aside className="w-full lg:w-[300px] flex flex-col gap-4 flex-shrink-0">
+        <aside className={`w-full lg:w-[300px] flex-col gap-4 flex-shrink-0 ${mobileSidebar === 'instructions' ? 'flex' : 'hidden lg:flex'}`}>
           <div className="flex gap-2 h-[42px]">
             <button 
               onClick={() => setActiveTab('INSTRUCTIONS')}
