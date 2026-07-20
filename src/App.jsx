@@ -610,39 +610,8 @@ function App() {
           
           {/* Content */}
           <div className="p-3 md:p-10">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 md:gap-6 mb-4 md:mb-10">
-              <div className="border border-gray-200 rounded-sm p-3 md:p-6 bg-gray-50/50 flex flex-col justify-center items-center sm:items-start text-center sm:text-left">
-                <div className="text-[9px] md:text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1 md:mb-2">Total Tasks</div>
-                <div className="text-2xl md:text-4xl font-bold text-[#1a446b] leading-none">{questions.length}</div>
-                <div className="text-[10px] md:text-xs text-gray-500 mt-1 md:mt-2 font-medium">Interactive exam items</div>
-              </div>
-              <div className="border border-gray-200 rounded-sm p-3 md:p-6 bg-gray-50/50 flex flex-col justify-center items-center sm:items-start text-center sm:text-left">
-                <div className="text-[9px] md:text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1 md:mb-2">Format</div>
-                <div className="text-2xl md:text-4xl font-bold text-[#1a446b] leading-none">Mixed</div>
-                <div className="text-[10px] md:text-xs text-gray-500 mt-1 md:mt-2 font-medium">Multiple Choice & Matching</div>
-              </div>
-              <div className="border border-gray-200 rounded-sm p-3 md:p-6 bg-gray-50/50 flex flex-col justify-center items-center sm:items-start text-center sm:text-left">
-                <div className="text-[9px] md:text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1 md:mb-2">Passing Score</div>
-                <div className="text-2xl md:text-4xl font-bold text-[#1a446b] leading-none">700</div>
-                <div className="text-[10px] md:text-xs text-gray-500 mt-1 md:mt-2 font-medium">Out of 1000 points</div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-8 mb-6 md:mb-10">
-              <div className="bg-blue-50/50 border border-blue-100 p-3 md:p-6 rounded-sm">
-                <h3 className="text-[11px] md:text-[13px] font-bold text-[#1a446b] uppercase tracking-widest mb-2 md:mb-4 flex items-center gap-1.5 md:gap-2">
-                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                  Important Instructions
-                </h3>
-                <ul className="list-disc pl-4 md:pl-5 space-y-1 md:space-y-2.5 text-[12px] md:text-[14px] text-gray-700 font-medium leading-relaxed">
-                   <li>Read each task carefully. Some tasks may have multiple requirements or items to match.</li>
-                   <li>You <strong className="text-[#e11d48]">must submit your response</strong> to each task before you are allowed to move to the next one.</li>
-                   <li>Skipping tasks is not allowed in this strict practice mode.</li>
-                   <li>Once you finish all tasks, your final score will be evaluated instantly.</li>
-                </ul>
-              </div>
-
-              <div className="border border-gray-200 p-3 md:p-6 rounded-sm bg-white shadow-sm flex flex-col justify-center">
+            <div className="max-w-xl mx-auto mb-6 md:mb-10">
+              <div className="border border-gray-200 p-4 md:p-8 rounded-sm bg-white shadow-sm flex flex-col justify-center">
                  <h3 className="text-[11px] md:text-[13px] font-bold text-[#1a446b] uppercase tracking-widest mb-2 md:mb-4 flex items-center gap-1.5 md:gap-2">
                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                    Registration & Test Setup
