@@ -21,6 +21,7 @@ function App() {
   
   const [registrationErrors, setRegistrationErrors] = useState({ firstName: false, lastName: false, email: false, level: false });
   const [requestId, setRequestId] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [adminCreds, setAdminCreds] = useState({ firstName: 'admin', lastName: 'Doe', email: '0807' });
   const [showInactiveModal, setShowInactiveModal] = useState(false);
@@ -501,32 +502,41 @@ function App() {
   };
 
   const handleStartExam = () => {
-    const isFirstNameValid = registration.firstName.trim().length > 0;
-    const isLastNameValid = registration.lastName.trim().length > 0;
-    const isEmailValid = registration.email.trim().length > 0; // Removed @gmail.com check to allow admin login easier
-    const isLevelValid = registration.level !== '';
+    if (isSubmitting) return;
+
+    const trimmedFirstName = registration.firstName.trim();
+    const trimmedLastName = registration.lastName.trim();
+    const trimmedEmail = registration.email.trim().toLowerCase();
+    const selectedLevel = registration.level;
+
+    const isFirstNameValid = trimmedFirstName.length > 0;
+    const isLastNameValid = trimmedLastName.length > 0;
+    const isEmailValid = trimmedEmail.length > 0; // Removed @gmail.com check to allow admin login easier
+    const isLevelValid = selectedLevel !== '';
     
     // Check if Admin
     if (
-      registration.firstName === adminCreds.firstName &&
-      registration.email === adminCreds.email
+      trimmedFirstName === adminCreds.firstName &&
+      trimmedEmail === adminCreds.email
     ) {
       setAppState('ADMIN');
       return;
     }
 
     if (isFirstNameValid && isLastNameValid && isEmailValid && isLevelValid) {
-      if (!levelsStatus[registration.level]) {
+      if (!levelsStatus[selectedLevel]) {
         setShowInactiveModal(true);
         return;
       }
+
+      setIsSubmitting(true);
 
       const checkRequests = async () => {
         const { data, error } = await supabase
           .from('requests')
           .select('id, status')
-          .ilike('email', registration.email)
-          .eq('level', registration.level)
+          .ilike('email', trimmedEmail)
+          .eq('level', selectedLevel)
           .in('status', ['pending', 'approved']);
           
         if (data && data.length > 0) {
@@ -535,7 +545,7 @@ function App() {
             const { data: sessionData } = await supabase
               .from('exam_sessions')
               .select('*')
-              .ilike('email', registration.email)
+              .ilike('email', trimmedEmail)
               .order('updated_at', { ascending: false })
               .limit(1);
               
@@ -547,19 +557,21 @@ function App() {
             } else {
                const { data: newSession } = await supabase
                  .from('exam_sessions')
-                 .insert([{ email: registration.email, registration, app_state: 'EXAM' }])
+                 .insert([{ email: trimmedEmail, registration: { ...registration, firstName: trimmedFirstName, lastName: trimmedLastName, email: trimmedEmail }, app_state: 'EXAM' }])
                  .select();
                if (newSession && newSession.length > 0) {
                  setSessionId(newSession[0].id);
                }
                setAppState('EXAM');
             }
+            setIsSubmitting(false);
             return;
           }
           const pending = data.find(r => r.status === 'pending');
           if (pending) {
             setRequestId(pending.id);
             setAppState('WAITING');
+            setIsSubmitting(false);
             return;
           }
         }
@@ -567,10 +579,10 @@ function App() {
         const { data: insertData, error: insertError } = await supabase
           .from('requests')
           .insert([{
-            firstName: registration.firstName,
-            lastName: registration.lastName,
-            email: registration.email,
-            level: registration.level,
+            firstName: trimmedFirstName,
+            lastName: trimmedLastName,
+            email: trimmedEmail,
+            level: selectedLevel,
             status: 'pending'
           }])
           .select();
@@ -581,6 +593,7 @@ function App() {
         } else {
           alert('So\'rov yuborishda xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.');
         }
+        setIsSubmitting(false);
       };
 
       checkRequests();
@@ -686,7 +699,8 @@ function App() {
             <div className="flex justify-center pt-2">
                <button 
                  onClick={handleStartExam} 
-                 className="bg-[#1a446b] text-white px-8 py-3 md:px-12 md:py-4 rounded-sm font-bold tracking-widest text-[13px] md:text-[15px] hover:bg-[#153655] transition-all hover:shadow-lg hover:-translate-y-0.5"
+                 disabled={isSubmitting}
+                 className={`text-white px-8 py-3 md:px-12 md:py-4 rounded-sm font-bold tracking-widest text-[13px] md:text-[15px] transition-all ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#1a446b] hover:bg-[#153655] hover:shadow-lg hover:-translate-y-0.5'}`}
                >
                  START PRACTICE EXAM
                </button>
