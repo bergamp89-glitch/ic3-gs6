@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from './supabase';
 import AdminPanel from './AdminPanel';
+import { examQuestions as q1 } from './1-level.js';
+import { examQuestions as q2 } from './2-level.js';
+import { examQuestions as q3 } from './3-level.js';
 function App() {
   const [sessionId, setSessionId] = useState(() => localStorage.getItem('sessionId') || null);
   const [questions, setQuestions] = useState(() => {
@@ -173,20 +176,54 @@ function App() {
         if (registration.level === '2-Level') levelNum = 2;
         if (registration.level === '3-Level') levelNum = 3;
 
-        const { data, error } = await supabase
-          .from('questions')
-          .select('*')
-          .eq('level_num', levelNum)
-          .order('id', { ascending: true });
+        let rawQuestions = [];
 
-        if (error || !data || data.length === 0) {
-          console.error("Savollarni bazadan olishda xatolik:", error);
-          return;
+        if (levelNum === 3) {
+          rawQuestions = q3;
+          // Synchronize/Replace Level 3 in Supabase
+          try {
+            await supabase.from('questions').delete().eq('level_num', 3);
+            const formattedForDb = q3.map(q => {
+              const { id, prompt, type, ...rest } = q;
+              return {
+                id: 30000 + parseInt(id),
+                level_num: 3,
+                type: type,
+                prompt: prompt,
+                data: rest
+              };
+            });
+            await supabase.from('questions').insert(formattedForDb);
+          } catch (err) {
+            console.error("Supabase sync error:", err);
+          }
+        } else {
+          const { data, error } = await supabase
+            .from('questions')
+            .select('*')
+            .eq('level_num', levelNum)
+            .order('id', { ascending: true });
+
+          if (!error && data && data.length > 0) {
+            rawQuestions = data.map(dbQ => ({ id: dbQ.id, prompt: dbQ.prompt, type: dbQ.type, ...dbQ.data }));
+          } else {
+            rawQuestions = levelNum === 1 ? q1 : q2;
+          }
         }
 
-        const initial = data.map(dbQ => {
-          const q = { id: dbQ.id, prompt: dbQ.prompt, type: dbQ.type, ...dbQ.data };
-          let normalizedQ = { ...q };
+        const shuffleArray = (arr) => {
+          if (!Array.isArray(arr)) return arr;
+          const clone = [...arr];
+          for (let i = clone.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [clone[i], clone[j]] = [clone[j], clone[i]];
+          }
+          return clone;
+        };
+
+        const initial = rawQuestions.map((q, idx) => {
+          let normalizedQ = JSON.parse(JSON.stringify(q));
+          normalizedQ.id = idx + 1;
           
           if (normalizedQ.type === 'SINGLE CHOICE') {
             normalizedQ.type = 'MULTIPLE CHOICE';
@@ -207,7 +244,7 @@ function App() {
                 normalizedQ.targetAreas.push({ id: tgtId, label: rightText || leftText, correctAnswer: srcId });
               });
 
-              const shuffledOptions = [...normalizedQ.options].sort(() => Math.random() - 0.5);
+              const shuffledOptions = shuffleArray(normalizedQ.options);
               shuffledOptions.forEach((opt) => {
                 const parts = opt.text.split('->');
                 const leftText = parts[0].trim();
@@ -232,12 +269,25 @@ function App() {
             }));
           }
 
+          if (normalizedQ.options && Array.isArray(normalizedQ.options)) {
+            normalizedQ.options = shuffleArray(normalizedQ.options);
+          }
+
+          if (normalizedQ.statements && Array.isArray(normalizedQ.statements)) {
+            normalizedQ.statements = shuffleArray(normalizedQ.statements);
+          }
+
+          if (normalizedQ.sourceItems && Array.isArray(normalizedQ.sourceItems)) {
+            normalizedQ.sourceItems = shuffleArray(normalizedQ.sourceItems);
+          }
+
           return {
             ...normalizedQ,
             userAnswers: (normalizedQ.type === 'INSTRUCTION SET' || normalizedQ.type === 'MATCHING TASK') ? {} : [],
             status: 'Not Started' 
           };
         });
+
         setQuestions(initial);
         setCurrentIndex(0);
       }
@@ -981,7 +1031,7 @@ function App() {
              </div>
 
              <div className="w-full flex-1">
-               {currentQ.type === 'MULTIPLE CHOICE' && currentQ.options.map(opt => {
+               {currentQ.type === 'MULTIPLE CHOICE' && currentQ.options.map((opt, optIdx) => {
                  const isSelected = currentQ.userAnswers.includes(opt.id);
                  const isCorrectAnswer = currentQ.correctAnswers.includes(opt.id);
                  
@@ -1022,7 +1072,7 @@ function App() {
                     onClick={() => toggleOption(opt.id)}
                    >
                      <div className={`w-8 h-8 rounded-md border flex items-center justify-center text-sm flex-shrink-0 mt-0.5 transition-all duration-300 ${letterClass}`}>
-                        {opt.id}
+                        {String.fromCharCode(65 + optIdx)}
                      </div>
                      <div className="flex flex-col justify-center min-h-[32px]">
                         <div className={`text-[15px] transition-colors duration-300 leading-snug ${textClass}`}>{opt.text}</div>

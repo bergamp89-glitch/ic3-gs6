@@ -35,6 +35,20 @@ function AdminPanel({
       .eq('id', id);
     if (!error) {
       fetchRequests();
+    } else {
+      alert("Xatolik yuz berdi: " + (error.message || "Baza bilan aloqa yo'q"));
+    }
+  };
+
+  const deleteRequest = async (id) => {
+    const { error } = await supabase
+      .from('requests')
+      .delete()
+      .eq('id', id);
+    if (!error) {
+      fetchRequests();
+    } else {
+      alert("O'chirishda xatolik: " + (error.message || "Baza bilan aloqa yo'q"));
     }
   };
 
@@ -140,11 +154,16 @@ function AdminPanel({
                                  <div className="text-[11px] md:text-sm text-gray-500 mt-0.5 md:mt-1 truncate">{req.email} &bull; <span className="font-semibold text-[#1a446b] bg-blue-50 px-1.5 py-0.5 rounded-sm">{req.level}</span></div>
                               </div>
                               <div className="flex gap-2 flex-shrink-0">
-                                 <button 
-                                   onClick={() => updateRequestStatus(req.id, 'revoked')}
-                                   className="bg-white border border-[#e11d48] text-[#e11d48] hover:bg-[#fff1f2] px-3 py-1.5 md:px-5 md:py-2 rounded-sm text-[11px] md:text-sm font-semibold transition-colors"
-                                 >Revoke</button>
-                              </div>
+                                  <button 
+                                    onClick={() => updateRequestStatus(req.id, 'revoked')}
+                                    className="bg-white border border-[#e11d48] text-[#e11d48] hover:bg-[#fff1f2] px-3 py-1.5 md:px-5 md:py-2 rounded-sm text-[11px] md:text-sm font-semibold transition-colors"
+                                  >Revoke</button>
+                                  <button 
+                                    onClick={() => deleteRequest(req.id)}
+                                    className="bg-gray-100 border border-gray-300 text-gray-600 hover:bg-gray-200 px-3 py-1.5 md:px-4 md:py-2 rounded-sm text-[11px] md:text-sm font-semibold transition-colors"
+                                    title="Ro'yxatdan o'chirish"
+                                  >Delete</button>
+                               </div>
                            </div>
                          ))}
                        </div>
