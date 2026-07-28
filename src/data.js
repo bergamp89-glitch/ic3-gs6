@@ -839,5 +839,426 @@ export const examQuestions = [
       { id: 'F', text: "Share screenshots demonstrating the issue." }
     ],
     correctAnswers: ['A', 'D', 'F']
+  },
+  {
+    id: 49,
+    prompt: "You need to appropriately protect your personally identifiable information (PII). For each of the three statements, select True or False:",
+    type: "INSTRUCTION SET",
+    statements: [
+      {
+        id: 's1',
+        text: "The PII collected by websites can be used for identity theft purposes.",
+        options: ['True', 'False'],
+        correctAnswer: 'True'
+      },
+      {
+        id: 's2',
+        text: "Using multifactor authentication increases the risk of outsiders accessing your PII.",
+        options: ['True', 'False'],
+        correctAnswer: 'False'
+      },
+      {
+        id: 's3',
+        text: "Closing an online account permanently deletes your PII from the website hosting server.",
+        options: ['True', 'False'],
+        correctAnswer: 'False'
+      }
+    ]
+  },
+  {
+    id: 50,
+    prompt: "Which statement describes the principles of cloud versioning?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "Cloud versioning requires users to manually save every version of their files." },
+      { id: 'B', text: "Cloud versioning keeps a history of changes made to a file." },
+      { id: 'C', text: "Cloud versioning allows users to save only the most recent version of a file." },
+      { id: 'D', text: "Cloud versioning enables users to create multiple copies of a file." }
+    ],
+    correctAnswers: ['B']
+  },
+  {
+    id: 51,
+    prompt: "McKenna is setting up a new social media account and is asked to enable multifactor authentication. What is the main purpose of enabling this feature?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "To create a more complex password for your account" },
+      { id: 'B', text: "To allow your friends to easily find you online" },
+      { id: 'C', text: "To change your password every month" },
+      { id: 'D', text: "To confirm your identity" }
+    ],
+    correctAnswers: ['D']
+  },
+  {
+    id: 52,
+    prompt: "What are two traits of a constructive team member? (Choose 2.)",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 2,
+    options: [
+      { id: 'A', text: "Rigid" },
+      { id: 'B', text: "Opinionated" },
+      { id: 'C', text: "Inquisitive" },
+      { id: 'D', text: "Confident" }
+    ],
+    correctAnswers: ['C', 'D']
+  },
+  {
+    id: 53,
+    prompt: "What is a benefit of using a cyclical design process to create digital products?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "It allows you to deliver the final product as quickly as possible with few changes." },
+      { id: 'B', text: "It allows you to follow a strict schedule with a definite ending deadline." },
+      { id: 'C', text: "It allows you to work independently, without needing to ask for input from other team members." },
+      { id: 'D', text: "It allows you to continually test and improve the product to achieve the best possible result." }
+    ],
+    correctAnswers: ['D']
+  },
+  {
+    id: 54,
+    prompt: "You are using Microsoft Word on a Windows 10 computer to write a paper about a company. The company name, ABusiness, begins with two capital letters. Each time you type the company name, the software corrects the capital letters. Where can you change this correction preference?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "In the Office Language Preferences" },
+      { id: 'B', text: "In the AutoCorrect Options settings" },
+      { id: 'C', text: "In the Grammar & Refinements settings" },
+      { id: 'D', text: "In the computer operating system preferences" }
+    ],
+    correctAnswers: ['B']
+  },
+  {
+    id: 55,
+    prompt: "For each of the four statements about website credibility and accuracy, select True or False:",
+    type: "INSTRUCTION SET",
+    statements: [
+      {
+        id: 's1',
+        text: "Web pages are more credible if they cite sources for their content.",
+        options: ['True', 'False'],
+        correctAnswer: 'True'
+      },
+      {
+        id: 's2',
+        text: "You know a source is reliable when the website address ends in .org.",
+        options: ['True', 'False'],
+        correctAnswer: 'False'
+      },
+      {
+        id: 's3',
+        text: "Consulting multiple sources is a good way to determine a site's accuracy.",
+        options: ['True', 'False'],
+        correctAnswer: 'True'
+      },
+      {
+        id: 's4',
+        text: "A search engine differentiates between good and bad sites. The first results are usually the most reliable.",
+        options: ['True', 'False'],
+        correctAnswer: 'False'
+      }
+    ]
+  },
+  {
+    id: 56,
+    prompt: "You open a small business. You and your employees will use the Microsoft Office suite of productivity software. You need to decide whether to install the desktop apps or use the online version. What is a benefit of using a desktop app rather than a cloud app?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "The software is updated more frequently." },
+      { id: 'B', text: "The software does not depend on an internet connection." },
+      { id: 'C', text: "The up-front cost is less." },
+      { id: 'D', text: "The software uses less hard disk drive storage space." }
+    ],
+    correctAnswers: ['B']
+  },
+  {
+    id: 57,
+    prompt: "Isaac's online banking app asks for a code from his phone in addition to his password. What is this an example of?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "A password reset prompt" },
+      { id: 'B', text: "Identity monitoring notification" },
+      { id: 'C', text: "Multifactor authentication" },
+      { id: 'D', text: "A phishing attempt" }
+    ],
+    correctAnswers: ['C']
+  },
+  {
+    id: 58,
+    prompt: "You are creating content for a website. You need to follow accessibility standards. Complete the sentences by selecting the correct option from each drop-down list:",
+    type: "INSTRUCTION SET",
+    statements: [
+      {
+        id: 's1',
+        text: "The preferred font style is:",
+        options: ['sans serif', 'serif', 'script'],
+        correctAnswer: 'sans serif'
+      },
+      {
+        id: 's2',
+        text: "The minimum recommended font size for website body text is:",
+        options: ['12 points/16 pixels', '8 points/10 pixels', '24 points/32 pixels'],
+        correctAnswer: '12 points/16 pixels'
+      },
+      {
+        id: 's3',
+        text: "You should maintain a between font color and background color:",
+        options: ['high contrast', 'low contrast', 'no contrast'],
+        correctAnswer: 'high contrast'
+      }
+    ]
+  },
+  {
+    id: 59,
+    prompt: "Experts are concerned that society will lose some skills because of reliance on technology. Which three skills can become underutilized through the use of technology? (Choose 3.)",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 3,
+    options: [
+      { id: 'A', text: "Mental math" },
+      { id: 'B', text: "Memorization" },
+      { id: 'C', text: "Eye-hand coordination" },
+      { id: 'D', text: "Map navigation" },
+      { id: 'E', text: "Organization" },
+      { id: 'F', text: "Dexterity" }
+    ],
+    correctAnswers: ['A', 'B', 'D']
+  },
+  {
+    id: 60,
+    prompt: "You are the leader of a digital design team. Your team is creating a poster for a local fundraising event. You send a draft of the poster to the client. The client requests changes that you and your team members believe will make the poster less attractive and less effective. You need to communicate effectively with the client about the design changes. Which three actions should you take? (Choose 3.)",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 3,
+    options: [
+      { id: 'A', text: "Focus the discussion on the design choices, rather than your emotional response to the client's changes." },
+      { id: 'B', text: "Create a mockup of the poster with the client's changes and send it to the client." },
+      { id: 'C', text: "Remind the client that your team has the knowledge and experience to create an effective final poster design." },
+      { id: 'D', text: "Tell the client that their ideas are not welcome." },
+      { id: 'E', text: "Tell the client you don't want to make the changes." },
+      { id: 'F', text: "Ask the client to explain the reasons for the changes and the impact they will have on the poster." }
+    ],
+    correctAnswers: ['A', 'B', 'F']
+  },
+  {
+    id: 61,
+    prompt: "Which option is recommended to assist you in creating a secure password that you can remember?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "Use your social media profile name." },
+      { id: 'B', text: "Use parts of a random phrase." },
+      { id: 'C', text: "Use your favorite color and favorite animal." },
+      { id: 'D', text: "Use a name with a number at the end." }
+    ],
+    correctAnswers: ['B']
+  },
+  {
+    id: 62,
+    prompt: "Move each search topic from the list on the left to the corresponding type of search on the right:",
+    type: "MATCHING TASK",
+    sourceItems: [
+      { id: 'src1', text: "Population statistics" },
+      { id: 'src2', text: "A specific site" },
+      { id: 'src3', text: "Third-party options to purchase software" }
+    ],
+    targetAreas: [
+      { id: 'tgt1', label: "Informational search", correctAnswer: 'src1' },
+      { id: 'tgt2', label: "Navigational search", correctAnswer: 'src2' },
+      { id: 'tgt3', label: "Transactional search", correctAnswer: 'src3' }
+    ]
+  },
+  {
+    id: 63,
+    prompt: "Your team is working virtually on a group project. You want the group and the project to be successful. For each of the four statements about strategies for achieving success in a virtual group, select True or False:",
+    type: "INSTRUCTION SET",
+    statements: [
+      {
+        id: 's1',
+        text: "Have team members collect information in a shared document.",
+        options: ['True', 'False'],
+        correctAnswer: 'True'
+      },
+      {
+        id: 's2',
+        text: "Increase efficiency by utilizing only asynchronous communication.",
+        options: ['True', 'False'],
+        correctAnswer: 'False'
+      },
+      {
+        id: 's3',
+        text: "Create a team discussion board for project-related conversations.",
+        options: ['True', 'False'],
+        correctAnswer: 'True'
+      },
+      {
+        id: 's4',
+        text: "Have a central file storage location that all team members can access.",
+        options: ['True', 'False'],
+        correctAnswer: 'True'
+      }
+    ]
+  },
+  {
+    id: 64,
+    prompt: "You lead a project team in your digital design class. You and your teammates will create a project for a local business. You arrange a virtual meeting with the business owner to discuss the project. You need to ensure that the business owner leaves the meeting with confidence that your team can successfully complete the project. Which three actions should you take? (Choose 3.)",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 3,
+    options: [
+      { id: 'A', text: "Discuss your career goals in the field of digital design." },
+      { id: 'B', text: "Decide with the client which forms of digital communication to use during the project." },
+      { id: 'C', text: "Tell the client that you will email a draft proposal that includes deadlines." },
+      { id: 'D', text: "After the client presents ideas, paraphrase what they said." },
+      { id: 'E', text: "Speak in a casual, informal manner to put the client at ease and encourage discussion." },
+      { id: 'F', text: "Include a lengthy discussion about the design applications you will use." }
+    ],
+    correctAnswers: ['B', 'C', 'D']
+  },
+  {
+    id: 65,
+    prompt: "What is the purpose of clearing file storage space during troubleshooting?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "To remove viruses from the system" },
+      { id: 'B', text: "To prevent applications from syncing with cloud storage" },
+      { id: 'C', text: "To make room for new system updates" },
+      { id: 'D', text: "To increase network speed" }
+    ],
+    correctAnswers: ['C']
+  },
+  {
+    id: 66,
+    prompt: "You need to find drivers for a Windows 10 laptop. Device Manager shows \"unknown device\" for several components. What should you do?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "Use the model number of the machine to locate the Drivers page on the laptop manufacturer's website." },
+      { id: 'B', text: "From Device Manager, scan for hardware changes." },
+      { id: 'C', text: "Purchase device driver software from the store where the computer was purchased." },
+      { id: 'D', text: "Restart the computer and use the Windows 10 repair tool." }
+    ],
+    correctAnswers: ['A']
+  },
+  {
+    id: 67,
+    prompt: "Which file size is the largest?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "640 kilobytes (KB)" },
+      { id: 'B', text: "1.44 megabytes (MB)" },
+      { id: 'C', text: "16 gigabytes (GB)" },
+      { id: 'D', text: "3 petabytes (PB)" },
+      { id: 'E', text: "2 terabytes (TB)" }
+    ],
+    correctAnswers: ['D']
+  },
+  {
+    id: 68,
+    prompt: "You are creating a flowchart. Move each symbol description from the list on the left to its corresponding symbol on the right:",
+    type: "MATCHING TASK",
+    sourceItems: [
+      { id: 'src1', text: "Decision: indicates a decision point between two or more paths in the chart" },
+      { id: 'src2', text: "Data: can represent any type of data in a flowchart" },
+      { id: 'src3', text: "Terminator: indicates the beginning or end of a process" },
+      { id: 'src4', text: "Delay: indicates a delay in the process" }
+    ],
+    targetAreas: [
+      { id: 'tgt1', label: "Diamond Shape", correctAnswer: 'src1' },
+      { id: 'tgt2', label: "Parallelogram Shape", correctAnswer: 'src2' },
+      { id: 'tgt3', label: "Oval / Stadium Shape", correctAnswer: 'src3' },
+      { id: 'tgt4', label: "Half-oval / D Shape", correctAnswer: 'src4' }
+    ]
+  },
+  {
+    id: 69,
+    prompt: "For each of the four statements about technology-driven automation, select True or False:",
+    type: "INSTRUCTION SET",
+    statements: [
+      {
+        id: 's1',
+        text: "Automation will displace some existing job roles.",
+        options: ['True', 'False'],
+        correctAnswer: 'True'
+      },
+      {
+        id: 's2',
+        text: "Automation will lead to the creation of new job roles.",
+        options: ['True', 'False'],
+        correctAnswer: 'True'
+      },
+      {
+        id: 's3',
+        text: "Activities that include social interactions are more likely than others to be automated.",
+        options: ['True', 'False'],
+        correctAnswer: 'False'
+      },
+      {
+        id: 's4',
+        text: "Activities that include physical tasks in predictable environments are more likely than others to be automated.",
+        options: ['True', 'False'],
+        correctAnswer: 'True'
+      }
+    ]
+  },
+  {
+    id: 70,
+    prompt: "You encounter a video on social media that you suspect might be a deepfake generated by AI. For each of the four statements, select Yes if the action would help you determine if the video is fake or No if it would not:",
+    type: "INSTRUCTION SET",
+    statements: [
+      {
+        id: 's1',
+        text: "Assume that because the video contains a statement unlikely to be said by the speaker that the video is trustworthy.",
+        options: ['Yes', 'No'],
+        correctAnswer: 'No'
+      },
+      {
+        id: 's2',
+        text: "Search online for some of the specific quotes from the video to see if they are being featured by reputable news organizations.",
+        options: ['Yes', 'No'],
+        correctAnswer: 'Yes'
+      },
+      {
+        id: 's3',
+        text: "Consider the motivations of the originators and sharers of the video.",
+        options: ['Yes', 'No'],
+        correctAnswer: 'Yes'
+      },
+      {
+        id: 's4',
+        text: "Check the comments on the video to see if there are accusations of impropriety or other issues.",
+        options: ['Yes', 'No'],
+        correctAnswer: 'Yes'
+      }
+    ]
+  },
+  {
+    id: 71,
+    prompt: "Which type of software can be used online and with iOS and Android devices?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "Mac OS" },
+      { id: 'B', text: "Windows 11" },
+      { id: 'C', text: "Microsoft 365" },
+      { id: 'D', text: "Chrome OS" }
+    ],
+    correctAnswers: ['C']
+  },
+  {
+    id: 72,
+    prompt: "You purchase a software program to complete a specific project. After you finish the project, a friend asks to borrow the program. You need to determine whether this is an acceptable use of the software. Where can you find this information?",
+    type: "MULTIPLE CHOICE",
+    answersRequired: 1,
+    options: [
+      { id: 'A', text: "Content Management System (CMS)" },
+      { id: 'B', text: "End User License Agreement (EULA)" },
+      { id: 'C', text: "Access Control List (ACL)" },
+      { id: 'D', text: "Electronic Software Rating Board (ESRB)" }
+    ],
+    correctAnswers: ['B']
   }
 ];
