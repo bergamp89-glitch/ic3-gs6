@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS requests (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   "firstName" text,
   "lastName" text,
+  birth_date text,
   email text,
   level text,
   status text DEFAULT 'pending',

@@ -42,6 +42,7 @@ function HomePage({
                       {['1-Level', '2-Level', '3-Level'].map(lvl => (
                         <button
                           key={lvl}
+                          type="button"
                           onClick={() => {
                             setRegistration({...registration, level: lvl});
                             if (registrationErrors.level) setRegistrationErrors({...registrationErrors, level: false});
@@ -54,12 +55,13 @@ function HomePage({
                     </div>
                     {registrationErrors.level && <p className="text-[#e11d48] text-[10px] mt-1.5 font-medium">Please select a test level.</p>}
                  </div>
+
                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                    <div>
                      <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">First Name</label>
                      <input 
                        type="text" 
-                       value={registration.firstName}
+                       value={registration.firstName || ''}
                        onChange={(e) => {
                          setRegistration({...registration, firstName: e.target.value});
                          if (registrationErrors.firstName) setRegistrationErrors({...registrationErrors, firstName: false});
@@ -73,7 +75,7 @@ function HomePage({
                      <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Last Name</label>
                      <input 
                        type="text" 
-                       value={registration.lastName}
+                       value={registration.lastName || ''}
                        onChange={(e) => {
                          setRegistration({...registration, lastName: e.target.value});
                          if (registrationErrors.lastName) setRegistrationErrors({...registrationErrors, lastName: false});
@@ -84,11 +86,12 @@ function HomePage({
                      {registrationErrors.lastName && <p className="text-[#e11d48] text-[10px] mt-1.5 font-medium">Required.</p>}
                    </div>
                  </div>
+
                  <div>
                    <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Email Address</label>
                    <input 
                      type="email" 
-                     value={registration.email}
+                     value={registration.email || ''}
                      onChange={(e) => {
                        setRegistration({...registration, email: e.target.value});
                        if (registrationErrors.email) setRegistrationErrors({...registrationErrors, email: false});
@@ -96,7 +99,7 @@ function HomePage({
                      className={`w-full border ${registrationErrors.email ? 'border-[#e11d48]' : 'border-gray-300'} rounded-sm px-2.5 py-1.5 md:px-3 md:py-2.5 text-xs md:text-sm focus:outline-none focus:border-[#1a446b]`} 
                      placeholder="example@gmail.com"
                    />
-                   {registrationErrors.email && <p className="text-[#e11d48] text-[11px] mt-1.5 font-medium">Please enter a valid email address.</p>}
+                   {registrationErrors.email && <p className="text-[#e11d48] text-[11px] mt-1.5 font-medium">Please enter email.</p>}
                  </div>
                </div>
             </div>
@@ -104,6 +107,7 @@ function HomePage({
 
           <div className="flex justify-center pt-2">
              <button 
+               type="button"
                onClick={handleStartExam} 
                disabled={isSubmitting}
                className={`text-white px-8 py-3 md:px-12 md:py-4 rounded-sm font-bold tracking-widest text-[13px] md:text-[15px] transition-all ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#1a446b] hover:bg-[#153655] hover:shadow-lg hover:-translate-y-0.5'}`}
@@ -127,6 +131,7 @@ function HomePage({
               The selected test level is currently inactive or unavailable. Please choose a different level.
             </p>
             <button 
+              type="button"
               onClick={() => setShowInactiveModal(false)}
               className="bg-[#e11d48] text-white hover:bg-[#be123c] px-6 py-2.5 rounded-sm font-semibold w-full transition-colors tracking-wide text-sm"
             >

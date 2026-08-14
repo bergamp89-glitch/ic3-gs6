@@ -15,6 +15,8 @@ function AdminPanel({
   const [activeTab, setActiveTab] = useState('dashboard');
   const [approvedSearch, setApprovedSearch] = useState('');
   const [pendingSearch, setPendingSearch] = useState('');
+  const [resultsSearch, setResultsSearch] = useState('');
+  const [leaderboardResults, setLeaderboardResults] = useState([]);
 
   const filterRequests = (list, query) => {
     if (!query || !query.trim()) return list;
@@ -35,7 +37,16 @@ function AdminPanel({
 
   useEffect(() => {
     fetchRequests();
-  }, []);
+    fetchLeaderboard();
+
+    // Auto-poll requests every 5 seconds so new requests pop up automatically
+    const intervalId = setInterval(() => {
+      fetchRequests();
+      if (activeTab === 'results') fetchLeaderboard();
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [activeTab]);
 
   const fetchRequests = async () => {
     const { data, error } = await supabase
@@ -44,6 +55,28 @@ function AdminPanel({
       .order('created_at', { ascending: false });
     if (data) {
       setRequests(data);
+    }
+  };
+
+  const fetchLeaderboard = async () => {
+    const { data } = await supabase
+      .from('leaderboard')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (data) {
+      setLeaderboardResults(data);
+    }
+  };
+
+  const deleteLeaderboardEntry = async (id) => {
+    const { error } = await supabase
+      .from('leaderboard')
+      .delete()
+      .eq('id', id);
+    if (!error) {
+      fetchLeaderboard();
+    } else {
+      alert("Xatolik: " + (error.message || "Baza bilan aloqa yo'q"));
     }
   };
 
@@ -71,9 +104,17 @@ function AdminPanel({
     }
   };
 
+  const filteredLeaderboard = leaderboardResults.filter(item => {
+    if (!resultsSearch || !resultsSearch.trim()) return true;
+    const q = resultsSearch.trim().toLowerCase();
+    const name = (item.username || '').toLowerCase();
+    const lvl = `level ${item.level_num || ''}`.toLowerCase();
+    return name.includes(q) || lvl.includes(q);
+  });
+
   return (
-    <div className="min-h-screen bg-[#e6ebf0] p-6">
-      <div className="max-w-6xl mx-auto bg-white rounded-sm shadow-md overflow-hidden min-h-[80vh] flex flex-col">
+    <div className="min-h-screen bg-[#e6ebf0] p-4 md:p-6">
+      <div className="max-w-6xl mx-auto bg-white rounded-sm shadow-md overflow-hidden min-h-[85vh] flex flex-col">
         <div className="bg-[#1a446b] text-white px-4 md:px-8 py-4 md:py-6 flex justify-between items-center">
           <div>
             <div className="text-[11px] font-bold text-[#8baecf] uppercase tracking-widest mb-1.5">Administration</div>
@@ -85,13 +126,13 @@ function AdminPanel({
               className="text-white/80 hover:text-white flex items-center gap-1.5 text-xs md:text-sm font-medium transition-colors bg-transparent px-2 py-1.5 rounded-sm hover:bg-white/10"
               title="Bosh sahifaga qaytish"
             >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 001 1v4a1 1 0 001 1m-6 0h6"></path></svg>
               <span className="hidden sm:inline">Home</span>
             </button>
             <button 
               onClick={() => { 
                 setAppState('HOME'); 
-                setRegistration({...registration, firstName: '', lastName: '', email: '', level: ''}); 
+                setRegistration({ firstName: '', lastName: '', birthDate: '', email: '', level: '' }); 
               }} 
               className="border border-white/30 hover:bg-white/10 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-sm text-xs md:text-sm font-medium transition-colors"
             >
@@ -109,6 +150,12 @@ function AdminPanel({
                 className={`text-left px-4 py-3 rounded-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-[#1a446b] text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'}`}
               >
                 Dashboard
+              </button>
+              <button 
+                onClick={() => setActiveTab('results')}
+                className={`text-left px-4 py-3 rounded-sm font-medium transition-colors whitespace-nowrap ${activeTab === 'results' ? 'bg-[#1a446b] text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                Imtihon Natijalari
               </button>
               <button 
                 onClick={() => setActiveTab('passwords')}
@@ -168,7 +215,7 @@ function AdminPanel({
                          {filteredPendingRequests.map(req => (
                            <div key={req.id} className="flex flex-row justify-between items-center p-3 border border-gray-200 rounded-sm bg-white shadow-sm hover:border-[#1a446b]/30 transition-colors">
                               <div className="flex-1 min-w-0 pr-2">
-                                 <div className="font-semibold text-gray-800 text-[13px] md:text-[15px] truncate">{req.firstName} {req.lastName}</div>
+                                 <div className="font-semibold text-gray-800 text-[13px] md:text-[15px] truncate">{req.firstName} {req.lastName} {req.birth_date ? `(${req.birth_date})` : ''}</div>
                                  <div className="text-[11px] md:text-sm text-gray-500 mt-0.5 md:mt-1 truncate">{req.email} &bull; <span className="font-semibold text-[#1a446b] bg-blue-50 px-1.5 py-0.5 rounded-sm">{req.level}</span></div>
                               </div>
                               <div className="flex flex-col sm:flex-row gap-1.5 md:gap-2 flex-shrink-0">
@@ -270,7 +317,7 @@ function AdminPanel({
                                   }
                                 }}
                                  className={`px-3 py-1.5 md:px-5 md:py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider border transition-all ${levelsStatus[lvl] ? 'bg-[#ecfdf5] border-[#059669] text-[#059669] hover:bg-[#d1fae5]' : 'bg-[#fff1f2] border-[#e11d48] text-[#e11d48] hover:bg-[#ffe4e6]'}`}
-                               >
+                              >
                                 {levelsStatus[lvl] ? 'Active' : 'Inactive'}
                               </button>
                            </div>
@@ -279,6 +326,76 @@ function AdminPanel({
                      </div>
                   </div>
                 </>
+              )}
+
+              {activeTab === 'results' && (
+                <div>
+                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b pb-2">
+                      <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                        Imtihon Natijalari (Leaderboard)
+                        <span className="text-xs font-semibold px-2.5 py-0.5 bg-blue-100 text-[#1a446b] rounded-full">
+                          Jami: {filteredLeaderboard.length}
+                        </span>
+                      </h2>
+                      <div className="flex items-center gap-2">
+                         <input 
+                           type="text" 
+                           placeholder="Qidiruv (ism, daraja)..." 
+                           value={resultsSearch} 
+                           onChange={e => setResultsSearch(e.target.value)} 
+                           className="px-3 py-1.5 text-xs md:text-sm border border-gray-300 rounded-sm focus:outline-none focus:border-[#1a446b]"
+                         />
+                         <button onClick={fetchLeaderboard} className="text-xs font-semibold text-[#1a446b] border border-[#1a446b]/20 px-3 py-1.5 rounded-sm hover:bg-blue-50">
+                           Yangilash
+                         </button>
+                      </div>
+                   </div>
+
+                   {filteredLeaderboard.length === 0 ? (
+                     <div className="text-gray-500 italic p-6 text-center bg-gray-50 border border-gray-100 rounded-sm">
+                       Hali hech qanday imtihon natijalari saqlanmagan.
+                     </div>
+                   ) : (
+                     <div className="overflow-x-auto border border-gray-200 rounded-sm shadow-sm">
+                       <table className="w-full text-left text-xs md:text-sm">
+                         <thead className="bg-[#1a446b] text-white uppercase text-[10px] tracking-wider">
+                           <tr>
+                             <th className="p-3">#</th>
+                             <th className="p-3">F.I.SH / Foydalanuvchi</th>
+                             <th className="p-3">Level</th>
+                             <th className="p-3">Ball (%)</th>
+                             <th className="p-3">Sana</th>
+                             <th className="p-3 text-right">Amal</th>
+                           </tr>
+                         </thead>
+                         <tbody className="divide-y divide-gray-100 bg-white">
+                           {filteredLeaderboard.map((item, idx) => {
+                             const pct = item.score || 0;
+                             const dateStr = item.created_at ? new Date(item.created_at).toLocaleString() : '-';
+
+                             return (
+                               <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                                 <td className="p-3 font-semibold text-gray-500">{idx + 1}</td>
+                                 <td className="p-3 font-bold text-gray-800">{item.username || 'Noma\'lum'}</td>
+                                 <td className="p-3 font-semibold text-[#1a446b]">{item.level_num ? `${item.level_num}-Level` : '-'}</td>
+                                 <td className="p-3 font-bold text-[#047857]">{pct}%</td>
+                                 <td className="p-3 text-gray-500 text-xs">{dateStr}</td>
+                                 <td className="p-3 text-right">
+                                   <button 
+                                     onClick={() => deleteLeaderboardEntry(item.id)} 
+                                     className="text-rose-600 hover:text-rose-800 font-semibold text-xs border border-rose-200 px-2 py-1 rounded hover:bg-rose-50"
+                                   >
+                                     O'chirish
+                                   </button>
+                                 </td>
+                               </tr>
+                             );
+                           })}
+                         </tbody>
+                       </table>
+                     </div>
+                   )}
+                </div>
               )}
 
               {activeTab === 'passwords' && (

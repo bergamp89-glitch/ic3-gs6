@@ -1,8 +1,9 @@
 import React from 'react';
 
-function ResultPage({ questions, correctCount, handleRestartExam }) {
-  const score = Math.round((correctCount / questions.length) * 100);
-  const reviewed = questions.length - correctCount;
+function ResultPage({ questions = [], correctCount = 0, handleRestartExam }) {
+  const total = questions.length || 1;
+  const score = Math.round((correctCount / total) * 100);
+  const reviewed = total - correctCount;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#e6ebf0] p-4">
