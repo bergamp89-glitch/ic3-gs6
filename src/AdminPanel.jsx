@@ -13,6 +13,25 @@ function AdminPanel({
   setAdminCreds 
 }) {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [approvedSearch, setApprovedSearch] = useState('');
+  const [pendingSearch, setPendingSearch] = useState('');
+
+  const filterRequests = (list, query) => {
+    if (!query || !query.trim()) return list;
+    const q = query.trim().toLowerCase();
+    return list.filter(r => {
+      const fullName = `${r.firstName || ''} ${r.lastName || ''}`.toLowerCase();
+      const email = (r.email || '').toLowerCase();
+      const level = (r.level || '').toLowerCase();
+      return fullName.includes(q) || email.includes(q) || level.includes(q);
+    });
+  };
+
+  const pendingRequests = requests.filter(r => r.status === 'pending');
+  const filteredPendingRequests = filterRequests(pendingRequests, pendingSearch);
+
+  const approvedRequests = requests.filter(r => r.status === 'approved');
+  const filteredApprovedRequests = filterRequests(approvedRequests, approvedSearch);
 
   useEffect(() => {
     fetchRequests();
@@ -106,17 +125,47 @@ function AdminPanel({
                 <>
                   {/* Requests Section */}
                   <div className="mb-12">
-                     <h2 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2 flex items-center justify-between">
-                       Pending Exam Requests
-                       <button onClick={fetchRequests} className="text-xs font-semibold text-[#1a446b] border border-[#1a446b]/20 px-3 py-1 rounded-sm hover:bg-blue-50 transition-colors">
-                         Refresh List
-                       </button>
-                     </h2>
-                     {requests.filter(r => r.status === 'pending').length === 0 ? (
-                       <div className="text-gray-500 italic p-6 text-center bg-gray-50 border border-gray-100 rounded-sm">No pending requests at the moment.</div>
+                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b pb-2">
+                        <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                          Pending Exam Requests
+                          <span className="text-xs font-semibold px-2.5 py-0.5 bg-amber-100 text-amber-800 rounded-full">
+                            {filteredPendingRequests.length}{pendingSearch && ` / ${pendingRequests.length}`}
+                          </span>
+                        </h2>
+                        
+                        <div className="flex flex-wrap items-center gap-2">
+                           <div className="relative w-full sm:w-60">
+                             <input
+                               type="text"
+                               placeholder="Qidiruv (ism, email)..."
+                               value={pendingSearch}
+                               onChange={(e) => setPendingSearch(e.target.value)}
+                               className="w-full pl-9 pr-8 py-1.5 text-xs md:text-sm border border-gray-300 rounded-sm focus:outline-none focus:border-[#1a446b] focus:ring-1 focus:ring-[#1a446b]/20"
+                             />
+                             <svg className="w-4 h-4 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                             </svg>
+                             {pendingSearch && (
+                               <button
+                                 onClick={() => setPendingSearch('')}
+                                 className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs font-bold"
+                               >
+                                 ✕
+                               </button>
+                             )}
+                           </div>
+                           <button onClick={fetchRequests} className="text-xs font-semibold text-[#1a446b] border border-[#1a446b]/20 px-3 py-1.5 rounded-sm hover:bg-blue-50 transition-colors whitespace-nowrap">
+                             Refresh List
+                           </button>
+                        </div>
+                     </div>
+                     {filteredPendingRequests.length === 0 ? (
+                       <div className="text-gray-500 italic p-6 text-center bg-gray-50 border border-gray-100 rounded-sm">
+                         {pendingSearch ? `"${pendingSearch}" bo'yicha so'rovlar topilmadi.` : 'No pending requests at the moment.'}
+                       </div>
                      ) : (
                        <div className="space-y-3">
-                         {requests.filter(r => r.status === 'pending').map(req => (
+                         {filteredPendingRequests.map(req => (
                            <div key={req.id} className="flex flex-row justify-between items-center p-3 border border-gray-200 rounded-sm bg-white shadow-sm hover:border-[#1a446b]/30 transition-colors">
                               <div className="flex-1 min-w-0 pr-2">
                                  <div className="font-semibold text-gray-800 text-[13px] md:text-[15px] truncate">{req.firstName} {req.lastName}</div>
@@ -140,14 +189,43 @@ function AdminPanel({
 
                   {/* Approved Requests Section */}
                   <div className="mb-12">
-                     <h2 className="text-lg font-bold text-gray-800 mb-4 border-b pb-2 flex items-center justify-between">
-                       Approved Users
-                     </h2>
-                     {requests.filter(r => r.status === 'approved').length === 0 ? (
-                       <div className="text-gray-500 italic p-6 text-center bg-gray-50 border border-gray-100 rounded-sm">No approved users at the moment.</div>
+                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b pb-2">
+                        <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                          Approved Users
+                          <span className="text-xs font-semibold px-2.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-full">
+                            {filteredApprovedRequests.length}{approvedSearch && ` / ${approvedRequests.length}`}
+                          </span>
+                        </h2>
+                        
+                        <div className="relative w-full sm:w-72">
+                          <input
+                            type="text"
+                            placeholder="Qidiruv (ism, email, daraja)..."
+                            value={approvedSearch}
+                            onChange={(e) => setApprovedSearch(e.target.value)}
+                            className="w-full pl-9 pr-8 py-1.5 text-xs md:text-sm border border-gray-300 rounded-sm focus:outline-none focus:border-[#1a446b] focus:ring-1 focus:ring-[#1a446b]/20"
+                          />
+                          <svg className="w-4 h-4 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                          </svg>
+                          {approvedSearch && (
+                            <button
+                              onClick={() => setApprovedSearch('')}
+                              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs font-bold"
+                            >
+                              ✕
+                            </button>
+                          )}
+                        </div>
+                     </div>
+
+                     {filteredApprovedRequests.length === 0 ? (
+                       <div className="text-gray-500 italic p-6 text-center bg-gray-50 border border-gray-100 rounded-sm">
+                         {approvedSearch ? `"${approvedSearch}" bo'yicha hech qanday ruxsat berilgan foydalanuvchi topilmadi.` : 'No approved users at the moment.'}
+                       </div>
                      ) : (
                        <div className="space-y-3">
-                         {requests.filter(r => r.status === 'approved').map(req => (
+                         {filteredApprovedRequests.map(req => (
                            <div key={req.id} className="flex flex-row justify-between items-center p-3 border border-gray-200 rounded-sm bg-white shadow-sm hover:border-[#1a446b]/30 transition-colors">
                               <div className="flex-1 min-w-0 pr-2">
                                  <div className="font-semibold text-gray-800 text-[13px] md:text-[15px] truncate">{req.firstName} {req.lastName}</div>
@@ -182,7 +260,14 @@ function AdminPanel({
                                 onClick={async () => {
                                   const newStatuses = {...levelsStatus, [lvl]: !levelsStatus[lvl]};
                                   setLevelsStatus(newStatuses);
-                                  await supabase.from('settings').update({ value: newStatuses }).eq('key', 'levels_status');
+                                  let { error } = await supabase.from('settings').update({ value: newStatuses }).eq('key', 'levels_status');
+                                  if (error) {
+                                    const res = await supabase.from('settings').upsert({ key: 'levels_status', value: newStatuses });
+                                    error = res.error;
+                                  }
+                                  if (error) {
+                                    alert("Statusni saqlashda xatolik: " + error.message);
+                                  }
                                 }}
                                  className={`px-3 py-1.5 md:px-5 md:py-2 rounded-sm text-[10px] md:text-xs font-bold uppercase tracking-wider border transition-all ${levelsStatus[lvl] ? 'bg-[#ecfdf5] border-[#059669] text-[#059669] hover:bg-[#d1fae5]' : 'bg-[#fff1f2] border-[#e11d48] text-[#e11d48] hover:bg-[#ffe4e6]'}`}
                                >
@@ -221,8 +306,16 @@ function AdminPanel({
                       </div>
                       <button 
                         onClick={async () => {
-                          await supabase.from('settings').update({ value: adminCreds }).eq('key', 'admin_creds');
-                          alert('Admin credentials updated successfully!');
+                           let { error } = await supabase.from('settings').update({ value: adminCreds }).eq('key', 'admin_creds');
+                           if (error) {
+                             const res = await supabase.from('settings').upsert({ key: 'admin_creds', value: adminCreds });
+                             error = res.error;
+                           }
+                           if (!error) {
+                             alert('Admin credentials updated successfully!');
+                           } else {
+                             alert('Xatolik: ' + error.message);
+                           }
                         }}
                         className="bg-[#1a446b] text-white px-4 py-3 rounded-sm text-sm font-semibold hover:bg-[#153655] w-full mt-2 transition-colors shadow-sm"
                       >

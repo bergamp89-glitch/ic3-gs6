@@ -1,6 +1,11 @@
--- Supabase SQL Editor ga shu kodni nusxalab ishga tushiring:
+-- ============================================================
+-- IC3-GS6 Quiz App — Supabase Jadvallar (To'liq)
+-- Supabase SQL Editor ga shu kodni nusxalab ishga tushiring.
+-- ============================================================
 
+-- ========================
 -- 1. settings jadvali
+-- ========================
 CREATE TABLE IF NOT EXISTS settings (
   key text PRIMARY KEY,
   value jsonb NOT NULL
@@ -12,10 +17,17 @@ INSERT INTO settings (key, value) VALUES
 ('admin_creds', '{"firstName": "admin", "lastName": "Doe", "email": "0807"}')
 ON CONFLICT (key) DO NOTHING;
 
--- Barcha foydalanuvchilar o'qishi/yozishi uchun ruxsat (RLS o'chirilgan holati uchun, yoki quyidagi policy larni qo'shing)
-ALTER TABLE settings DISABLE ROW LEVEL SECURITY;
+ALTER TABLE settings ENABLE ROW LEVEL SECURITY;
 
--- 2. exam_sessions jadvali (Test jarayonini saqlash uchun)
+CREATE POLICY "settings_anon_read" ON settings
+  FOR SELECT USING (true);
+
+CREATE POLICY "settings_anon_write" ON settings
+  FOR ALL USING (true) WITH CHECK (true);
+
+-- ========================
+-- 2. exam_sessions jadvali
+-- ========================
 CREATE TABLE IF NOT EXISTS exam_sessions (
   id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
   email text,
@@ -26,4 +38,69 @@ CREATE TABLE IF NOT EXISTS exam_sessions (
   updated_at timestamp with time zone DEFAULT now()
 );
 
-ALTER TABLE exam_sessions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE exam_sessions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "exam_sessions_anon_read" ON exam_sessions
+  FOR SELECT USING (true);
+
+CREATE POLICY "exam_sessions_anon_write" ON exam_sessions
+  FOR ALL USING (true) WITH CHECK (true);
+
+-- ========================
+-- 3. requests jadvali (Foydalanuvchi so'rovlari)
+-- ========================
+CREATE TABLE IF NOT EXISTS requests (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  "firstName" text,
+  "lastName" text,
+  email text,
+  level text,
+  status text DEFAULT 'pending',
+  created_at timestamp with time zone DEFAULT now()
+);
+
+ALTER TABLE requests ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "requests_anon_read" ON requests
+  FOR SELECT USING (true);
+
+CREATE POLICY "requests_anon_write" ON requests
+  FOR ALL USING (true) WITH CHECK (true);
+
+-- ========================
+-- 4. questions jadvali (Savollar bazasi)
+-- ========================
+CREATE TABLE IF NOT EXISTS questions (
+  id integer PRIMARY KEY,
+  level_num integer NOT NULL,
+  type text,
+  prompt text,
+  data jsonb
+);
+
+ALTER TABLE questions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "questions_anon_read" ON questions
+  FOR SELECT USING (true);
+
+CREATE POLICY "questions_anon_write" ON questions
+  FOR ALL USING (true) WITH CHECK (true);
+
+-- ========================
+-- 5. leaderboard jadvali (Natijalar jadvali)
+-- ========================
+CREATE TABLE IF NOT EXISTS leaderboard (
+  id uuid DEFAULT gen_random_uuid() PRIMARY KEY,
+  username text,
+  level_num integer,
+  score integer,
+  created_at timestamp with time zone DEFAULT now()
+);
+
+ALTER TABLE leaderboard ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "leaderboard_anon_read" ON leaderboard
+  FOR SELECT USING (true);
+
+CREATE POLICY "leaderboard_anon_write" ON leaderboard
+  FOR ALL USING (true) WITH CHECK (true);
