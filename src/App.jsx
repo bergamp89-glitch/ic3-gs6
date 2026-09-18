@@ -10,9 +10,11 @@ import QuestionMatchingTask from './components/QuestionMatchingTask';
 import QuestionSimulatedUI from './components/QuestionSimulatedUI';
 import FaceRegistrationModal from './components/FaceRegistrationModal';
 import FaceProctoringWidget from './components/FaceProctoringWidget';
+import AntiScreenCaptureShield from './components/AntiScreenCaptureShield';
 import { examQuestions as q1 } from './1-level.js';
 import { examQuestions as q2 } from './2-level.js';
 import { examQuestions as q3 } from './3-level.js';
+
 
 function App() {
   const [sessionId, setSessionId] = useState(null);
@@ -1246,10 +1248,17 @@ function App() {
         studentName={`${registration.firstName || ''} ${registration.lastName || ''}`} 
         level={registration.level} 
       />
+
+      {/* Anti-Screenshot & Anti-Screen-Recording Security Shield */}
+      <AntiScreenCaptureShield 
+        registration={registration} 
+        sessionId={sessionId} 
+      />
     </div>
 
   );
 }
+
 
 
 export default App;
