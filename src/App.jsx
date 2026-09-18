@@ -26,6 +26,8 @@ function App() {
   const [requestId, setRequestId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showFaceModal, setShowFaceModal] = useState(false);
+  const [modalMode, setModalMode] = useState('ENROLL'); // 'ENROLL' | 'VERIFY'
+  const [adminApprovedPhoto, setAdminApprovedPhoto] = useState(null);
 
   const [adminCreds, setAdminCreds] = useState({ firstName: 'admin', email: '0807' });
   const [showInactiveModal, setShowInactiveModal] = useState(false);
@@ -291,7 +293,7 @@ function App() {
       intervalId = setInterval(async () => {
         const { data } = await supabase
           .from('requests')
-          .select('status')
+          .select('*')
           .eq('id', requestId)
           .single();
           
@@ -300,16 +302,28 @@ function App() {
             clearInterval(intervalId);
             setQuestions([]);
             setCurrentIndex(0);
+            const approvedCredentials = {
+              firstName: data.firstName,
+              lastName: data.lastName,
+              email: (data.email || '').trim().toLowerCase(),
+              level: data.level,
+              photo: data.photo
+            };
+            setRegistration(approvedCredentials);
             const { data: newSession } = await supabase
               .from('exam_sessions')
-              .insert([{ email: (registration.email || '').trim().toLowerCase(), registration, app_state: 'EXAM' }])
+              .insert([{ 
+                email: approvedCredentials.email, 
+                registration: approvedCredentials, 
+                app_state: 'EXAM' 
+              }])
               .select();
             if (newSession && newSession.length > 0) {
               setSessionId(newSession[0].id);
             }
             setAppState('EXAM');
           } else if (data.status === 'rejected') {
-            alert('Your request has been rejected.');
+            alert('Sizning so\'rovingiz admin tomonidan rad etildi.');
             setAppState('HOME');
             clearInterval(intervalId);
           }
@@ -569,7 +583,7 @@ function App() {
     setAppState('HOME');
   };
 
-  const handleStartExam = () => {
+  const handleStartExam = async () => {
     if (isSubmitting) return;
 
     const trimmedFirstName = (registration.firstName || '').trim();
@@ -600,8 +614,90 @@ function App() {
         return;
       }
 
-      // Open Face ID Registration Modal
-      setShowFaceModal(true);
+      setIsSubmitting(true);
+      try {
+        // Query all requests for this email
+        const { data, error } = await supabase
+          .from('requests')
+          .select('*')
+          .ilike('email', trimmedEmail)
+          .order('created_at', { ascending: false });
+
+        if (!error && data && data.length > 0) {
+          // 1. Check if user has an APPROVED record
+          const approved = data.find(r => r.status === 'approved');
+          if (approved) {
+            // STRICT VALIDATION OF ALL 5 APPROVED CREDENTIALS:
+
+            // A) Level tekshiruvi:
+            if (approved.level !== selectedLevel) {
+              alert(`Xatolik: Sizga admin tomonidan faqat "${approved.level}" darajasi uchun ruxsat berilgan! Siz tanlagan daraja: "${selectedLevel}".`);
+              setIsSubmitting(false);
+              return;
+            }
+
+            // B) Ism tekshiruvi (firstName):
+            const approvedFirst = (approved.firstName || '').trim().toLowerCase();
+            if (trimmedFirstName.toLowerCase() !== approvedFirst) {
+              alert(`Xatolik: Kiritilgan ism ("${trimmedFirstName}") admin tasdiqlagan ism ("${approved.firstName}") bilan bir xil bo'lishi shart!`);
+              setIsSubmitting(false);
+              return;
+            }
+
+            // C) Familiya tekshiruvi (lastName):
+            const approvedLast = (approved.lastName || '').trim().toLowerCase();
+            if (trimmedLastName.toLowerCase() !== approvedLast) {
+              alert(`Xatolik: Kiritilgan familiya ("${trimmedLastName}") admin tasdiqlagan familiya ("${approved.lastName}") bilan bir xil bo'lishi shart!`);
+              setIsSubmitting(false);
+              return;
+            }
+
+            if (!approved.photo) {
+              alert(`Xatolik: "${approved.email}" uchun admin tasdiqlagan fotosurat mavjud emas! Iltimos, admindan qayta ro'yxatdan o'tkazishni so'rang.`);
+              setIsSubmitting(false);
+              return;
+            }
+
+            // D) Email va Level tasdiqlangan bilan 100% mos!
+            // E) 5-shart: YUZ (FACE ID) TEKSHIRUVI:
+            setRegistration({
+              firstName: approved.firstName,
+              lastName: approved.lastName,
+              email: approved.email,
+              level: approved.level,
+              photo: approved.photo
+            });
+            setModalMode('VERIFY');
+            setAdminApprovedPhoto(approved.photo);
+            setRequestId(approved.id);
+            setShowFaceModal(true);
+            setIsSubmitting(false);
+            return;
+          }
+
+          // 2. Check if user is PENDING admin approval
+          const pending = data.find(r => r.status === 'pending');
+          if (pending) {
+            setRequestId(pending.id);
+            setIsSubmitting(false);
+            alert(`Sizning ro'yxatdan o'tish so'rovingiz (${pending.firstName} ${pending.lastName}, ${pending.level}) yuborilgan, ammo admin tomonidan hali tasdiqlanmagan. Iltimos, admin tasdiqlashini kuting.`);
+            setAppState('WAITING');
+            return;
+          }
+        }
+
+        // 3. New candidate: Biometric Face Registration (ENROLL)
+        setModalMode('ENROLL');
+        setAdminApprovedPhoto(null);
+        setShowFaceModal(true);
+      } catch (err) {
+        console.error("Error checking user approval status:", err);
+        setModalMode('ENROLL');
+        setAdminApprovedPhoto(null);
+        setShowFaceModal(true);
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
       let emailErrorMsg = false;
       if (!trimmedEmail) {
@@ -619,6 +715,59 @@ function App() {
     }
   };
 
+  // Face Unlock verification success (Only admin-approved face can enter)
+  const handleVerifiedFace = async (verifiedPhoto) => {
+    setIsSubmitting(true);
+    const trimmedFirstName = (registration.firstName || '').trim();
+    const trimmedLastName = (registration.lastName || '').trim();
+    const trimmedEmail = (registration.email || '').trim().toLowerCase();
+    const selectedLevel = registration.level;
+
+    try {
+      const { data: sessionData } = await supabase
+        .from('exam_sessions')
+        .select('*')
+        .ilike('email', trimmedEmail)
+        .eq('registration->>level', selectedLevel)
+        .order('updated_at', { ascending: false })
+        .limit(1);
+        
+      if (sessionData && sessionData.length > 0 && sessionData[0].app_state !== 'RESULT') {
+        setSessionId(sessionData[0].id);
+        setQuestions(sessionData[0].questions || []);
+        setCurrentIndex(sessionData[0].current_index || 0);
+        setAppState(sessionData[0].app_state || 'EXAM');
+      } else {
+        setQuestions([]);
+        setCurrentIndex(0);
+        const { data: newSession } = await supabase
+          .from('exam_sessions')
+          .insert([{ 
+            email: trimmedEmail, 
+            registration: { 
+              firstName: trimmedFirstName, 
+              lastName: trimmedLastName, 
+              email: trimmedEmail, 
+              level: selectedLevel,
+              photo: verifiedPhoto
+            }, 
+            app_state: 'EXAM' 
+          }])
+          .select();
+        if (newSession && newSession.length > 0) {
+          setSessionId(newSession[0].id);
+        }
+        setAppState('EXAM');
+      }
+    } catch (e) {
+      console.error("Error setting up exam session after face unlock:", e);
+      setAppState('EXAM');
+    }
+    setShowFaceModal(false);
+    setIsSubmitting(false);
+  };
+
+  // Initial Enrollment confirmation (sends request to admin with photo)
   const handleConfirmFace = async (capturedPhoto) => {
     setIsSubmitting(true);
     const trimmedFirstName = (registration.firstName || '').trim();
@@ -635,58 +784,6 @@ function App() {
         .in('status', ['pending', 'approved']);
         
       if (data && data.length > 0) {
-        const approved = data.find(r => r.status === 'approved');
-        if (approved) {
-          // Update photo for approved user record if column exists
-          try {
-            await supabase
-              .from('requests')
-              .update({ photo: capturedPhoto })
-              .eq('id', approved.id);
-          } catch (e) {
-            console.warn("Could not update photo in requests:", e);
-          }
-
-          const { data: sessionData } = await supabase
-            .from('exam_sessions')
-            .select('*')
-            .ilike('email', trimmedEmail)
-            .eq('registration->>level', selectedLevel)
-            .order('updated_at', { ascending: false })
-            .limit(1);
-            
-          if (sessionData && sessionData.length > 0 && sessionData[0].app_state !== 'RESULT') {
-             setSessionId(sessionData[0].id);
-             setQuestions(sessionData[0].questions || []);
-             setCurrentIndex(sessionData[0].current_index || 0);
-             setAppState(sessionData[0].app_state || 'EXAM');
-          } else {
-             setQuestions([]);
-             setCurrentIndex(0);
-             const { data: newSession } = await supabase
-               .from('exam_sessions')
-               .insert([{ 
-                 email: trimmedEmail, 
-                 registration: { 
-                   firstName: trimmedFirstName, 
-                   lastName: trimmedLastName, 
-                   email: trimmedEmail, 
-                   level: selectedLevel,
-                   photo: capturedPhoto
-                 }, 
-                 app_state: 'EXAM' 
-               }])
-               .select();
-             if (newSession && newSession.length > 0) {
-               setSessionId(newSession[0].id);
-             }
-             setAppState('EXAM');
-          }
-          setShowFaceModal(false);
-          setIsSubmitting(false);
-          return;
-        }
-
         const pending = data.find(r => r.status === 'pending');
         if (pending) {
           try {
@@ -722,7 +819,6 @@ function App() {
 
       if (insertErr) {
         console.error("Supabase insert error:", insertErr);
-        // Fallback: If 'photo' column does not exist yet in DB, retry without 'photo' column
         if (insertErr.message && insertErr.message.includes('photo')) {
           const fallbackPayload = {
             firstName: trimmedFirstName,
@@ -770,6 +866,9 @@ function App() {
           isOpen={showFaceModal}
           onClose={() => setShowFaceModal(false)}
           onConfirm={handleConfirmFace}
+          onVerifySuccess={handleVerifiedFace}
+          mode={modalMode}
+          adminApprovedPhoto={adminApprovedPhoto}
           registration={registration}
           isSubmitting={isSubmitting}
         />
