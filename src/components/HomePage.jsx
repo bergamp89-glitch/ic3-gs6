@@ -99,7 +99,13 @@ function HomePage({
                      className={`w-full border ${registrationErrors.email ? 'border-[#e11d48]' : 'border-gray-300'} rounded-sm px-2.5 py-1.5 md:px-3 md:py-2.5 text-xs md:text-sm focus:outline-none focus:border-[#1a446b]`} 
                      placeholder="example@gmail.com"
                    />
-                   {registrationErrors.email && <p className="text-[#e11d48] text-[11px] mt-1.5 font-medium">Please enter email.</p>}
+                    {registrationErrors.email && (
+                      <p className="text-[#e11d48] text-[11px] mt-1.5 font-medium">
+                        {typeof registrationErrors.email === 'string'
+                          ? registrationErrors.email
+                          : "Email @gmail.com bo'lishi kerak (masalan: example@gmail.com)"}
+                      </p>
+                    )}
                  </div>
                </div>
             </div>

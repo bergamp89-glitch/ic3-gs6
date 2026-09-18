@@ -300,7 +300,7 @@ function App() {
             setCurrentIndex(0);
             const { data: newSession } = await supabase
               .from('exam_sessions')
-              .insert([{ email: registration.email, registration, app_state: 'EXAM' }])
+              .insert([{ email: (registration.email || '').trim().toLowerCase(), registration, app_state: 'EXAM' }])
               .select();
             if (newSession && newSession.length > 0) {
               setSessionId(newSession[0].id);
@@ -577,7 +577,7 @@ function App() {
 
     const isFirstNameValid = trimmedFirstName.length > 0;
     const isLastNameValid = trimmedLastName.length > 0;
-    const isEmailValid = trimmedEmail.length > 0;
+    const isEmailValid = /^[^\s@]+@gmail\.com$/.test(trimmedEmail);
     const isLevelValid = selectedLevel !== '';
     
     // Check if Admin
@@ -684,10 +684,17 @@ function App() {
 
       checkRequests();
     } else {
+      let emailErrorMsg = false;
+      if (!trimmedEmail) {
+        emailErrorMsg = 'Please enter email.';
+      } else if (!isEmailValid) {
+        emailErrorMsg = "Email @gmail.com bo'lishi kerak (masalan: example@gmail.com)";
+      }
+
       setRegistrationErrors({
         firstName: !isFirstNameValid,
         lastName: !isLastNameValid,
-        email: !isEmailValid,
+        email: emailErrorMsg,
         level: !isLevelValid
       });
     }
