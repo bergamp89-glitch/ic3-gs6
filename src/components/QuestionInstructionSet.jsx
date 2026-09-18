@@ -14,17 +14,17 @@ function QuestionInstructionSet({ currentQ, isEvaluated, openDropdownId, setOpen
         }
 
         return (
-          <div key={stmt.id} className={`bg-white border rounded-sm mb-4 transition-colors ${boxBorder}`}>
-            <div className="px-5 py-4">
-              <div className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2">Statement {idx + 1}</div>
-              <div className="text-[13px] text-gray-800 font-medium mb-4">{stmt.text}</div>
+          <div key={stmt.id} className={`bg-white border rounded-sm mb-2.5 transition-colors ${boxBorder}`}>
+            <div className="px-4 py-2.5 sm:py-3">
+              <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1">Statement {idx + 1}</div>
+              <div className="text-[13px] text-gray-800 font-medium mb-2.5">{stmt.text}</div>
               
                 <div className="relative dropdown-container">
                 <div 
                   onClick={() => !isEvaluated && setOpenDropdownId(isOpen ? null : stmt.id)} 
-                  className={`w-full border rounded-md p-3.5 flex justify-between items-center transition-all duration-200 ${isEvaluated ? 'bg-white/50 cursor-default' : 'bg-white cursor-pointer hover:border-[#1a446b]/60 hover:shadow-sm'} ${isOpen ? 'border-[#1a446b] ring-2 ring-[#1a446b]/10 shadow-sm' : 'border-gray-300'}`}
+                  className={`w-full border rounded-md p-2.5 sm:p-3 flex justify-between items-center transition-all duration-200 ${isEvaluated ? 'bg-white/50 cursor-default' : 'bg-white cursor-pointer hover:border-[#1a446b]/60 hover:shadow-sm'} ${isOpen ? 'border-[#1a446b] ring-2 ring-[#1a446b]/10 shadow-sm' : 'border-gray-300'}`}
                 >
-                  <span className={selectedVal ? "text-[#1a446b] text-[14px] font-semibold" : "text-gray-400 text-[14px]"}>
+                  <span className={selectedVal ? "text-[#1a446b] text-[13.5px] font-semibold" : "text-gray-400 text-[13.5px]"}>
                     {selectedVal || "Select an answer"}
                   </span>
                   <svg className={`w-4 h-4 text-gray-500 transition-transform duration-300 ${isOpen ? 'rotate-180 text-[#1a446b]' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">

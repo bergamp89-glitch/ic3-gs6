@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase } from './supabase';
 import AdminPanel from './AdminPanel';
 import HomePage from './components/HomePage';
@@ -38,6 +38,17 @@ function App() {
   const [showInactiveModal, setShowInactiveModal] = useState(false);
   const [mobileSidebar, setMobileSidebar] = useState(null);
   const [selectedSourceId, setSelectedSourceId] = useState(null);
+
+  const currentNavBtnRef = useRef(null);
+
+  // Faol savol o'zgarganda navigatsiyada avtomatik ko'rsatish
+  useEffect(() => {
+    if (currentNavBtnRef.current) {
+      try {
+        currentNavBtnRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } catch (e) {}
+    }
+  }, [currentIndex]);
 
   // Restore local session on initial mount
   useEffect(() => {
@@ -927,31 +938,31 @@ function App() {
 
   // --- Render Main Exam Screen ---
   return (
-    <div className="min-h-screen flex flex-col font-sans select-none selection:bg-[#1a446b] selection:text-white" onClick={(e) => {
+    <div className="min-h-screen lg:h-screen lg:max-h-screen flex flex-col font-sans select-none selection:bg-[#1a446b] selection:text-white lg:overflow-hidden" onClick={(e) => {
       if (!e.target.closest('.dropdown-container')) {
         setOpenDropdownId(null);
       }
     }}>
-      {/* Header */}
-      <header className="min-h-[60px] py-3 md:py-0 bg-[#1a446b] text-white flex flex-col md:flex-row justify-between items-center px-4 md:px-6 flex-shrink-0 gap-3 md:gap-0">
+      {/* Header - Bo'yiga siqilgan (h-[50px]) */}
+      <header className="min-h-[48px] md:h-[50px] py-2 md:py-0 bg-[#1a446b] text-white flex flex-col md:flex-row justify-between items-center px-4 md:px-6 flex-shrink-0 gap-2 md:gap-0">
         <div className="text-center md:text-left">
-          <div className="text-[10px] text-[#8baecf] font-bold tracking-widest uppercase mb-[2px]">Testing Workspace</div>
-          <h1 className="text-[15px] md:text-[17px] font-semibold tracking-wide">IC3 Test Session {registration.level ? `- ${registration.level}` : ''}</h1>
+          <div className="text-[9px] text-[#8baecf] font-bold tracking-widest uppercase mb-[1px]">Testing Workspace</div>
+          <h1 className="text-[14px] md:text-[16px] font-semibold tracking-wide">IC3 Test Session {registration.level ? `- ${registration.level}` : ''}</h1>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4">
-          <div className="bg-[#153655] rounded-sm px-4 py-1.5 border border-[#1a446b] flex flex-col items-center">
-            <div className="text-[#8baecf] text-[9px] font-bold tracking-widest uppercase mb-[2px]">Current Task</div>
-            <div className="text-[13px] font-semibold tracking-wide">Question {currentIndex + 1} of {questions.length}</div>
+        <div className="flex flex-wrap items-center justify-center gap-1.5 md:gap-3">
+          <div className="bg-[#153655] rounded-sm px-3 py-1 border border-[#1a446b] flex flex-col items-center">
+            <div className="text-[#8baecf] text-[8.5px] font-bold tracking-widest uppercase mb-[1px]">Current Task</div>
+            <div className="text-[12px] font-semibold tracking-wide">Question {currentIndex + 1} of {questions.length}</div>
           </div>
-          <div className="bg-[#153655] rounded-sm px-4 py-1.5 border border-[#1a446b] flex flex-col items-center">
-            <div className="text-[#8baecf] text-[9px] font-bold tracking-widest uppercase mb-[2px]">Completed</div>
-            <div className="text-[13px] font-semibold tracking-wide">{correctCount + reviewCount} / {questions.length}</div>
+          <div className="bg-[#153655] rounded-sm px-3 py-1 border border-[#1a446b] flex flex-col items-center">
+            <div className="text-[#8baecf] text-[8.5px] font-bold tracking-widest uppercase mb-[1px]">Completed</div>
+            <div className="text-[12px] font-semibold tracking-wide">{correctCount + reviewCount} / {questions.length}</div>
           </div>
-          <button onClick={() => setAppState('HOME')} className="text-[#8baecf] hover:text-white flex items-center gap-1.5 bg-transparent px-3 py-[6px] rounded-sm font-semibold hover:bg-white/10 transition-colors text-sm ml-2" title="Bosh sahifaga qaytish">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+          <button onClick={() => setAppState('HOME')} className="text-[#8baecf] hover:text-white flex items-center gap-1 bg-transparent px-2.5 py-1 rounded-sm font-semibold hover:bg-white/10 transition-colors text-xs ml-1" title="Bosh sahifaga qaytish">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
             Home
           </button>
-          <button onClick={handleRestartExam} className="border border-white text-white bg-transparent px-4 py-[6px] rounded-sm font-semibold hover:bg-white/10 transition-colors text-sm ml-2">
+          <button onClick={handleRestartExam} className="border border-white text-white bg-transparent px-3 py-1 rounded-sm font-semibold hover:bg-white/10 transition-colors text-xs ml-1">
             Restart Exam
           </button>
         </div>
@@ -961,7 +972,7 @@ function App() {
       <div className="lg:hidden flex bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm flex-shrink-0">
         <button 
           onClick={() => setMobileSidebar(mobileSidebar === 'nav' ? null : 'nav')}
-          className={`flex-1 py-3 text-[11px] font-bold uppercase tracking-wider flex justify-center items-center gap-2 transition-colors ${mobileSidebar === 'nav' ? 'text-[#1a446b] border-b-2 border-[#1a446b] bg-blue-50/30' : 'text-gray-500 hover:bg-gray-50'}`}
+          className={`flex-1 py-2 text-[11px] font-bold uppercase tracking-wider flex justify-center items-center gap-2 transition-colors ${mobileSidebar === 'nav' ? 'text-[#1a446b] border-b-2 border-[#1a446b] bg-blue-50/30' : 'text-gray-500 hover:bg-gray-50'}`}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
           Navigation
@@ -969,23 +980,23 @@ function App() {
         <div className="w-px bg-gray-200"></div>
         <button 
           onClick={() => setMobileSidebar(mobileSidebar === 'instructions' ? null : 'instructions')}
-          className={`flex-1 py-3 text-[11px] font-bold uppercase tracking-wider flex justify-center items-center gap-2 transition-colors ${mobileSidebar === 'instructions' ? 'text-[#1a446b] border-b-2 border-[#1a446b] bg-blue-50/30' : 'text-gray-500 hover:bg-gray-50'}`}
+          className={`flex-1 py-2 text-[11px] font-bold uppercase tracking-wider flex justify-center items-center gap-2 transition-colors ${mobileSidebar === 'instructions' ? 'text-[#1a446b] border-b-2 border-[#1a446b] bg-blue-50/30' : 'text-gray-500 hover:bg-gray-50'}`}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
           Instructions
         </button>
       </div>
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-[1500px] w-full mx-auto p-2 sm:p-4 flex flex-col lg:flex-row gap-4 overflow-y-auto lg:overflow-hidden">
+      {/* Main Content Area - Bo'yiga siqilgan (py-1.5 md:py-2), yon taraf kengligi qulay */}
+      <main className="flex-1 min-h-0 max-w-[1580px] w-full mx-auto py-1.5 md:py-2 px-2.5 sm:px-3.5 md:px-4 flex flex-col lg:flex-row gap-2.5 md:gap-3.5 overflow-y-auto lg:overflow-hidden">
         
-        {/* Left Sidebar - Task Navigation */}
-        <aside className={`w-full lg:w-[280px] bg-white border border-gray-200 rounded-sm shadow-sm flex-col flex-shrink-0 lg:overflow-hidden ${mobileSidebar === 'nav' ? 'flex' : 'hidden lg:flex'}`}>
-          <div className="px-5 py-4 border-b border-gray-100">
-            <h3 className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest">Task Navigation</h3>
+        {/* Left Sidebar - Task Navigation (Kengligi qulay: 260px, bo'yiga ixcham) */}
+        <aside className={`w-full lg:w-[260px] xl:w-[275px] bg-white border border-gray-200 rounded-sm shadow-sm flex flex-col flex-shrink-0 min-h-0 lg:h-full lg:max-h-full overflow-hidden ${mobileSidebar === 'nav' ? 'flex' : 'hidden lg:flex'}`}>
+          <div className="px-3.5 py-1.5 border-b border-gray-100 flex-shrink-0">
+            <h3 className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest">Task Navigation</h3>
           </div>
-          <div className="px-5 py-4 border-b border-gray-100">
-            <div className="flex justify-between text-xs text-gray-500 font-medium mb-2">
+          <div className="px-3.5 py-1.5 border-b border-gray-100 flex-shrink-0">
+            <div className="flex justify-between text-[11px] text-gray-500 font-medium mb-1">
               <span>Session progress</span>
               <span>{progressPercent}%</span>
             </div>
@@ -994,8 +1005,9 @@ function App() {
             </div>
           </div>
           
-          <div className="flex-1 overflow-y-auto px-5 py-4">
-            <div className="grid grid-cols-5 gap-[6px]">
+          {/* Scrollable Questions Grid */}
+          <div className="flex-1 min-h-0 overflow-y-auto px-2.5 py-2 max-h-[250px] lg:max-h-none">
+            <div className="grid grid-cols-5 gap-1 sm:gap-1.5">
               {questions.map((q, idx) => {
                 let statusClass = '';
                 if (idx === currentIndex) {
@@ -1011,6 +1023,7 @@ function App() {
                 return (
                   <button 
                     key={q.id} 
+                    ref={idx === currentIndex ? currentNavBtnRef : null}
                     onClick={() => {
                       setCurrentIndex(idx);
                       setOpenDropdownId(null);
@@ -1027,8 +1040,8 @@ function App() {
             </div>
           </div>
 
-          <div className="px-5 py-4 border-t border-gray-100 bg-[#f8f9fb]">
-            <div className="space-y-1.5 mb-5 text-xs font-medium">
+          <div className="px-3.5 py-1.5 border-t border-gray-100 bg-[#f8f9fb] flex-shrink-0">
+            <div className="space-y-0.5 mb-1.5 text-[11px] font-medium">
               <div className="flex justify-between">
                 <span className="text-gray-500">Started</span>
                 <span className="text-[#1a446b] font-semibold">{startedCount}</span>
@@ -1043,23 +1056,23 @@ function App() {
               </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-[6px] text-[9px] font-bold text-center tracking-widest">
-              <div className="border border-gray-200 text-gray-400 uppercase py-1.5 rounded-sm bg-white">Pending</div>
-              <div className="border border-[#ffc107] text-[#ffc107] uppercase py-1.5 rounded-sm bg-white">Progress</div>
-              <div className="border border-[#059669] text-[#059669] uppercase py-1.5 rounded-sm bg-white">Correct</div>
-              <div className="border border-[#e11d48] text-[#e11d48] uppercase py-1.5 rounded-sm bg-white">Review</div>
+            <div className="grid grid-cols-2 gap-1 text-[8.5px] font-bold text-center tracking-wider">
+              <div className="border border-gray-200 text-gray-400 uppercase py-0.5 rounded-sm bg-white">Pending</div>
+              <div className="border border-[#ffc107] text-[#ffc107] uppercase py-0.5 rounded-sm bg-white">Progress</div>
+              <div className="border border-[#059669] text-[#059669] uppercase py-0.5 rounded-sm bg-white">Correct</div>
+              <div className="border border-[#e11d48] text-[#e11d48] uppercase py-0.5 rounded-sm bg-white">Review</div>
             </div>
           </div>
         </aside>
 
-        {/* Center Workspace */}
-        <section className={`flex-1 flex flex-col gap-4 min-w-0 ${mobileSidebar !== null ? 'hidden lg:flex' : 'flex'}`}>
-          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-4 md:px-6 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+        {/* Center Workspace (Bo'yiga ixchamlashtirilgan) */}
+        <section className={`flex-1 min-h-0 flex flex-col gap-2 min-w-0 lg:h-full ${mobileSidebar !== null ? 'hidden lg:flex' : 'flex'}`}>
+          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-3 md:px-4 py-1.5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 sm:gap-0 flex-shrink-0">
              <div>
-                <div className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1">Exam Workspace</div>
-                <h2 className="text-lg font-semibold text-gray-800">Question {currentQ.id}</h2>
+                <div className="text-[9px] font-bold text-[#6f93b5] uppercase tracking-widest">Exam Workspace</div>
+                <h2 className="text-sm sm:text-base font-semibold text-gray-800">Question {currentQ.id}</h2>
              </div>
-             <div className="flex gap-3">
+             <div className="flex gap-2">
                 <span className="badge-outline multiple-choice">
                   {currentQ.type} {currentQ.type === 'MULTIPLE CHOICE' && `(${currentQ.answersRequired})`}
                 </span>
@@ -1075,10 +1088,10 @@ function App() {
              </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-sm shadow-sm p-6 flex-1 flex flex-col overflow-y-auto">
-             <div className="bg-[#f5f8fa] p-5 rounded-sm border border-gray-200 mb-6">
-                <div className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest mb-3">Task Prompt</div>
-                <p className="text-[15px] text-gray-800 font-medium leading-relaxed">{currentQ.prompt}</p>
+          <div className="bg-white border border-gray-200 rounded-sm shadow-sm p-3 sm:p-3.5 flex-1 min-h-0 flex flex-col overflow-y-auto">
+             <div className="bg-[#f5f8fa] p-2 sm:p-2.5 rounded-sm border border-gray-200 mb-2 flex-shrink-0">
+                <div className="text-[9px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1">Task Prompt</div>
+                <p className="text-[13px] sm:text-[14px] text-gray-800 font-medium leading-relaxed">{currentQ.prompt}</p>
              </div>
 
              <div className="w-full flex-1">
@@ -1115,18 +1128,19 @@ function App() {
              </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-4 md:px-6 py-4 flex flex-col md:flex-row justify-between items-center min-h-[76px] gap-4 md:gap-0 mt-auto">
+          {/* Pastki boshqaruv tugmalari paneli (Bo'yiga ixcham: min-h-[44px]) */}
+          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-3 md:px-4 py-1.5 flex flex-col md:flex-row justify-between items-center min-h-[44px] gap-2 md:gap-0 flex-shrink-0">
              {isEvaluated ? (
-                <span className="text-[12px] md:text-[13px] text-gray-600 font-medium md:w-1/2 text-center md:text-left">
+                <span className="text-[11px] md:text-[11.5px] text-gray-600 font-medium md:w-1/2 text-center md:text-left">
                    Task submitted. Review the highlighted response before moving on.
                 </span>
              ) : (
-                <span className="text-[12px] md:text-[13px] text-gray-500 font-medium text-center md:text-left">
+                <span className="text-[11px] md:text-[11.5px] text-gray-500 font-medium text-center md:text-left">
                    Answer the task and use Submit Task when ready.
                 </span>
              )}
              
-             <div className="flex flex-wrap justify-center gap-2 md:gap-3">
+             <div className="flex flex-wrap justify-center gap-1.5 md:gap-2">
                 <button className="action-btn" onClick={handlePrev} disabled={currentIndex === 0}>PREVIOUS</button>
                 
                 {!isEvaluated ? (
@@ -1146,18 +1160,18 @@ function App() {
           </div>
         </section>
 
-        {/* Right Sidebar - Instructions & Review */}
-        <aside className={`w-full lg:w-[300px] flex-col gap-4 flex-shrink-0 ${mobileSidebar === 'instructions' ? 'flex' : 'hidden lg:flex'}`}>
-          <div className="flex gap-2 h-[42px]">
+        {/* Right Sidebar - Instructions & Review (Kengligi qulay: 270px) */}
+        <aside className={`w-full lg:w-[270px] xl:w-[285px] flex flex-col gap-2 flex-shrink-0 min-h-0 lg:h-full lg:max-h-full overflow-hidden ${mobileSidebar === 'instructions' ? 'flex' : 'hidden lg:flex'}`}>
+          <div className="flex gap-1.5 h-[30px] flex-shrink-0">
             <button 
               onClick={() => setActiveTab('INSTRUCTIONS')}
-              className={`flex-1 rounded-sm text-xs font-bold tracking-widest uppercase transition-colors ${activeTab === 'INSTRUCTIONS' ? 'bg-[#1a446b] text-white' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
+              className={`flex-1 rounded-sm text-[11px] font-bold tracking-wider uppercase transition-colors ${activeTab === 'INSTRUCTIONS' ? 'bg-[#1a446b] text-white' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
             >
               INSTRUCTIONS
             </button>
             <button 
               onClick={() => setActiveTab('REVIEW')}
-              className={`flex-1 rounded-sm text-xs font-bold tracking-widest uppercase transition-colors ${activeTab === 'REVIEW' ? 'bg-[#1a446b] text-white' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
+              className={`flex-1 rounded-sm text-[11px] font-bold tracking-wider uppercase transition-colors ${activeTab === 'REVIEW' ? 'bg-[#1a446b] text-white' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
             >
               REVIEW
             </button>
@@ -1165,7 +1179,7 @@ function App() {
 
           <div className="bg-white border border-gray-200 rounded-sm shadow-sm flex-1 p-0 flex flex-col overflow-hidden">
             {activeTab === 'INSTRUCTIONS' ? (
-              <div className="p-6 space-y-6 overflow-y-auto h-full">
+              <div className="p-3.5 space-y-3 overflow-y-auto h-full">
                 <div>
                    <div className="rs-title">Overview</div>
                    <div className="w-full h-px bg-gray-100 mb-3"></div>

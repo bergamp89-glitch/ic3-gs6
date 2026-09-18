@@ -90,7 +90,7 @@ export async function detectFaceInVideo(video) {
       return {
         detected: false,
         quality: 'low',
-        message: "Yuz aniqlanmadi — Kamera markaziga qarang",
+        message: "Kamera markaziga qarang",
         box: null
       };
     }
@@ -99,7 +99,7 @@ export async function detectFaceInVideo(video) {
       return {
         detected: false,
         quality: 'multiple',
-        message: "Diqqat: Kadrda bir nechta odam bor! Faqat 1 kishi bo'lishi shart.",
+        message: "Kadrda faqat 1 kishi bo'lishi shart!",
         box: null
       };
     }
@@ -135,8 +135,8 @@ export async function detectFaceInVideo(video) {
     const faceBottom = box.y + box.height;
 
     // --- 2. YUZ OVAL ICHIGA TO'LIQ TUSHGANLIGI (CHEKKALARI KESILMAGANLIGI) ---
-    const padX = visibleW * 0.05;
-    const padY = visibleH * 0.05;
+    const padX = visibleW * 0.04;
+    const padY = visibleH * 0.04;
 
     const isCutOff = (
       faceLeft < (visibleStartX + padX) ||
@@ -149,7 +149,7 @@ export async function detectFaceInVideo(video) {
       return {
         detected: false,
         quality: 'off-center',
-        message: "Yuzingiz ramkaga to'liq tushmadi. Markazga suriling!",
+        message: "Yuzingizni ramka markaziga to'g'rilang",
         box: null
       };
     }
@@ -164,11 +164,11 @@ export async function detectFaceInVideo(video) {
     const offsetXRatio = Math.abs(faceCenterX - visibleCenterX) / visibleW;
     const offsetYRatio = Math.abs(faceCenterY - visibleCenterY) / visibleH;
 
-    if (offsetXRatio > 0.14 || offsetYRatio > 0.16) {
+    if (offsetXRatio > 0.16 || offsetYRatio > 0.18) {
       return {
         detected: false,
         quality: 'off-center',
-        message: "Yuzingizni oval ramka markaziga to'g'rilang",
+        message: "Yuzingizni ramka markaziga to'g'rilang",
         box: null
       };
     }
@@ -176,16 +176,16 @@ export async function detectFaceInVideo(video) {
     // --- 4. MASOFA TEKSHIRUVI (O'LCHAM NISBATI) ---
     const faceWidthRatio = box.width / visibleW;
 
-    if (faceWidthRatio < 0.35) {
+    if (faceWidthRatio < 0.32) {
       return {
         detected: false,
         quality: 'too-far',
-        message: "Kameraga biroz yaqinroq keling",
+        message: "Kameraga yaqinroq keling",
         box: null
       };
     }
 
-    if (faceWidthRatio > 0.75) {
+    if (faceWidthRatio > 0.78) {
       return {
         detected: false,
         quality: 'too-close',
@@ -215,11 +215,11 @@ export async function detectFaceInVideo(video) {
     const distRightToNose = Math.abs(rightEyeCenter.x - noseTip.x);
     const symmetryRatio = distLeftToNose / (distRightToNose || 1);
 
-    if (symmetryRatio < 0.55 || symmetryRatio > 1.8) {
+    if (symmetryRatio < 0.52 || symmetryRatio > 1.9) {
       return {
         detected: false,
         quality: 'turned',
-        message: "Iltimos, to'g'riga (kameraga) qarang, yuzingizni burmang!",
+        message: "To'g'riga (kameraga) qarang",
         box: null
       };
     }
@@ -229,11 +229,11 @@ export async function detectFaceInVideo(video) {
     const deltaX = Math.abs(leftEyeCenter.x - rightEyeCenter.x);
     const rollAngle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
 
-    if (rollAngle > 16) {
+    if (rollAngle > 18) {
       return {
         detected: false,
         quality: 'tilted',
-        message: "Boshingizni to'g'ri tuting (qiyalatmasdan)",
+        message: "Boshingizni to'g'ri tuting",
         box: null
       };
     }

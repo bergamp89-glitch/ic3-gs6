@@ -21,9 +21,9 @@ function QuestionMatchingTask({
 
       <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 flex-1 min-h-0">
         {/* Left Column - Source Items */}
-        <div className="flex-1 border border-gray-200 rounded-sm p-5 flex flex-col bg-white shadow-sm">
-          <div className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest mb-4">Source Items</div>
-          <div className="space-y-4 flex-1 overflow-y-auto pr-2">
+        <div className="flex-1 border border-gray-200 rounded-sm p-3.5 sm:p-4 flex flex-col bg-white shadow-sm">
+          <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2.5">Source Items</div>
+          <div className="space-y-2.5 flex-1 overflow-y-auto pr-1">
             {currentQ.sourceItems.map(src => {
                const placedTargetId = Object.keys(currentQ.userAnswers).find(tId => currentQ.userAnswers[tId] === src.id);
                const placedTarget = placedTargetId ? currentQ.targetAreas.find(t => t.id === placedTargetId) : null;
@@ -34,11 +34,11 @@ function QuestionMatchingTask({
                    draggable={!isEvaluated}
                    onDragStart={(e) => handleDragStart(e, src.id)}
                    onClick={() => handleSourceClick(src.id)}
-                   className={`border rounded-md p-4 bg-white transition-all duration-200 ${!isEvaluated ? 'cursor-pointer hover:shadow-md hover:border-[#1a446b]/40' : ''} ${placedTarget ? 'opacity-50 scale-95 border-gray-200 bg-gray-50' : 'border-gray-200'} ${selectedSourceId === src.id ? 'ring-2 ring-[#1a446b] border-[#1a446b] bg-blue-50/30 transform scale-[1.02] font-semibold' : ''}`}
+                   className={`border rounded-md p-2.5 sm:p-3 bg-white transition-all duration-200 ${!isEvaluated ? 'cursor-pointer hover:shadow-sm hover:border-[#1a446b]/40' : ''} ${placedTarget ? 'opacity-50 scale-95 border-gray-200 bg-gray-50' : 'border-gray-200'} ${selectedSourceId === src.id ? 'ring-2 ring-[#1a446b] border-[#1a446b] bg-blue-50/30 font-semibold' : ''}`}
                  >
-                   <div className="text-[13px] text-gray-800 font-medium">{src.text}</div>
+                   <div className="text-[12.5px] sm:text-[13px] text-gray-800 font-medium">{src.text}</div>
                    {placedTarget && (
-                     <div className="text-[10px] font-bold text-[#1a446b] uppercase tracking-widest mt-2 flex items-center gap-1">
+                     <div className="text-[9.5px] font-bold text-[#1a446b] uppercase tracking-widest mt-1.5 flex items-center gap-1">
                        <svg className="w-3 h-3 text-[#1a446b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
                        Placed in: {placedTarget.label}
                      </div>
@@ -50,9 +50,9 @@ function QuestionMatchingTask({
         </div>
 
         {/* Right Column - Target Areas */}
-        <div className="flex-1 border border-gray-200 rounded-sm p-5 flex flex-col bg-white shadow-sm">
-          <div className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest mb-4">Target Areas</div>
-          <div className="space-y-4 flex-1 overflow-y-auto pr-2">
+        <div className="flex-1 border border-gray-200 rounded-sm p-3.5 sm:p-4 flex flex-col bg-white shadow-sm">
+          <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2.5">Target Areas</div>
+          <div className="space-y-2.5 flex-1 overflow-y-auto pr-1">
             {currentQ.targetAreas.map(tgt => {
                const placedSourceId = currentQ.userAnswers[tgt.id];
                const placedSource = placedSourceId ? currentQ.sourceItems.find(s => s.id === placedSourceId) : null;
