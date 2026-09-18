@@ -61,11 +61,14 @@ CREATE TABLE IF NOT EXISTS requests (
   email text,
   level text,
   photo text,
+  descriptor jsonb,
   status text DEFAULT 'pending',
   created_at timestamp with time zone DEFAULT now()
 );
 
 ALTER TABLE requests ADD COLUMN IF NOT EXISTS photo text;
+ALTER TABLE requests ADD COLUMN IF NOT EXISTS descriptor jsonb;
+
 
 ALTER TABLE requests ENABLE ROW LEVEL SECURITY;
 

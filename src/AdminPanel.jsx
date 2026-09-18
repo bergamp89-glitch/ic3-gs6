@@ -264,6 +264,11 @@ function AdminPanel({
                                            Rasm yo'q
                                          </span>
                                        )}
+                                       {req.descriptor && (
+                                         <span className="text-[10px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded" title="128-o'lchamli AI Biometrik Vektori saqlangan">
+                                           AI Vektor 128D ✓
+                                         </span>
+                                       )}
                                      </div>
                                      <div className="text-xs text-gray-600 mt-1 flex items-center gap-2 flex-wrap">
                                        <span className="font-mono text-gray-700 font-medium">{req.email}</span>
@@ -377,9 +382,18 @@ function AdminPanel({
                                    )}
                                  </div>
                                  <div className="min-w-0">
-                                    <div className="font-semibold text-gray-800 text-[13px] md:text-[15px] truncate">{req.firstName} {req.lastName}</div>
-                                    <div className="text-[11px] md:text-sm text-gray-500 mt-0.5 md:mt-1 truncate">{req.email} &bull; <span className="font-semibold text-[#1a446b] bg-blue-50 px-1.5 py-0.5 rounded-sm">{req.level}</span></div>
-                                 </div>
+                                     <div className="font-semibold text-gray-800 text-[13px] md:text-[15px] truncate">{req.firstName} {req.lastName}</div>
+                                     <div className="text-[11px] md:text-sm text-gray-500 mt-0.5 md:mt-1 truncate flex items-center gap-1.5 flex-wrap">
+                                       <span>{req.email}</span>
+                                       <span>&bull;</span>
+                                       <span className="font-semibold text-[#1a446b] bg-blue-50 px-1.5 py-0.5 rounded-sm">{req.level}</span>
+                                       {req.descriptor && (
+                                         <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 rounded" title="128-o'lchamli AI Biometrik Vektori faol">
+                                           Biometriya ✓
+                                         </span>
+                                       )}
+                                     </div>
+                                  </div>
                               </div>
                               <div className="flex gap-2 flex-shrink-0">
                                   <button 

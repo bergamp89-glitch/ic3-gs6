@@ -54,36 +54,57 @@ export async function getFaceDescriptor(imageInput) {
 }
 
 /**
+ * Vektor ma'lumotlarini Float32Array ga aylantirish yordamchisi
+ */
+function toFloat32Array(val) {
+  if (!val) return null;
+  if (val instanceof Float32Array) return val;
+  if (Array.isArray(val)) return new Float32Array(val);
+  if (typeof val === 'string' && val.startsWith('[') && val.endsWith(']')) {
+    try {
+      const arr = JSON.parse(val);
+      if (Array.isArray(arr)) return new Float32Array(arr);
+    } catch (e) {}
+  }
+  return null;
+}
+
+/**
  * Asosiy Biometrik Taqqoslash Funksiyasi (AI Face Comparison)
- * @param {string} approvedPhotoBase64 Admin tasdiqlagan rasm (Reference Base64)
- * @param {string} livePhotoBase64 Kameradan olingan jonli rasm (Live Base64)
- * @param {number} threshold Qabul qilish chegarasi (default: 60%)
+ * @param {string|Array|Float32Array} approvedPhotoOrDescriptor Admin tasdiqlagan rasm (Base64) yoki 128-vektor
+ * @param {string|Array|Float32Array} livePhotoOrDescriptor Kameradan olingan rasm (Base64) yoki 128-vektor
+ * @param {number} threshold Qabul qilish chegarasi (default: 58%)
  * @returns {Promise<{ match: boolean, confidence: number, distance: number, error?: string }>}
  */
-export async function compareFaces(approvedPhotoBase64, livePhotoBase64, threshold = 60) {
+export async function compareFaces(approvedPhotoOrDescriptor, livePhotoOrDescriptor, threshold = 58) {
   try {
-    if (!approvedPhotoBase64 || !livePhotoBase64) {
+    if (!approvedPhotoOrDescriptor || !livePhotoOrDescriptor) {
       return {
         match: false,
         confidence: 0,
         distance: 1.0,
-        error: "Rasm ma'lumotlari to'liq emas"
+        error: "Biometrik ma'lumotlar to'liq emas"
       };
     }
 
     await loadFaceModels();
 
-    const [descApproved, descLive] = await Promise.all([
-      getFaceDescriptor(approvedPhotoBase64),
-      getFaceDescriptor(livePhotoBase64)
-    ]);
+    let descApproved = toFloat32Array(approvedPhotoOrDescriptor);
+    if (!descApproved && typeof approvedPhotoOrDescriptor === 'string') {
+      descApproved = await getFaceDescriptor(approvedPhotoOrDescriptor);
+    }
+
+    let descLive = toFloat32Array(livePhotoOrDescriptor);
+    if (!descLive && typeof livePhotoOrDescriptor === 'string') {
+      descLive = await getFaceDescriptor(livePhotoOrDescriptor);
+    }
 
     if (!descApproved) {
       return {
         match: false,
         confidence: 0,
         distance: 1.0,
-        error: "Admin tasdiqlagan asl fotosuratdan yuz aniqlanmadi"
+        error: "Admin tasdiqlagan fotosurat yoki biometrik vektordan yuz aniqlanmadi"
       };
     }
 
@@ -97,15 +118,10 @@ export async function compareFaces(approvedPhotoBase64, livePhotoBase64, thresho
     }
 
     // 128-o'lchamli vektorlar orasidagi Evklid masofasi
-    // Odatda: distance < 0.58 -> bitta shaxs (Match)
+    // distance < 0.58 -> bitta shaxs (Match)
     const distance = faceapi.euclideanDistance(descApproved, descLive);
 
     // Masofani 0-100% ishonchlilik foiziga aylantirish:
-    // masofa <= 0.25 -> 95-100%
-    // masofa = 0.40 -> 80%
-    // masofa = 0.55 -> 65%
-    // masofa = 0.60 -> 50%
-    // masofa >= 0.75 -> 0-25%
     let confidence = Math.round(Math.max(0, Math.min(100, (1 - (distance / 0.78)) * 100)));
 
     // Standart face-api benchmark: masofa 0.58 dan kichik bo'lsa bitta shaxs
@@ -131,3 +147,4 @@ export async function compareFaces(approvedPhotoBase64, livePhotoBase64, thresho
     };
   }
 }
+

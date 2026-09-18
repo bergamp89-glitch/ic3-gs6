@@ -238,11 +238,28 @@ export async function detectFaceInVideo(video) {
       };
     }
 
+    // --- 6. KO'Z PIRPIRATISH (EYE ASPECT RATIO - EAR / LIVENESS DETECTION) ---
+    const calcEyeEAR = (eye) => {
+      if (!eye || eye.length < 6) return 0.3;
+      const v1 = Math.hypot(eye[1].x - eye[5].x, eye[1].y - eye[5].y);
+      const v2 = Math.hypot(eye[2].x - eye[4].x, eye[2].y - eye[4].y);
+      const h = Math.hypot(eye[0].x - eye[3].x, eye[0].y - eye[3].y);
+      if (h <= 0) return 0.3;
+      return (v1 + v2) / (2.0 * h);
+    };
+
+    const leftEAR = calcEyeEAR(leftEye);
+    const rightEAR = calcEyeEAR(rightEye);
+    const avgEAR = Number(((leftEAR + rightEAR) / 2).toFixed(3));
+    const isEyesClosed = avgEAR < 0.21;
+
     // Barcha biometrik talablar to'liq bajarildi ✓
     return {
       detected: true,
       quality: 'good',
-      message: "Yuz to'g'ri joylashdi ✓ Qimirlamang...",
+      message: "Yuz to'g'ri joylashdi ✓",
+      ear: avgEAR,
+      isEyesClosed,
       box: {
         x: Math.round(box.x),
         y: Math.round(box.y),
@@ -258,7 +275,10 @@ export async function detectFaceInVideo(video) {
       detected: false,
       quality: 'low',
       message: "Yuz tahlil qilinmoqda...",
+      ear: 0.3,
+      isEyesClosed: false,
       box: null
     };
   }
 }
+

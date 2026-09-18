@@ -9,6 +9,7 @@ import QuestionInstructionSet from './components/QuestionInstructionSet';
 import QuestionMatchingTask from './components/QuestionMatchingTask';
 import QuestionSimulatedUI from './components/QuestionSimulatedUI';
 import FaceRegistrationModal from './components/FaceRegistrationModal';
+import FaceProctoringWidget from './components/FaceProctoringWidget';
 import { examQuestions as q1 } from './1-level.js';
 import { examQuestions as q2 } from './2-level.js';
 import { examQuestions as q3 } from './3-level.js';
@@ -28,6 +29,8 @@ function App() {
   const [showFaceModal, setShowFaceModal] = useState(false);
   const [modalMode, setModalMode] = useState('ENROLL'); // 'ENROLL' | 'VERIFY'
   const [adminApprovedPhoto, setAdminApprovedPhoto] = useState(null);
+  const [adminApprovedDescriptor, setAdminApprovedDescriptor] = useState(null);
+
 
   const [adminCreds, setAdminCreds] = useState({ firstName: 'admin', email: '0807' });
   const [showInactiveModal, setShowInactiveModal] = useState(false);
@@ -665,10 +668,12 @@ function App() {
               lastName: approved.lastName,
               email: approved.email,
               level: approved.level,
-              photo: approved.photo
+              photo: approved.photo,
+              descriptor: approved.descriptor || null
             });
             setModalMode('VERIFY');
             setAdminApprovedPhoto(approved.photo);
+            setAdminApprovedDescriptor(approved.descriptor || null);
             setRequestId(approved.id);
             setShowFaceModal(true);
             setIsSubmitting(false);
@@ -689,15 +694,18 @@ function App() {
         // 3. New candidate: Biometric Face Registration (ENROLL)
         setModalMode('ENROLL');
         setAdminApprovedPhoto(null);
+        setAdminApprovedDescriptor(null);
         setShowFaceModal(true);
       } catch (err) {
         console.error("Error checking user approval status:", err);
         setModalMode('ENROLL');
         setAdminApprovedPhoto(null);
+        setAdminApprovedDescriptor(null);
         setShowFaceModal(true);
       } finally {
         setIsSubmitting(false);
       }
+
     } else {
       let emailErrorMsg = false;
       if (!trimmedEmail) {
@@ -767,9 +775,12 @@ function App() {
     setIsSubmitting(false);
   };
 
-  // Initial Enrollment confirmation (sends request to admin with photo)
-  const handleConfirmFace = async (capturedPhoto) => {
+  // Initial Enrollment confirmation (sends request to admin with photo and descriptor)
+  const handleConfirmFace = async (capturedData) => {
     setIsSubmitting(true);
+    const capturedPhoto = typeof capturedData === 'object' && capturedData !== null ? capturedData.photo : capturedData;
+    const capturedDescriptor = typeof capturedData === 'object' && capturedData !== null ? capturedData.descriptor : null;
+
     const trimmedFirstName = (registration.firstName || '').trim();
     const trimmedLastName = (registration.lastName || '').trim();
     const trimmedEmail = (registration.email || '').trim().toLowerCase();
@@ -789,7 +800,7 @@ function App() {
           try {
             await supabase
               .from('requests')
-              .update({ photo: capturedPhoto })
+              .update({ photo: capturedPhoto, descriptor: capturedDescriptor })
               .eq('id', pending.id);
           } catch (e) {
             console.warn("Could not update photo in pending request:", e);
@@ -809,6 +820,7 @@ function App() {
         email: trimmedEmail,
         level: selectedLevel,
         photo: capturedPhoto,
+        descriptor: capturedDescriptor,
         status: 'pending'
       };
 
@@ -819,17 +831,17 @@ function App() {
 
       if (insertErr) {
         console.error("Supabase insert error:", insertErr);
-        if (insertErr.message && insertErr.message.includes('photo')) {
-          const fallbackPayload = {
-            firstName: trimmedFirstName,
-            lastName: trimmedLastName,
-            email: trimmedEmail,
-            level: selectedLevel,
-            status: 'pending'
-          };
-          const retryRes = await supabase.from('requests').insert([fallbackPayload]).select();
-          insertData = retryRes.data;
-        }
+        // Fallback without descriptor if column does not exist yet in DB
+        const fallbackPayload = {
+          firstName: trimmedFirstName,
+          lastName: trimmedLastName,
+          email: trimmedEmail,
+          level: selectedLevel,
+          photo: capturedPhoto,
+          status: 'pending'
+        };
+        const retryRes = await supabase.from('requests').insert([fallbackPayload]).select();
+        insertData = retryRes.data;
       }
       
       if (insertData && insertData.length > 0) {
@@ -869,12 +881,14 @@ function App() {
           onVerifySuccess={handleVerifiedFace}
           mode={modalMode}
           adminApprovedPhoto={adminApprovedPhoto}
+          adminApprovedDescriptor={adminApprovedDescriptor}
           registration={registration}
           isSubmitting={isSubmitting}
         />
       </>
     );
   }
+
 
   // --- Render Waiting Screen ---
   if (appState === 'WAITING') {
@@ -1226,8 +1240,16 @@ function App() {
         </aside>
 
       </main>
+
+      {/* Real-time AI Face Proctoring Widget */}
+      <FaceProctoringWidget 
+        studentName={`${registration.firstName || ''} ${registration.lastName || ''}`} 
+        level={registration.level} 
+      />
     </div>
+
   );
 }
+
 
 export default App;
