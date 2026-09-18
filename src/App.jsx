@@ -8,6 +8,7 @@ import QuestionMultipleChoice from './components/QuestionMultipleChoice';
 import QuestionInstructionSet from './components/QuestionInstructionSet';
 import QuestionMatchingTask from './components/QuestionMatchingTask';
 import QuestionSimulatedUI from './components/QuestionSimulatedUI';
+import FaceRegistrationModal from './components/FaceRegistrationModal';
 import { examQuestions as q1 } from './1-level.js';
 import { examQuestions as q2 } from './2-level.js';
 import { examQuestions as q3 } from './3-level.js';
@@ -24,6 +25,7 @@ function App() {
   const [registrationErrors, setRegistrationErrors] = useState({ firstName: false, lastName: false, birthDate: false, email: false, level: false });
   const [requestId, setRequestId] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showFaceModal, setShowFaceModal] = useState(false);
 
   const [adminCreds, setAdminCreds] = useState({ firstName: 'admin', email: '0807' });
   const [showInactiveModal, setShowInactiveModal] = useState(false);
@@ -598,91 +600,8 @@ function App() {
         return;
       }
 
-      setIsSubmitting(true);
-
-      const checkRequests = async () => {
-        try {
-          const { data } = await supabase
-            .from('requests')
-            .select('id, status')
-            .ilike('email', trimmedEmail)
-            .eq('level', selectedLevel)
-            .in('status', ['pending', 'approved']);
-            
-          if (data && data.length > 0) {
-            const approved = data.find(r => r.status === 'approved');
-            if (approved) {
-              const { data: sessionData } = await supabase
-                .from('exam_sessions')
-                .select('*')
-                .ilike('email', trimmedEmail)
-                .eq('registration->>level', selectedLevel)
-                .order('updated_at', { ascending: false })
-                .limit(1);
-                
-              if (sessionData && sessionData.length > 0 && sessionData[0].app_state !== 'RESULT') {
-                 setSessionId(sessionData[0].id);
-                 setQuestions(sessionData[0].questions || []);
-                 setCurrentIndex(sessionData[0].current_index || 0);
-                 setAppState(sessionData[0].app_state || 'EXAM');
-              } else {
-                 setQuestions([]);
-                 setCurrentIndex(0);
-                 const { data: newSession } = await supabase
-                   .from('exam_sessions')
-                   .insert([{ email: trimmedEmail, registration: { firstName: trimmedFirstName, lastName: trimmedLastName, email: trimmedEmail, level: selectedLevel }, app_state: 'EXAM' }])
-                   .select();
-                 if (newSession && newSession.length > 0) {
-                   setSessionId(newSession[0].id);
-                 }
-                 setAppState('EXAM');
-              }
-              setIsSubmitting(false);
-              return;
-            }
-            const pending = data.find(r => r.status === 'pending');
-            if (pending) {
-              setRequestId(pending.id);
-              setAppState('WAITING');
-              setIsSubmitting(false);
-              return;
-            }
-          }
-
-          const insertPayload = {
-            firstName: trimmedFirstName,
-            lastName: trimmedLastName,
-            email: trimmedEmail,
-            level: selectedLevel,
-            status: 'pending'
-          };
-
-          let { data: insertData, error: insertErr } = await supabase
-            .from('requests')
-            .insert([insertPayload])
-            .select();
-
-          if (insertErr) {
-            console.error("Supabase insert error:", insertErr);
-          }
-          
-          if (insertData && insertData.length > 0) {
-            setRequestId(insertData[0].id);
-            setAppState('WAITING');
-          } else {
-            // Fallback: If select failed or empty response but insert succeeded without throwing
-            setRequestId('req_' + Date.now());
-            setAppState('WAITING');
-          }
-        } catch (e) {
-          console.error("Error submitting request:", e);
-          setRequestId('req_' + Date.now());
-          setAppState('WAITING');
-        }
-        setIsSubmitting(false);
-      };
-
-      checkRequests();
+      // Open Face ID Registration Modal
+      setShowFaceModal(true);
     } else {
       let emailErrorMsg = false;
       if (!trimmedEmail) {
@@ -700,19 +619,161 @@ function App() {
     }
   };
 
+  const handleConfirmFace = async (capturedPhoto) => {
+    setIsSubmitting(true);
+    const trimmedFirstName = (registration.firstName || '').trim();
+    const trimmedLastName = (registration.lastName || '').trim();
+    const trimmedEmail = (registration.email || '').trim().toLowerCase();
+    const selectedLevel = registration.level;
+
+    try {
+      const { data } = await supabase
+        .from('requests')
+        .select('id, status')
+        .ilike('email', trimmedEmail)
+        .eq('level', selectedLevel)
+        .in('status', ['pending', 'approved']);
+        
+      if (data && data.length > 0) {
+        const approved = data.find(r => r.status === 'approved');
+        if (approved) {
+          // Update photo for approved user record if column exists
+          try {
+            await supabase
+              .from('requests')
+              .update({ photo: capturedPhoto })
+              .eq('id', approved.id);
+          } catch (e) {
+            console.warn("Could not update photo in requests:", e);
+          }
+
+          const { data: sessionData } = await supabase
+            .from('exam_sessions')
+            .select('*')
+            .ilike('email', trimmedEmail)
+            .eq('registration->>level', selectedLevel)
+            .order('updated_at', { ascending: false })
+            .limit(1);
+            
+          if (sessionData && sessionData.length > 0 && sessionData[0].app_state !== 'RESULT') {
+             setSessionId(sessionData[0].id);
+             setQuestions(sessionData[0].questions || []);
+             setCurrentIndex(sessionData[0].current_index || 0);
+             setAppState(sessionData[0].app_state || 'EXAM');
+          } else {
+             setQuestions([]);
+             setCurrentIndex(0);
+             const { data: newSession } = await supabase
+               .from('exam_sessions')
+               .insert([{ 
+                 email: trimmedEmail, 
+                 registration: { 
+                   firstName: trimmedFirstName, 
+                   lastName: trimmedLastName, 
+                   email: trimmedEmail, 
+                   level: selectedLevel,
+                   photo: capturedPhoto
+                 }, 
+                 app_state: 'EXAM' 
+               }])
+               .select();
+             if (newSession && newSession.length > 0) {
+               setSessionId(newSession[0].id);
+             }
+             setAppState('EXAM');
+          }
+          setShowFaceModal(false);
+          setIsSubmitting(false);
+          return;
+        }
+
+        const pending = data.find(r => r.status === 'pending');
+        if (pending) {
+          try {
+            await supabase
+              .from('requests')
+              .update({ photo: capturedPhoto })
+              .eq('id', pending.id);
+          } catch (e) {
+            console.warn("Could not update photo in pending request:", e);
+          }
+
+          setRequestId(pending.id);
+          setShowFaceModal(false);
+          setAppState('WAITING');
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
+      const insertPayload = {
+        firstName: trimmedFirstName,
+        lastName: trimmedLastName,
+        email: trimmedEmail,
+        level: selectedLevel,
+        photo: capturedPhoto,
+        status: 'pending'
+      };
+
+      let { data: insertData, error: insertErr } = await supabase
+        .from('requests')
+        .insert([insertPayload])
+        .select();
+
+      if (insertErr) {
+        console.error("Supabase insert error:", insertErr);
+        // Fallback: If 'photo' column does not exist yet in DB, retry without 'photo' column
+        if (insertErr.message && insertErr.message.includes('photo')) {
+          const fallbackPayload = {
+            firstName: trimmedFirstName,
+            lastName: trimmedLastName,
+            email: trimmedEmail,
+            level: selectedLevel,
+            status: 'pending'
+          };
+          const retryRes = await supabase.from('requests').insert([fallbackPayload]).select();
+          insertData = retryRes.data;
+        }
+      }
+      
+      if (insertData && insertData.length > 0) {
+        setRequestId(insertData[0].id);
+      } else {
+        setRequestId('req_' + Date.now());
+      }
+      setShowFaceModal(false);
+      setAppState('WAITING');
+    } catch (e) {
+      console.error("Error submitting request:", e);
+      setRequestId('req_' + Date.now());
+      setShowFaceModal(false);
+      setAppState('WAITING');
+    }
+    setIsSubmitting(false);
+  };
+
   // --- Render Home Screen ---
   if (appState === 'HOME') {
     return (
-      <HomePage 
-        registration={registration}
-        setRegistration={setRegistration}
-        registrationErrors={registrationErrors}
-        setRegistrationErrors={setRegistrationErrors}
-        handleStartExam={handleStartExam}
-        isSubmitting={isSubmitting}
-        showInactiveModal={showInactiveModal}
-        setShowInactiveModal={setShowInactiveModal}
-      />
+      <>
+        <HomePage 
+          registration={registration}
+          setRegistration={setRegistration}
+          registrationErrors={registrationErrors}
+          setRegistrationErrors={setRegistrationErrors}
+          handleStartExam={handleStartExam}
+          isSubmitting={isSubmitting}
+          showInactiveModal={showInactiveModal}
+          setShowInactiveModal={setShowInactiveModal}
+        />
+        <FaceRegistrationModal
+          isOpen={showFaceModal}
+          onClose={() => setShowFaceModal(false)}
+          onConfirm={handleConfirmFace}
+          registration={registration}
+          isSubmitting={isSubmitting}
+        />
+      </>
     );
   }
 

@@ -19,9 +19,11 @@ ON CONFLICT (key) DO NOTHING;
 
 ALTER TABLE settings ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "settings_anon_read" ON settings;
 CREATE POLICY "settings_anon_read" ON settings
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "settings_anon_write" ON settings;
 CREATE POLICY "settings_anon_write" ON settings
   FOR ALL USING (true) WITH CHECK (true);
 
@@ -40,9 +42,11 @@ CREATE TABLE IF NOT EXISTS exam_sessions (
 
 ALTER TABLE exam_sessions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "exam_sessions_anon_read" ON exam_sessions;
 CREATE POLICY "exam_sessions_anon_read" ON exam_sessions
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "exam_sessions_anon_write" ON exam_sessions;
 CREATE POLICY "exam_sessions_anon_write" ON exam_sessions
   FOR ALL USING (true) WITH CHECK (true);
 
@@ -56,15 +60,20 @@ CREATE TABLE IF NOT EXISTS requests (
   birth_date text,
   email text,
   level text,
+  photo text,
   status text DEFAULT 'pending',
   created_at timestamp with time zone DEFAULT now()
 );
 
+ALTER TABLE requests ADD COLUMN IF NOT EXISTS photo text;
+
 ALTER TABLE requests ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "requests_anon_read" ON requests;
 CREATE POLICY "requests_anon_read" ON requests
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "requests_anon_write" ON requests;
 CREATE POLICY "requests_anon_write" ON requests
   FOR ALL USING (true) WITH CHECK (true);
 
@@ -81,9 +90,11 @@ CREATE TABLE IF NOT EXISTS questions (
 
 ALTER TABLE questions ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "questions_anon_read" ON questions;
 CREATE POLICY "questions_anon_read" ON questions
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "questions_anon_write" ON questions;
 CREATE POLICY "questions_anon_write" ON questions
   FOR ALL USING (true) WITH CHECK (true);
 
@@ -100,8 +111,11 @@ CREATE TABLE IF NOT EXISTS leaderboard (
 
 ALTER TABLE leaderboard ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "leaderboard_anon_read" ON leaderboard;
 CREATE POLICY "leaderboard_anon_read" ON leaderboard
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "leaderboard_anon_write" ON leaderboard;
 CREATE POLICY "leaderboard_anon_write" ON leaderboard
   FOR ALL USING (true) WITH CHECK (true);
+
