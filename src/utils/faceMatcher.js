@@ -82,7 +82,7 @@ function toFloat32Array(val) {
  * @param {number} threshold Qabul qilish chegarasi (default: 58%)
  * @returns {Promise<{ match: boolean, confidence: number, distance: number, error?: string }>}
  */
-export async function compareFaces(approvedPhotoOrDescriptor, livePhotoOrDescriptor, threshold = 58) {
+export async function compareFaces(approvedPhotoOrDescriptor, livePhotoOrDescriptor, threshold = 52) {
   try {
     if (!approvedPhotoOrDescriptor || !livePhotoOrDescriptor) {
       return {
@@ -124,22 +124,18 @@ export async function compareFaces(approvedPhotoOrDescriptor, livePhotoOrDescrip
     }
 
     // 128-o'lchamli vektorlar orasidagi Evklid masofasi
-    // Standart face-api benchmark: masofa <= 0.58 bo'lsa bitta shaxs (Match)
+    // Standart face-api benchmark: masofa <= 0.60 bo'lsa bitta shaxs (Match)
     const distance = faceapi.euclideanDistance(descApproved, descLive);
 
     // Masofani 0-100% ishonchlilik foiziga to'g'ri ilmiy shkala bo'yicha aylantirish:
-    // distance = 0.0 -> 100%
-    // distance = 0.30 -> ~79%
-    // distance = 0.58 (mezon chegarasi) -> 60%
-    // distance > 0.58 -> 60% dan past (Mos emas)
     let confidence = 0;
-    if (distance <= 0.58) {
-      confidence = Math.round(100 - (distance / 0.58) * 40);
+    if (distance <= 0.60) {
+      confidence = Math.round(100 - (distance / 0.60) * 45);
     } else {
-      confidence = Math.round(Math.max(0, 60 - ((distance - 0.58) / 0.42) * 60));
+      confidence = Math.round(Math.max(0, 55 - ((distance - 0.60) / 0.40) * 55));
     }
 
-    const isMatch = distance <= 0.58 && confidence >= threshold;
+    const isMatch = distance <= 0.61 && confidence >= threshold;
 
     return {
       match: isMatch,

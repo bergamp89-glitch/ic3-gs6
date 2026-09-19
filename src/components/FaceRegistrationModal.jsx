@@ -48,7 +48,7 @@ function FaceRegistrationModal({
     if (isCompleted || verifyStatus === 'success') {
       return {
         title: mode === 'VERIFY' ? "Shaxs tasdiqlandi ✓" : "Yuz muvaffaqiyatli saqlandi ✓",
-        desc: mode === 'VERIFY' ? "Xush kelibsiz! Tizimga yo'naltirilmoqda..." : "Ma'lumotlar adminga tasdiqlash uchun yuborilmoqda",
+        desc: mode === 'VERIFY' ? "Xush kelibsiz! Imtihonga yo'naltirilmoqda..." : "Ma'lumotlar adminga tasdiqlash uchun yuborilmoqda",
         type: 'success',
         pill: "Tasdiqlandi ✓",
         icon: 'success'
@@ -58,16 +58,71 @@ function FaceRegistrationModal({
     if (verifyStatus === 'failed') {
       return {
         title: "Yuz mos kelmadi! ✕",
-        desc: verifyMessage || "Ushbu email egasining yuzi bilan mos kelmadi. Qaytadan urinib ko'ring.",
+        desc: verifyMessage || "Admin tasdiqlagan fotosurat bilan mos kelmadi. Qaytadan urinib ko'ring.",
         type: 'danger',
         pill: "Yuz mos kelmadi ✕",
         icon: 'error'
       };
     }
 
+    if (mode === 'VERIFY') {
+      if (verifyStatus === 'verifying' || isScanning) {
+        return {
+          title: `Shaxs tekshirilmoqda: ${scanProgress}%`,
+          desc: "Admin fotosurati bilan solishtirilmoqda, iltimos to'g'riga qarab turing...",
+          type: 'scanning',
+          pill: `Tekshirilmoqda: ${scanProgress}%`,
+          icon: 'scan'
+        };
+      }
+      if (detection.detected && detection.quality === 'good') {
+        return {
+          title: "Yuz aniqlandi ✓",
+          desc: "Shaxs avtomatik tekshirilmoqda, iltimos kuting...",
+          type: 'good',
+          pill: "Avtomatik tekshirilmoqda...",
+          icon: 'good'
+        };
+      }
+      if (detection.quality === 'too-far') {
+        return {
+          title: "Kameraga yaqinroq keling",
+          desc: "Yuzingiz kameradan uzoqda — biroz yaqinlashing",
+          type: 'warning',
+          pill: "Kameraga yaqinroq keling 🔍",
+          icon: 'zoom-in'
+        };
+      }
+      if (detection.quality === 'too-close') {
+        return {
+          title: "Kameradan biroz uzoqlashing",
+          desc: "Yuzingiz kameraga haddan tashqari yaqin",
+          type: 'warning',
+          pill: "Kameradan biroz uzoqlashing 👤",
+          icon: 'zoom-out'
+        };
+      }
+      if (detection.quality === 'multiple') {
+        return {
+          title: "Kadrda faqat 1 kishi bo'lishi shart!",
+          desc: "Begona odam aniqlandi. Faqat o'zingiz kadrda bo'ling",
+          type: 'danger',
+          pill: "Faqat 1 kishi bo'ling ⚠️",
+          icon: 'multiple'
+        };
+      }
+      return {
+        title: "Kamera markaziga qarang",
+        desc: "Yuzingizni oval ramkaga to'g'rilang — tizim avtomatik tekshirib imtihonga kiritadi",
+        type: 'neutral',
+        pill: "Kameraga qarang 👤",
+        icon: 'neutral'
+      };
+    }
+
     if (isScanning) {
       return {
-        title: mode === 'VERIFY' ? `Shaxs tekshirilmoqda: ${scanProgress}%` : `Biometrik yuz o'qilmoqda: ${scanProgress}%`,
+        title: `Biometrik yuz o'qilmoqda: ${scanProgress}%`,
         desc: "Iltimos, harakatsiz to'g'riga qarab turing...",
         type: 'scanning',
         pill: `Skanerlanmoqda: ${scanProgress}%`,
@@ -175,6 +230,21 @@ function FaceRegistrationModal({
   const stableFramesRef = useRef(0);
   const isDetectingRef = useRef(false);
 
+  const modeRef = useRef(mode);
+  const adminApprovedPhotoRef = useRef(adminApprovedPhoto);
+  const adminApprovedDescriptorRef = useRef(adminApprovedDescriptor);
+  const verifyStatusRef = useRef('idle');
+  const onVerifySuccessRef = useRef(onVerifySuccess);
+  const onConfirmRef = useRef(onConfirm);
+
+  useEffect(() => {
+    modeRef.current = mode;
+    adminApprovedPhotoRef.current = adminApprovedPhoto;
+    adminApprovedDescriptorRef.current = adminApprovedDescriptor;
+    onVerifySuccessRef.current = onVerifySuccess;
+    onConfirmRef.current = onConfirm;
+  }, [mode, adminApprovedPhoto, adminApprovedDescriptor, onVerifySuccess, onConfirm]);
+
   // Stop camera stream
   const stopStream = () => {
     if (detectIntervalRef.current) {
@@ -223,6 +293,7 @@ function FaceRegistrationModal({
     setScanProgress(0);
     setIsCompleted(false);
     setScanPrompt("Yuzingizni ramka markaziga to'g'rilang");
+    verifyStatusRef.current = 'idle';
     setVerifyStatus('idle');
     setVerifyMessage('');
     setVerifyConfidence(null);
@@ -291,53 +362,53 @@ function FaceRegistrationModal({
       if (!videoRef.current || videoRef.current.readyState < 2 || hasSubmittedRef.current || isDetectingRef.current) return;
       isDetectingRef.current = true;
       try {
-        const res = await detectFaceInVideo(videoRef.current);
+        const res = await detectFaceInVideo(videoRef.current, { isVerifying: modeRef.current === 'VERIFY' });
         setDetection(res);
 
         if (res.detected && res.quality === 'good') {
           stableFramesRef.current += 1;
 
-          // Anti-spoofing Blink Check (ko'z pirpiratish tekshiruvi)
-          if (!livenessVerifiedRef.current) {
-            setLivenessStage(prev => (prev === 'passed' ? 'passed' : 'blink'));
-
-            if (res.isEyesClosed) {
-              sawClosedEyesRef.current = true;
-            } else if (sawClosedEyesRef.current && !res.isEyesClosed && res.ear >= 0.22) {
-              // Ko'z bir marta yumilib ochildi — haqiqiy jonli inson!
-              sawClosedEyesRef.current = false;
-              livenessVerifiedRef.current = true;
-              setLivenessVerified(true);
-              setLivenessStage('passed');
-              setScanPrompt("Jonli inson tasdiqlandi ✓ Qimirlamang...");
+          // 1. VERIFY REJIMI (AVTOMATIK TEKSHIRISH VA TASDIQLANSA KIRISH)
+          if (modeRef.current === 'VERIFY') {
+            if (
+              !isScanningRef.current &&
+              !hasSubmittedRef.current &&
+              verifyStatusRef.current === 'idle' &&
+              stableFramesRef.current >= 1
+            ) {
+              handleVerifyFace();
             }
-          }
+          } else {
+            // 2. ENROLL REJIMI
+            if (!livenessVerifiedRef.current) {
+              setLivenessStage(prev => (prev === 'passed' ? 'passed' : 'blink'));
 
-          // 1. ENROLL REJIMI: Liveness o'tgach yoki barqaror yuz bilan skanerlash
-          if (
-            mode === 'ENROLL' && 
-            !isScanningRef.current && 
-            !hasSubmittedRef.current && 
-            (livenessVerifiedRef.current || stableFramesRef.current >= 6)
-          ) {
-            triggerAutoScan();
-          }
+              if (res.isEyesClosed) {
+                sawClosedEyesRef.current = true;
+              } else if (sawClosedEyesRef.current && !res.isEyesClosed && res.ear >= 0.22) {
+                // Ko'z bir marta yumilib ochildi — haqiqiy jonli inson!
+                sawClosedEyesRef.current = false;
+                livenessVerifiedRef.current = true;
+                setLivenessVerified(true);
+                setLivenessStage('passed');
+                setScanPrompt("Jonli inson tasdiqlandi ✓ Qimirlamang...");
+              }
+            }
 
-          // 2. VERIFY REJIMI: Qayta kirishda yuz barqaror bo'lsa
-          if (
-            mode === 'VERIFY' &&
-            !isScanningRef.current &&
-            verifyStatus === 'idle' &&
-            (livenessVerifiedRef.current || stableFramesRef.current >= 4)
-          ) {
-            handleVerifyFace();
+            if (
+              !isScanningRef.current && 
+              !hasSubmittedRef.current && 
+              (livenessVerifiedRef.current || stableFramesRef.current >= 6)
+            ) {
+              triggerAutoScan();
+            }
           }
         } else {
           stableFramesRef.current = 0;
           if (!livenessVerifiedRef.current) {
             setLivenessStage('align');
           }
-          if (isScanningRef.current && !hasSubmittedRef.current && mode === 'ENROLL') {
+          if (isScanningRef.current && !hasSubmittedRef.current && modeRef.current === 'ENROLL') {
             cancelScan(res.message);
           }
         }
@@ -491,19 +562,17 @@ function FaceRegistrationModal({
 
   // --- FACE UNLOCK (VERIFY AGAINST ADMIN-APPROVED FACE OR DESCRIPTOR USING AI) ---
   const handleVerifyFace = async () => {
-    if (isScanningRef.current || cameraStatus !== 'active') return;
-
-    if (!detection.detected || detection.quality !== 'good') {
-      return;
-    }
+    if (isScanningRef.current || hasSubmittedRef.current) return;
+    if (verifyStatusRef.current === 'verifying' || verifyStatusRef.current === 'success') return;
 
     isScanningRef.current = true;
+    verifyStatusRef.current = 'verifying';
     setVerifyStatus('verifying');
-    setVerifyMessage("AI neyron tarmog'i shaxsingiz va yuzingizni tekshirmoqda...");
+    setVerifyMessage("AI neyron tarmog'i shaxsingizni tekshirmoqda...");
     setIsScanning(true);
-    setScanProgress(20);
+    setScanProgress(25);
 
-    let progress = 20;
+    let progress = 25;
     const progressTimer = setInterval(() => {
       progress += 15;
       setScanProgress(Math.min(90, progress));
@@ -516,53 +585,59 @@ function FaceRegistrationModal({
       if (!livePhoto) {
         isScanningRef.current = false;
         setIsScanning(false);
+        verifyStatusRef.current = 'failed';
         setVerifyStatus('failed');
         setVerifyMessage("Kameradan tasvir olinmadi. Yuzingizni ramkaga to'g'rilang.");
         setScanProgress(0);
         return;
       }
 
-      if (!adminApprovedDescriptor && !adminApprovedPhoto) {
+      const approvedTarget = adminApprovedDescriptorRef.current || adminApprovedPhotoRef.current;
+      if (!approvedTarget) {
         isScanningRef.current = false;
         setIsScanning(false);
+        verifyStatusRef.current = 'failed';
         setVerifyStatus('failed');
-        setVerifyMessage("Ushbu email uchun admin tasdiqlagan fotosurat yoki biometrik ma'lumot topilmadi!");
+        setVerifyMessage("Admin tasdiqlagan fotosurat yoki biometrik ma'lumot topilmadi!");
         setScanProgress(0);
         return;
       }
 
       try {
-        // Tezkor biometrik solishtirish: agar bazada vektor bo'lsa, rasmni qayta ochish shart emas!
-        const approvedTarget = adminApprovedDescriptor || adminApprovedPhoto;
-        const result = await compareFaces(approvedTarget, livePhoto, 58);
+        // Tezkor biometrik solishtirish: bazadagi 128-vektor yoki rasm bilan
+        const result = await compareFaces(approvedTarget, livePhoto, 52);
         setVerifyConfidence(result.confidence);
         setIsScanning(false);
 
         if (result.match) {
+          hasSubmittedRef.current = true;
+          verifyStatusRef.current = 'success';
           setScanProgress(100);
           setVerifyStatus('success');
-          setVerifyMessage(`Yuz va Email tasdiqlandi! (Moslik: ${result.confidence}%). Xush kelibsiz!`);
+          setVerifyMessage(`Shaxs tasdiqlandi! (Moslik: ${result.confidence}%). Imtihonga kirilmoqda... ✓`);
 
           setTimeout(() => {
             stopStream();
-            if (onVerifySuccess) {
-              onVerifySuccess(livePhoto);
+            if (onVerifySuccessRef.current) {
+              onVerifySuccessRef.current(livePhoto);
             }
-          }, 900);
+          }, 500);
         } else {
           isScanningRef.current = false;
+          verifyStatusRef.current = 'failed';
           setScanProgress(0);
           setVerifyStatus('failed');
-          const errMsg = `Yuz mos kelmadi! (Moslik: ${result.confidence}%). Siz ushbu email (${registration.email}) egasi emassiz. Kirish taqiqlanadi!`;
+          const errMsg = `Yuz mos kelmadi! (Moslik: ${result.confidence}%). Siz tasdiqlangan nomzod emassiz.`;
           setVerifyMessage(errMsg);
         }
       } catch (e) {
         isScanningRef.current = false;
         setIsScanning(false);
+        verifyStatusRef.current = 'failed';
         setVerifyStatus('failed');
-        setVerifyMessage("Taqqoslashda xatolik yuz berdi: " + e.message);
+        setVerifyMessage("Taqqoslashda xatolik yuz berdi: " + (e.message || "Noma'lum xato"));
       }
-    }, 600);
+    }, 450);
   };
 
 
@@ -570,6 +645,7 @@ function FaceRegistrationModal({
     isScanningRef.current = false;
     hasSubmittedRef.current = false;
     stableFramesRef.current = 0;
+    verifyStatusRef.current = 'idle';
     setVerifyStatus('idle');
     setVerifyMessage('');
     setVerifyConfidence(null);
@@ -1011,21 +1087,30 @@ function FaceRegistrationModal({
                         Tasdiqlandi! Imtihonga kirilmoqda...
                       </div>
                     ) : (
-                      <button
-                        type="button"
-                        onClick={handleVerifyFace}
-                        disabled={!detection.detected || detection.quality !== 'good'}
-                        className={`w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-bold tracking-wide shadow-md transition-all flex items-center justify-center gap-2 ${
-                          !detection.detected || detection.quality !== 'good'
-                            ? 'bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300'
-                            : 'bg-gradient-to-r from-[#1a446b] to-emerald-600 hover:from-[#153655] hover:to-emerald-500 text-white active:scale-95 shadow-lg'
-                        }`}
-                      >
-                        <svg className="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                        </svg>
-                        Shaxsni Tekshirish va Kirish
-                      </button>
+                      <div className="flex flex-col gap-2.5">
+                        <div className="w-full py-2.5 px-3 rounded-xl text-xs font-semibold text-center bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center justify-center gap-2 shadow-sm">
+                          <span className="relative flex h-2.5 w-2.5">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                          </span>
+                          Avtomatik tekshirish faol: Yuzingizni kameraga qaratib turing
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleVerifyFace}
+                          disabled={!detection.detected || detection.quality !== 'good'}
+                          className={`w-full py-3 px-4 rounded-xl text-xs sm:text-sm font-bold tracking-wide shadow-md transition-all flex items-center justify-center gap-2 ${
+                            !detection.detected || detection.quality !== 'good'
+                              ? 'bg-slate-200 text-slate-400 cursor-not-allowed border border-slate-300'
+                              : 'bg-gradient-to-r from-[#1a446b] to-emerald-600 hover:from-[#153655] hover:to-emerald-500 text-white active:scale-95 shadow-lg'
+                          }`}
+                        >
+                          <svg className="w-4 h-4 text-blue-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                          </svg>
+                          Shaxsni Tekshirish va Kirish
+                        </button>
+                      </div>
                     )}
                   </div>
                 )}

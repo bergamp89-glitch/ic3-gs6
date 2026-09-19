@@ -52,7 +52,7 @@ export async function loadFaceModels() {
  *   box: object | null
  * }>}
  */
-export async function detectFaceInVideo(video, { isProctoring = false } = {}) {
+export async function detectFaceInVideo(video, { isProctoring = false, isVerifying = false } = {}) {
   if (!video || video.readyState < 2 || !video.videoWidth || !video.videoHeight) {
     return {
       detected: false,
@@ -79,7 +79,7 @@ export async function detectFaceInVideo(video, { isProctoring = false } = {}) {
   try {
     const detectorOptions = new faceapi.TinyFaceDetectorOptions({
       inputSize: 320,
-      scoreThreshold: 0.45
+      scoreThreshold: (isVerifying || isProctoring) ? 0.30 : 0.38
     });
 
     const detections = await faceapi
@@ -90,7 +90,7 @@ export async function detectFaceInVideo(video, { isProctoring = false } = {}) {
       return {
         detected: false,
         quality: 'low',
-        message: isProctoring ? "Yuz aniqlanmadi" : "Kamera markaziga qarang",
+        message: isProctoring ? "Yuz aniqlanmadi" : isVerifying ? "Kameraga qarang" : "Kamera markaziga qarang",
         box: null
       };
     }
@@ -119,6 +119,44 @@ export async function detectFaceInVideo(video, { isProctoring = false } = {}) {
         detected: true,
         quality: 'good',
         message: "Nazorat ostida ✓",
+        ear: 0.3,
+        isEyesClosed: false,
+        box: {
+          x: Math.round(box.x),
+          y: Math.round(box.y),
+          width: Math.round(box.width),
+          height: Math.round(box.height),
+          videoWidth: vW,
+          videoHeight: vH
+        }
+      };
+    }
+
+    // --- VERIFY REJIMI (SHAXSNI TEZKOR AVTOMATIK TEKSHIRUV) ---
+    // Qayta kirishda yuz kadrda bo'lsa kifoya. Haqiqiy identifikatsiya 128-vektor orqali amalga oshiriladi.
+    if (isVerifying) {
+      const faceWidthRatio = box.width / vW;
+      if (faceWidthRatio < 0.10) {
+        return {
+          detected: false,
+          quality: 'too-far',
+          message: "Kameraga biroz yaqinroq keling",
+          box: null
+        };
+      }
+      if (faceWidthRatio > 0.90) {
+        return {
+          detected: false,
+          quality: 'too-close',
+          message: "Kameradan biroz uzoqlashing",
+          box: null
+        };
+      }
+
+      return {
+        detected: true,
+        quality: 'good',
+        message: "Yuz aniqlandi ✓",
         ear: 0.3,
         isEyesClosed: false,
         box: {
