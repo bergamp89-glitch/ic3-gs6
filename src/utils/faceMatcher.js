@@ -60,10 +60,16 @@ function toFloat32Array(val) {
   if (!val) return null;
   if (val instanceof Float32Array) return val;
   if (Array.isArray(val)) return new Float32Array(val);
-  if (typeof val === 'string' && val.startsWith('[') && val.endsWith(']')) {
+  if (typeof val === 'string' && val.trim().startsWith('[') && val.trim().endsWith(']')) {
     try {
       const arr = JSON.parse(val);
       if (Array.isArray(arr)) return new Float32Array(arr);
+    } catch (e) {}
+  }
+  if (typeof val === 'object' && val !== null) {
+    try {
+      const values = Object.values(val);
+      if (values.length >= 128) return new Float32Array(values);
     } catch (e) {}
   }
   return null;
@@ -71,8 +77,8 @@ function toFloat32Array(val) {
 
 /**
  * Asosiy Biometrik Taqqoslash Funksiyasi (AI Face Comparison)
- * @param {string|Array|Float32Array} approvedPhotoOrDescriptor Admin tasdiqlagan rasm (Base64) yoki 128-vektor
- * @param {string|Array|Float32Array} livePhotoOrDescriptor Kameradan olingan rasm (Base64) yoki 128-vektor
+ * @param {string|Array|Float32Array|object} approvedPhotoOrDescriptor Admin tasdiqlagan rasm (Base64) yoki 128-vektor
+ * @param {string|Array|Float32Array|object} livePhotoOrDescriptor Kameradan olingan rasm (Base64) yoki 128-vektor
  * @param {number} threshold Qabul qilish chegarasi (default: 58%)
  * @returns {Promise<{ match: boolean, confidence: number, distance: number, error?: string }>}
  */
@@ -118,13 +124,21 @@ export async function compareFaces(approvedPhotoOrDescriptor, livePhotoOrDescrip
     }
 
     // 128-o'lchamli vektorlar orasidagi Evklid masofasi
-    // distance < 0.58 -> bitta shaxs (Match)
+    // Standart face-api benchmark: masofa <= 0.58 bo'lsa bitta shaxs (Match)
     const distance = faceapi.euclideanDistance(descApproved, descLive);
 
-    // Masofani 0-100% ishonchlilik foiziga aylantirish:
-    let confidence = Math.round(Math.max(0, Math.min(100, (1 - (distance / 0.78)) * 100)));
+    // Masofani 0-100% ishonchlilik foiziga to'g'ri ilmiy shkala bo'yicha aylantirish:
+    // distance = 0.0 -> 100%
+    // distance = 0.30 -> ~79%
+    // distance = 0.58 (mezon chegarasi) -> 60%
+    // distance > 0.58 -> 60% dan past (Mos emas)
+    let confidence = 0;
+    if (distance <= 0.58) {
+      confidence = Math.round(100 - (distance / 0.58) * 40);
+    } else {
+      confidence = Math.round(Math.max(0, 60 - ((distance - 0.58) / 0.42) * 60));
+    }
 
-    // Standart face-api benchmark: masofa 0.58 dan kichik bo'lsa bitta shaxs
     const isMatch = distance <= 0.58 && confidence >= threshold;
 
     return {

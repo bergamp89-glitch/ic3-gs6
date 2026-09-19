@@ -1,6 +1,10 @@
 import React from 'react';
 
 function QuestionSimulatedUI({ currentQ, isEvaluated, toggleOption }) {
+  const options = currentQ?.options || [];
+  const userAnswers = Array.isArray(currentQ?.userAnswers) ? currentQ.userAnswers : [];
+  const correctAnswers = Array.isArray(currentQ?.correctAnswers) ? currentQ.correctAnswers : [];
+
   return (
     <div className="border border-gray-300 rounded-lg shadow-xl overflow-hidden bg-white mt-4 flex flex-col relative max-w-full">
        {/* Browser Header */}
@@ -24,9 +28,9 @@ function QuestionSimulatedUI({ currentQ, isEvaluated, toggleOption }) {
           </div>
           
           <div className="flex flex-wrap gap-4 justify-center">
-            {currentQ.options.map(opt => {
-              const isSelected = currentQ.userAnswers.includes(opt.id);
-              const isCorrectAnswer = currentQ.correctAnswers.includes(opt.id);
+            {options.map(opt => {
+              const isSelected = userAnswers.includes(opt.id);
+              const isCorrectAnswer = correctAnswers.includes(opt.id);
               
               const mainText = opt.text.split('(')[0].trim();
               const subText = opt.text.includes('(') ? opt.text.substring(opt.text.indexOf('(') + 1, opt.text.lastIndexOf(')')) : '';

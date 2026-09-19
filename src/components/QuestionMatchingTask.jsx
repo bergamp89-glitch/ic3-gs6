@@ -10,6 +10,12 @@ function QuestionMatchingTask({
   handleDrop, 
   handleClearTarget 
 }) {
+  const sourceItems = currentQ?.sourceItems || [];
+  const targetAreas = currentQ?.targetAreas || [];
+  const userAnswers = (currentQ?.userAnswers && typeof currentQ.userAnswers === 'object' && !Array.isArray(currentQ.userAnswers))
+    ? currentQ.userAnswers
+    : {};
+
   return (
     <div className="flex flex-col gap-3 mt-2 h-full">
       <div className="bg-[#f0f4f8] text-[#1a446b] text-xs font-semibold px-4 py-2 rounded-sm border border-[#1a446b]/20 flex items-center justify-between">
@@ -24,9 +30,9 @@ function QuestionMatchingTask({
         <div className="flex-1 border border-gray-200 rounded-sm p-3.5 sm:p-4 flex flex-col bg-white shadow-sm">
           <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2.5">Source Items</div>
           <div className="space-y-2.5 flex-1 overflow-y-auto pr-1">
-            {currentQ.sourceItems.map(src => {
-               const placedTargetId = Object.keys(currentQ.userAnswers).find(tId => currentQ.userAnswers[tId] === src.id);
-               const placedTarget = placedTargetId ? currentQ.targetAreas.find(t => t.id === placedTargetId) : null;
+            {sourceItems.map(src => {
+               const placedTargetId = Object.keys(userAnswers).find(tId => userAnswers[tId] === src.id);
+               const placedTarget = placedTargetId ? targetAreas.find(t => t.id === placedTargetId) : null;
                
                return (
                  <div 
@@ -53,9 +59,9 @@ function QuestionMatchingTask({
         <div className="flex-1 border border-gray-200 rounded-sm p-3.5 sm:p-4 flex flex-col bg-white shadow-sm">
           <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2.5">Target Areas</div>
           <div className="space-y-2.5 flex-1 overflow-y-auto pr-1">
-            {currentQ.targetAreas.map(tgt => {
-               const placedSourceId = currentQ.userAnswers[tgt.id];
-               const placedSource = placedSourceId ? currentQ.sourceItems.find(s => s.id === placedSourceId) : null;
+            {targetAreas.map(tgt => {
+               const placedSourceId = userAnswers[tgt.id];
+               const placedSource = placedSourceId ? sourceItems.find(s => s.id === placedSourceId) : null;
                
                const isCorrectAnswer = isEvaluated && placedSourceId === tgt.correctAnswer;
                const isWrongAnswer = isEvaluated && placedSourceId && placedSourceId !== tgt.correctAnswer;
@@ -112,7 +118,7 @@ function QuestionMatchingTask({
                      {isEvaluated && isWrongAnswer && (
                        <div className="text-[11px] font-bold text-[#e11d48] uppercase tracking-widest mt-2 flex items-center gap-1">
                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
-                         Incorrect (Correct is: {currentQ.sourceItems.find(s => s.id === tgt.correctAnswer)?.text})
+                         Incorrect (Correct is: {sourceItems.find(s => s.id === tgt.correctAnswer)?.text || tgt.correctAnswer})
                        </div>
                      )}
                    </div>

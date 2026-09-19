@@ -20,6 +20,9 @@ export default function AntiScreenCaptureShield({ registration = {}, sessionId }
   const deactivateShield = () => {
     setIsShieldActive(false);
     setShieldReason('');
+    try {
+      document.body.style.filter = 'none';
+    } catch (e) {}
   };
 
   useEffect(() => {
@@ -84,7 +87,19 @@ export default function AntiScreenCaptureShield({ registration = {}, sessionId }
 
     // 3. Oyna fokusini yo'qotishi (Snipping Tool ochilganda yoki boshqa ilovaga o'tilganda)
     const handleWindowBlur = () => {
-      activateShield("Brauzer fokusdan chiqdi (Boshqa ilova yoki skrinshot vositasi ochildi)");
+      if (triggerTimeoutRef.current) clearTimeout(triggerTimeoutRef.current);
+      triggerTimeoutRef.current = setTimeout(() => {
+        if (!document.hasFocus()) {
+          activateShield("Brauzer fokusdan chiqdi (Boshqa ilova yoki skrinshot vositasi ochildi)");
+        }
+      }, 350);
+    };
+
+    const handleWindowFocus = () => {
+      if (triggerTimeoutRef.current) {
+        clearTimeout(triggerTimeoutRef.current);
+        triggerTimeoutRef.current = null;
+      }
     };
 
     const handleVisibilityChange = () => {
@@ -93,38 +108,18 @@ export default function AntiScreenCaptureShield({ registration = {}, sessionId }
       }
     };
 
-    // 4. Sichqoncha ekrandan chiqib ketganda (Masalan, Snipping Tool yoki ikkinchi monitorga o'tganda)
-    const handleMouseLeave = (e) => {
-      if (e.clientY <= 0 || e.clientX <= 0 || (e.clientX >= window.innerWidth || e.clientY >= window.innerHeight)) {
-        // Sichqoncha brauzer chetidan chiqdi
-        if (triggerTimeoutRef.current) clearTimeout(triggerTimeoutRef.current);
-        triggerTimeoutRef.current = setTimeout(() => {
-          activateShield("Kursor brauzer oynasidan tashqariga chiqdi");
-        }, 150);
-      }
-    };
-
-    const handleMouseEnter = () => {
-      if (triggerTimeoutRef.current) {
-        clearTimeout(triggerTimeoutRef.current);
-        triggerTimeoutRef.current = null;
-      }
-    };
-
     window.addEventListener('keydown', handleKeyDown, true);
     window.addEventListener('keyup', handleKeyUp, true);
     window.addEventListener('blur', handleWindowBlur);
+    window.addEventListener('focus', handleWindowFocus);
     document.addEventListener('visibilitychange', handleVisibilityChange);
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown, true);
       window.removeEventListener('keyup', handleKeyUp, true);
       window.removeEventListener('blur', handleWindowBlur);
+      window.removeEventListener('focus', handleWindowFocus);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
-      document.removeEventListener('mouseleave', handleMouseLeave);
-      document.removeEventListener('mouseenter', handleMouseEnter);
       if (triggerTimeoutRef.current) clearTimeout(triggerTimeoutRef.current);
 
       if (originalGetDisplayMedia && navigator.mediaDevices) {

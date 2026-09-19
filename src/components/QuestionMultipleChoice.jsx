@@ -1,11 +1,15 @@
 import React from 'react';
 
 function QuestionMultipleChoice({ currentQ, isEvaluated, toggleOption }) {
+  const options = currentQ?.options || [];
+  const userAnswers = Array.isArray(currentQ?.userAnswers) ? currentQ.userAnswers : [];
+  const correctAnswers = Array.isArray(currentQ?.correctAnswers) ? currentQ.correctAnswers : [];
+
   return (
     <>
-      {currentQ.options.map((opt, optIdx) => {
-        const isSelected = currentQ.userAnswers.includes(opt.id);
-        const isCorrectAnswer = currentQ.correctAnswers.includes(opt.id);
+      {options.map((opt, optIdx) => {
+        const isSelected = userAnswers.includes(opt.id);
+        const isCorrectAnswer = correctAnswers.includes(opt.id);
         
         let boxClass = 'border-gray-200 bg-white hover:border-[#1a446b]/50 hover:bg-gray-50';
         let letterClass = 'border-gray-300 text-gray-500 bg-white';

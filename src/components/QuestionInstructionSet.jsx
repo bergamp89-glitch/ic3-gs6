@@ -1,12 +1,18 @@
 import React from 'react';
 
 function QuestionInstructionSet({ currentQ, isEvaluated, openDropdownId, setOpenDropdownId, handleSelectAnswer }) {
+  const statements = currentQ?.statements || [];
+  const userAnswers = (currentQ?.userAnswers && typeof currentQ.userAnswers === 'object' && !Array.isArray(currentQ.userAnswers))
+    ? currentQ.userAnswers
+    : {};
+
   return (
     <>
-      {currentQ.statements.map((stmt, idx) => {
-        const selectedVal = currentQ.userAnswers[stmt.id];
+      {statements.map((stmt, idx) => {
+        const selectedVal = userAnswers[stmt.id];
         const isCorrectAnswer = selectedVal === stmt.correctAnswer;
         const isOpen = openDropdownId === stmt.id;
+        const stmtOptions = stmt.options || [];
         
         let boxBorder = 'border-gray-200';
         if (isEvaluated) {
@@ -34,7 +40,7 @@ function QuestionInstructionSet({ currentQ, isEvaluated, openDropdownId, setOpen
                 
                 {isOpen && !isEvaluated && (
                   <div className="absolute top-full left-0 w-full mt-2 bg-white border border-gray-200 rounded-md shadow-xl z-10 overflow-hidden transform origin-top transition-all">
-                    {stmt.options.map(opt => (
+                    {stmtOptions.map(opt => (
                       <div 
                         key={opt}
                         onClick={() => handleSelectAnswer(stmt.id, opt)} 

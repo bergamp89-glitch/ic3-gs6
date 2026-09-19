@@ -52,7 +52,7 @@ export async function loadFaceModels() {
  *   box: object | null
  * }>}
  */
-export async function detectFaceInVideo(video) {
+export async function detectFaceInVideo(video, { isProctoring = false } = {}) {
   if (!video || video.readyState < 2 || !video.videoWidth || !video.videoHeight) {
     return {
       detected: false,
@@ -79,7 +79,7 @@ export async function detectFaceInVideo(video) {
   try {
     const detectorOptions = new faceapi.TinyFaceDetectorOptions({
       inputSize: 320,
-      scoreThreshold: 0.5
+      scoreThreshold: 0.45
     });
 
     const detections = await faceapi
@@ -90,7 +90,7 @@ export async function detectFaceInVideo(video) {
       return {
         detected: false,
         quality: 'low',
-        message: "Kamera markaziga qarang",
+        message: isProctoring ? "Yuz aniqlanmadi" : "Kamera markaziga qarang",
         box: null
       };
     }
@@ -99,7 +99,7 @@ export async function detectFaceInVideo(video) {
       return {
         detected: false,
         quality: 'multiple',
-        message: "Kadrda faqat 1 kishi bo'lishi shart!",
+        message: isProctoring ? "Begona shaxs aniqlandi!" : "Kadrda faqat 1 kishi bo'lishi shart!",
         box: null
       };
     }
@@ -110,6 +110,27 @@ export async function detectFaceInVideo(video) {
 
     const vW = video.videoWidth;
     const vH = video.videoHeight;
+
+    // --- PROCTORING REJIMI ---
+    // Imtihon vaqtida talaba savol o'qiganda boshini tabiiy burishi yoki pastga qarashi mumkin.
+    // Shu sababli kadrda 1 ta inson yuzi mavjud bo'lsa, barqaror "good" deb qabul qilinadi.
+    if (isProctoring) {
+      return {
+        detected: true,
+        quality: 'good',
+        message: "Nazorat ostida ✓",
+        ear: 0.3,
+        isEyesClosed: false,
+        box: {
+          x: Math.round(box.x),
+          y: Math.round(box.y),
+          width: Math.round(box.width),
+          height: Math.round(box.height),
+          videoWidth: vW,
+          videoHeight: vH
+        }
+      };
+    }
 
     // --- 1. OVAL APERTURA CHЕGARALARINI HISOBLASH (UI dagi 270x340 nisbati) ---
     // UI da video `object-cover` bilan 270 / 340 (0.794) nisbatda ko'rsatiladi

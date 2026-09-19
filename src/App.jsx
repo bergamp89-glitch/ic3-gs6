@@ -16,17 +16,33 @@ import { examQuestions as q2 } from './2-level.js';
 import { examQuestions as q3 } from './3-level.js';
 
 
+const getInitialSession = () => {
+  try {
+    const saved = localStorage.getItem('ic3_session');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed.appState && parsed.appState !== 'HOME' && parsed.appState !== 'ADMIN') {
+        return parsed;
+      }
+    }
+  } catch (e) {
+    console.error("Session restore failed:", e);
+  }
+  return null;
+};
+
 function App() {
-  const [sessionId, setSessionId] = useState(null);
-  const [questions, setQuestions] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const initialSession = getInitialSession();
+  const [sessionId, setSessionId] = useState(initialSession?.sessionId || null);
+  const [questions, setQuestions] = useState(initialSession?.questions || []);
+  const [currentIndex, setCurrentIndex] = useState(initialSession?.currentIndex ?? 0);
   const [activeTab, setActiveTab] = useState('INSTRUCTIONS'); 
   const [openDropdownId, setOpenDropdownId] = useState(null); 
-  const [appState, setAppState] = useState('HOME'); // 'HOME', 'WAITING', 'ADMIN', 'EXAM', 'RESULT'
-  const [registration, setRegistration] = useState({ firstName: '', lastName: '', birthDate: '', email: '', level: '' });
+  const [appState, setAppState] = useState(initialSession?.appState || 'HOME'); // 'HOME', 'WAITING', 'ADMIN', 'EXAM', 'RESULT'
+  const [registration, setRegistration] = useState(initialSession?.registration || { firstName: '', lastName: '', birthDate: '', email: '', level: '' });
   
   const [registrationErrors, setRegistrationErrors] = useState({ firstName: false, lastName: false, birthDate: false, email: false, level: false });
-  const [requestId, setRequestId] = useState(null);
+  const [requestId, setRequestId] = useState(initialSession?.requestId || null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showFaceModal, setShowFaceModal] = useState(false);
   const [modalMode, setModalMode] = useState('ENROLL'); // 'ENROLL' | 'VERIFY'
@@ -49,26 +65,6 @@ function App() {
       } catch (e) {}
     }
   }, [currentIndex]);
-
-  // Restore local session on initial mount
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem('ic3_session');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.appState && parsed.appState !== 'HOME' && parsed.appState !== 'ADMIN') {
-          setAppState(parsed.appState);
-          if (parsed.sessionId) setSessionId(parsed.sessionId);
-          if (parsed.requestId) setRequestId(parsed.requestId);
-          if (parsed.questions && parsed.questions.length > 0) setQuestions(parsed.questions);
-          if (parsed.currentIndex !== undefined) setCurrentIndex(parsed.currentIndex);
-          if (parsed.registration) setRegistration(parsed.registration);
-        }
-      }
-    } catch (e) {
-      console.error("Session restore failed:", e);
-    }
-  }, []);
 
   // Save session to localStorage on active state change
   useEffect(() => {
@@ -181,15 +177,19 @@ function App() {
 
   useEffect(() => {
     if (sessionId && appState !== 'HOME' && appState !== 'ADMIN') {
-      const updateSession = async () => {
-        await supabase.from('exam_sessions').update({
-          questions,
-          current_index: currentIndex,
-          app_state: appState,
-          registration
-        }).eq('id', sessionId);
-      };
-      updateSession();
+      const timer = setTimeout(async () => {
+        try {
+          await supabase.from('exam_sessions').update({
+            questions,
+            current_index: currentIndex,
+            app_state: appState,
+            registration
+          }).eq('id', sessionId);
+        } catch (e) {
+          console.error("Session sync error:", e);
+        }
+      }, 800);
+      return () => clearTimeout(timer);
     }
   }, [questions, currentIndex, appState, registration, sessionId]);
 
@@ -383,6 +383,8 @@ function App() {
         newAnswers.push(optId);
       } else if (requiredCount === 1) {
         newAnswers = [optId];
+      } else {
+        newAnswers = [...newAnswers.slice(1), optId];
       }
     }
     
@@ -596,7 +598,23 @@ function App() {
     setCurrentIndex(0);
     setSessionId(null);
     setRequestId(null);
+    setRegistration({ firstName: '', lastName: '', birthDate: '', email: '', level: '' });
     setAppState('HOME');
+  };
+
+  const handleGoHome = () => {
+    if (appState === 'EXAM') {
+      const confirmExit = window.confirm("Imtihon davom etmoqda. Rostdan ham bosh sahifaga qaytmoqchimisiz?");
+      if (!confirmExit) return;
+    }
+    handleRestartExam();
+  };
+
+  const handleConfirmRestart = () => {
+    const confirmRestart = window.confirm("Rostdan ham imtihonni qaytadan boshlamoqchimisiz? Barcha javoblaringiz o'chiriladi.");
+    if (confirmRestart) {
+      handleRestartExam();
+    }
   };
 
   const handleStartExam = async () => {
@@ -640,19 +658,12 @@ function App() {
           .order('created_at', { ascending: false });
 
         if (!error && data && data.length > 0) {
-          // 1. Check if user has an APPROVED record
-          const approved = data.find(r => r.status === 'approved');
+          // 1. Check if user has an APPROVED record for this specific level
+          const approved = data.find(r => r.status === 'approved' && r.level === selectedLevel);
           if (approved) {
-            // STRICT VALIDATION OF ALL 5 APPROVED CREDENTIALS:
+            // STRICT VALIDATION OF APPROVED CREDENTIALS:
 
-            // A) Level tekshiruvi:
-            if (approved.level !== selectedLevel) {
-              alert(`Xatolik: Sizga admin tomonidan faqat "${approved.level}" darajasi uchun ruxsat berilgan! Siz tanlagan daraja: "${selectedLevel}".`);
-              setIsSubmitting(false);
-              return;
-            }
-
-            // B) Ism tekshiruvi (firstName):
+            // A) Ism tekshiruvi (firstName):
             const approvedFirst = (approved.firstName || '').trim().toLowerCase();
             if (trimmedFirstName.toLowerCase() !== approvedFirst) {
               alert(`Xatolik: Kiritilgan ism ("${trimmedFirstName}") admin tasdiqlagan ism ("${approved.firstName}") bilan bir xil bo'lishi shart!`);
@@ -660,7 +671,7 @@ function App() {
               return;
             }
 
-            // C) Familiya tekshiruvi (lastName):
+            // B) Familiya tekshiruvi (lastName):
             const approvedLast = (approved.lastName || '').trim().toLowerCase();
             if (trimmedLastName.toLowerCase() !== approvedLast) {
               alert(`Xatolik: Kiritilgan familiya ("${trimmedLastName}") admin tasdiqlagan familiya ("${approved.lastName}") bilan bir xil bo'lishi shart!`);
@@ -674,8 +685,7 @@ function App() {
               return;
             }
 
-            // D) Email va Level tasdiqlangan bilan 100% mos!
-            // E) 5-shart: YUZ (FACE ID) TEKSHIRUVI:
+            // C) YUZ (FACE ID) TEKSHIRUVI:
             setRegistration({
               firstName: approved.firstName,
               lastName: approved.lastName,
@@ -693,12 +703,12 @@ function App() {
             return;
           }
 
-          // 2. Check if user is PENDING admin approval
-          const pending = data.find(r => r.status === 'pending');
+          // 2. Check if user is PENDING admin approval for this specific level
+          const pending = data.find(r => r.status === 'pending' && r.level === selectedLevel);
           if (pending) {
             setRequestId(pending.id);
             setIsSubmitting(false);
-            alert(`Sizning ro'yxatdan o'tish so'rovingiz (${pending.firstName} ${pending.lastName}, ${pending.level}) yuborilgan, ammo admin tomonidan hali tasdiqlanmagan. Iltimos, admin tasdiqlashini kuting.`);
+            alert(`Sizning "${selectedLevel}" darajasi uchun ro'yxatdan o'tish so'rovingiz (${pending.firstName} ${pending.lastName}) yuborilgan, ammo admin tomonidan hali tasdiqlanmagan. Iltimos, admin tasdiqlashini kuting.`);
             setAppState('WAITING');
             return;
           }
@@ -749,15 +759,18 @@ function App() {
         .from('exam_sessions')
         .select('*')
         .ilike('email', trimmedEmail)
-        .eq('registration->>level', selectedLevel)
-        .order('updated_at', { ascending: false })
-        .limit(1);
+        .order('updated_at', { ascending: false });
         
-      if (sessionData && sessionData.length > 0 && sessionData[0].app_state !== 'RESULT') {
-        setSessionId(sessionData[0].id);
-        setQuestions(sessionData[0].questions || []);
-        setCurrentIndex(sessionData[0].current_index || 0);
-        setAppState(sessionData[0].app_state || 'EXAM');
+      const activeSession = sessionData?.find(s => {
+        const lvl = s.registration?.level || s.level;
+        return lvl === selectedLevel && s.app_state !== 'RESULT';
+      });
+
+      if (activeSession) {
+        setSessionId(activeSession.id);
+        setQuestions(activeSession.questions || []);
+        setCurrentIndex(activeSession.current_index || 0);
+        setAppState(activeSession.app_state || 'EXAM');
       } else {
         setQuestions([]);
         setCurrentIndex(0);
@@ -859,16 +872,14 @@ function App() {
       
       if (insertData && insertData.length > 0) {
         setRequestId(insertData[0].id);
+        setShowFaceModal(false);
+        setAppState('WAITING');
       } else {
-        setRequestId('req_' + Date.now());
+        alert("So'rov yuborishda xatolik yuz berdi. Iltimos internet aloqasini tekshirib, qaytadan urinib ko'ring.");
       }
-      setShowFaceModal(false);
-      setAppState('WAITING');
     } catch (e) {
       console.error("Error submitting request:", e);
-      setRequestId('req_' + Date.now());
-      setShowFaceModal(false);
-      setAppState('WAITING');
+      alert("So'rov yuborishda xatolik yuz berdi: " + (e.message || 'Tarmoq xatosi'));
     }
     setIsSubmitting(false);
   };
@@ -958,11 +969,11 @@ function App() {
             <div className="text-[#8baecf] text-[8.5px] font-bold tracking-widest uppercase mb-[1px]">Completed</div>
             <div className="text-[12px] font-semibold tracking-wide">{correctCount + reviewCount} / {questions.length}</div>
           </div>
-          <button onClick={() => setAppState('HOME')} className="text-[#8baecf] hover:text-white flex items-center gap-1 bg-transparent px-2.5 py-1 rounded-sm font-semibold hover:bg-white/10 transition-colors text-xs ml-1" title="Bosh sahifaga qaytish">
+          <button onClick={handleGoHome} className="text-[#8baecf] hover:text-white flex items-center gap-1 bg-transparent px-2.5 py-1 rounded-sm font-semibold hover:bg-white/10 transition-colors text-xs ml-1" title="Bosh sahifaga qaytish">
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
             Home
           </button>
-          <button onClick={handleRestartExam} className="border border-white text-white bg-transparent px-3 py-1 rounded-sm font-semibold hover:bg-white/10 transition-colors text-xs ml-1">
+          <button onClick={handleConfirmRestart} className="border border-white text-white bg-transparent px-3 py-1 rounded-sm font-semibold hover:bg-white/10 transition-colors text-xs ml-1">
             Restart Exam
           </button>
         </div>

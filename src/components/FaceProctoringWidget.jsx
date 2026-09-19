@@ -56,6 +56,7 @@ export default function FaceProctoringWidget({ studentName, level, onWarning }) 
   const streamRef = useRef(null);
   const checkIntervalRef = useRef(null);
   const missedFramesRef = useRef(0);
+  const isCheckingRef = useRef(false);
 
   // Ekran o'lchami o'zgarganda ekrandan chiqib ketmasligini ta'minlash
   useEffect(() => {
@@ -145,28 +146,35 @@ export default function FaceProctoringWidget({ studentName, level, onWarning }) 
         setStatusMessage('Nazorat ostida ✓');
 
         checkIntervalRef.current = setInterval(async () => {
-          if (!videoRef.current || videoRef.current.readyState < 2) return;
-          const res = await detectFaceInVideo(videoRef.current);
+          if (!videoRef.current || videoRef.current.readyState < 2 || isCheckingRef.current) return;
+          isCheckingRef.current = true;
+          try {
+            const res = await detectFaceInVideo(videoRef.current, { isProctoring: true });
 
-          if (!res.detected) {
-            missedFramesRef.current += 1;
-            if (missedFramesRef.current >= 2) {
+            if (!res.detected) {
+              missedFramesRef.current += 1;
+              if (missedFramesRef.current >= 3) {
+                setStatus('warning');
+                setStatusMessage(res.message || 'Yuz aniqlanmadi!');
+                setWarningCount(prev => prev + 1);
+                if (onWarning) onWarning(res.message);
+              }
+            } else if (res.quality === 'multiple') {
               setStatus('warning');
-              setStatusMessage(res.message || 'Yuz aniqlanmadi!');
+              setStatusMessage('Begona shaxs aniqlandi!');
               setWarningCount(prev => prev + 1);
-              if (onWarning) onWarning(res.message);
+              if (onWarning) onWarning('Kadrda bir nechta shaxs bor');
+            } else {
+              missedFramesRef.current = 0;
+              setStatus('active');
+              setStatusMessage('Nazorat ostida ✓');
             }
-          } else if (res.quality === 'multiple') {
-            setStatus('warning');
-            setStatusMessage('Begona shaxs aniqlandi!');
-            setWarningCount(prev => prev + 1);
-            if (onWarning) onWarning('Kadrda bir nechta shaxs bor');
-          } else {
-            missedFramesRef.current = 0;
-            setStatus('active');
-            setStatusMessage('Nazorat ostida ✓');
+          } catch (e) {
+            console.warn("Proctoring detection cycle error:", e);
+          } finally {
+            isCheckingRef.current = false;
           }
-        }, 3200);
+        }, 3000);
 
       } catch (err) {
         console.warn("Proctoring camera init error:", err);

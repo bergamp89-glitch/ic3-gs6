@@ -173,6 +173,7 @@ function FaceRegistrationModal({
   const isScanningRef = useRef(false);
   const hasSubmittedRef = useRef(false);
   const stableFramesRef = useRef(0);
+  const isDetectingRef = useRef(false);
 
   // Stop camera stream
   const stopStream = () => {
@@ -287,56 +288,63 @@ function FaceRegistrationModal({
     if (detectIntervalRef.current) clearInterval(detectIntervalRef.current);
 
     detectIntervalRef.current = setInterval(async () => {
-      if (!videoRef.current || videoRef.current.readyState < 2 || hasSubmittedRef.current) return;
-      const res = await detectFaceInVideo(videoRef.current);
-      setDetection(res);
+      if (!videoRef.current || videoRef.current.readyState < 2 || hasSubmittedRef.current || isDetectingRef.current) return;
+      isDetectingRef.current = true;
+      try {
+        const res = await detectFaceInVideo(videoRef.current);
+        setDetection(res);
 
-      if (res.detected && res.quality === 'good') {
-        stableFramesRef.current += 1;
+        if (res.detected && res.quality === 'good') {
+          stableFramesRef.current += 1;
 
-        // Anti-spoofing Blink Check (ko'z pirpiratish tekshiruvi)
-        if (!livenessVerifiedRef.current) {
-          setLivenessStage(prev => (prev === 'passed' ? 'passed' : 'blink'));
+          // Anti-spoofing Blink Check (ko'z pirpiratish tekshiruvi)
+          if (!livenessVerifiedRef.current) {
+            setLivenessStage(prev => (prev === 'passed' ? 'passed' : 'blink'));
 
-          if (res.isEyesClosed) {
-            sawClosedEyesRef.current = true;
-          } else if (sawClosedEyesRef.current && !res.isEyesClosed && res.ear >= 0.22) {
-            // Ko'z bir marta yumilib ochildi — haqiqiy jonli inson!
-            sawClosedEyesRef.current = false;
-            livenessVerifiedRef.current = true;
-            setLivenessVerified(true);
-            setLivenessStage('passed');
-            setScanPrompt("Jonli inson tasdiqlandi ✓ Qimirlamang...");
+            if (res.isEyesClosed) {
+              sawClosedEyesRef.current = true;
+            } else if (sawClosedEyesRef.current && !res.isEyesClosed && res.ear >= 0.22) {
+              // Ko'z bir marta yumilib ochildi — haqiqiy jonli inson!
+              sawClosedEyesRef.current = false;
+              livenessVerifiedRef.current = true;
+              setLivenessVerified(true);
+              setLivenessStage('passed');
+              setScanPrompt("Jonli inson tasdiqlandi ✓ Qimirlamang...");
+            }
+          }
+
+          // 1. ENROLL REJIMI: Liveness o'tgach yoki barqaror yuz bilan skanerlash
+          if (
+            mode === 'ENROLL' && 
+            !isScanningRef.current && 
+            !hasSubmittedRef.current && 
+            (livenessVerifiedRef.current || stableFramesRef.current >= 6)
+          ) {
+            triggerAutoScan();
+          }
+
+          // 2. VERIFY REJIMI: Qayta kirishda yuz barqaror bo'lsa
+          if (
+            mode === 'VERIFY' &&
+            !isScanningRef.current &&
+            verifyStatus === 'idle' &&
+            (livenessVerifiedRef.current || stableFramesRef.current >= 4)
+          ) {
+            handleVerifyFace();
+          }
+        } else {
+          stableFramesRef.current = 0;
+          if (!livenessVerifiedRef.current) {
+            setLivenessStage('align');
+          }
+          if (isScanningRef.current && !hasSubmittedRef.current && mode === 'ENROLL') {
+            cancelScan(res.message);
           }
         }
-
-        // 1. ENROLL REJIMI: Liveness o'tgach yoki barqaror yuz bilan skanerlash
-        if (
-          mode === 'ENROLL' && 
-          !isScanningRef.current && 
-          !hasSubmittedRef.current && 
-          (livenessVerifiedRef.current || stableFramesRef.current >= 6)
-        ) {
-          triggerAutoScan();
-        }
-
-        // 2. VERIFY REJIMI: Qayta kirishda yuz barqaror bo'lsa
-        if (
-          mode === 'VERIFY' &&
-          !isScanningRef.current &&
-          verifyStatus === 'idle' &&
-          (livenessVerifiedRef.current || stableFramesRef.current >= 4)
-        ) {
-          handleVerifyFace();
-        }
-      } else {
-        stableFramesRef.current = 0;
-        if (!livenessVerifiedRef.current) {
-          setLivenessStage('align');
-        }
-        if (isScanningRef.current && !hasSubmittedRef.current && mode === 'ENROLL') {
-          cancelScan(res.message);
-        }
+      } catch (err) {
+        console.warn("Live face detection cycle error:", err);
+      } finally {
+        isDetectingRef.current = false;
       }
     }, 180);
   };

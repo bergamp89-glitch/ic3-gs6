@@ -171,6 +171,37 @@ function AdminPanel({
               
               {activeTab === 'dashboard' && (
                 <>
+                  {/* Summary Metric Cards */}
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+                    <div className="bg-amber-50/70 border border-amber-200/80 rounded-lg p-3.5 sm:p-4 shadow-sm">
+                      <div className="text-[11px] font-bold text-amber-700 uppercase tracking-wider mb-1">Pending Requests</div>
+                      <div className="text-2xl sm:text-3xl font-extrabold text-amber-900">{pendingRequests.length}</div>
+                      <div className="text-[11px] text-amber-600 mt-1">Tasdiqlash kutilmoqda</div>
+                    </div>
+
+                    <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-lg p-3.5 sm:p-4 shadow-sm">
+                      <div className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider mb-1">Approved Users</div>
+                      <div className="text-2xl sm:text-3xl font-extrabold text-emerald-900">{approvedRequests.length}</div>
+                      <div className="text-[11px] text-emerald-600 mt-1">Imtihonga ruxsat berilgan</div>
+                    </div>
+
+                    <div className="bg-blue-50/70 border border-blue-200/80 rounded-lg p-3.5 sm:p-4 shadow-sm">
+                      <div className="text-[11px] font-bold text-[#1a446b] uppercase tracking-wider mb-1">Exams Taken</div>
+                      <div className="text-2xl sm:text-3xl font-extrabold text-[#1a446b]">{leaderboardResults.length}</div>
+                      <div className="text-[11px] text-blue-600 mt-1">Natijalar bazada mavjud</div>
+                    </div>
+
+                    <div className="bg-indigo-50/70 border border-indigo-200/80 rounded-lg p-3.5 sm:p-4 shadow-sm">
+                      <div className="text-[11px] font-bold text-indigo-700 uppercase tracking-wider mb-1">Average Score</div>
+                      <div className="text-2xl sm:text-3xl font-extrabold text-indigo-900">
+                        {leaderboardResults.length > 0 
+                          ? Math.round(leaderboardResults.reduce((sum, item) => sum + (item.score || 0), 0) / leaderboardResults.length)
+                          : 0}%
+                      </div>
+                      <div className="text-[11px] text-indigo-600 mt-1">O'rtacha o'zlashtirish</div>
+                    </div>
+                  </div>
+
                   {/* Requests Section */}
                   <div className="mb-12">
                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b pb-2">
@@ -488,6 +519,7 @@ function AdminPanel({
                          <tbody className="divide-y divide-gray-100 bg-white">
                            {filteredLeaderboard.map((item, idx) => {
                              const pct = item.score || 0;
+                             const isPassed = pct >= 70;
                              const dateStr = item.created_at ? new Date(item.created_at).toLocaleString() : '-';
 
                              return (
@@ -495,7 +527,13 @@ function AdminPanel({
                                  <td className="p-3 font-semibold text-gray-500">{idx + 1}</td>
                                  <td className="p-3 font-bold text-gray-800">{item.username || 'Noma\'lum'}</td>
                                  <td className="p-3 font-semibold text-[#1a446b]">{item.level_num ? `${item.level_num}-Level` : '-'}</td>
-                                 <td className="p-3 font-bold text-[#047857]">{pct}%</td>
+                                 <td className="p-3">
+                                   <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold ${
+                                     isPassed ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                                   }`}>
+                                     {pct}% {isPassed ? '(O\'tdi)' : '(Yiqildi)'}
+                                   </span>
+                                 </td>
                                  <td className="p-3 text-gray-500 text-xs">{dateStr}</td>
                                  <td className="p-3 text-right">
                                    <button 
@@ -523,8 +561,8 @@ function AdminPanel({
                          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">First Name</label>
                          <input 
                            type="text" 
-                           value={adminCreds.firstName} 
-                           onChange={e => setAdminCreds({...adminCreds, firstName: e.target.value})} 
+                           value={adminCreds?.firstName || ''} 
+                           onChange={e => setAdminCreds(prev => ({ ...prev, firstName: e.target.value }))} 
                            className="w-full border border-gray-300 rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:border-[#1a446b] focus:ring-1 focus:ring-[#1a446b]/20" 
                          />
                       </div>
@@ -533,8 +571,8 @@ function AdminPanel({
                          <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Email Address / Code</label>
                          <input 
                            type="text" 
-                           value={adminCreds.email} 
-                           onChange={e => setAdminCreds({...adminCreds, email: e.target.value})} 
+                           value={adminCreds?.email || ''} 
+                           onChange={e => setAdminCreds(prev => ({ ...prev, email: e.target.value }))} 
                            className="w-full border border-gray-300 rounded-sm px-3 py-2.5 text-sm focus:outline-none focus:border-[#1a446b] focus:ring-1 focus:ring-[#1a446b]/20" 
                          />
                       </div>
