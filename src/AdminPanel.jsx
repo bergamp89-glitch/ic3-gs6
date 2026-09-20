@@ -3,21 +3,41 @@ import { supabase } from './supabase';
 
 function AdminPanel({ 
   setAppState, 
-  registration, 
   setRegistration, 
-  requests, 
-  setRequests, 
   levelsStatus, 
   setLevelsStatus, 
   adminCreds, 
   setAdminCreds 
 }) {
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [requests, setRequests] = useState([]);
+  const [activeTab, setActiveTab] = useState(() => {
+    try {
+      const hash = window.location.hash;
+      if (hash.includes('tab=')) {
+        const tab = hash.split('tab=')[1]?.split('&')[0];
+        if (['dashboard', 'results', 'passwords'].includes(tab)) return tab;
+      }
+      const saved = localStorage.getItem('ic3_admin_tab');
+      if (saved && ['dashboard', 'results', 'passwords'].includes(saved)) return saved;
+    } catch (e) {}
+    return 'dashboard';
+  });
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    try {
+      localStorage.setItem('ic3_admin_tab', tab);
+      window.location.hash = `#/admin?tab=${tab}`;
+    } catch (e) {}
+  };
+
   const [approvedSearch, setApprovedSearch] = useState('');
   const [pendingSearch, setPendingSearch] = useState('');
   const [resultsSearch, setResultsSearch] = useState('');
   const [leaderboardResults, setLeaderboardResults] = useState([]);
+  const [leaderboardPage, setLeaderboardPage] = useState(1);
   const [selectedPhotoUser, setSelectedPhotoUser] = useState(null);
+  const [isRefreshingRequests, setIsRefreshingRequests] = useState(false);
 
   const filterRequests = (list, query) => {
     if (!query || !query.trim()) return list;
@@ -37,71 +57,90 @@ function AdminPanel({
   const filteredApprovedRequests = filterRequests(approvedRequests, approvedSearch);
 
   useEffect(() => {
-    fetchRequests();
-    fetchLeaderboard();
-
-    // Auto-poll requests every 5 seconds so new requests pop up automatically
-    const intervalId = setInterval(() => {
+    if (activeTab === 'dashboard') {
       fetchRequests();
-      if (activeTab === 'results') fetchLeaderboard();
-    }, 5000);
+    } else if (activeTab === 'results') {
+      fetchLeaderboard();
+    }
 
-    return () => clearInterval(intervalId);
+    // Auto-poll requests every 10s only when on dashboard
+    let intervalId;
+    if (activeTab === 'dashboard') {
+      intervalId = setInterval(() => {
+        fetchRequests(true);
+      }, 10000);
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
   }, [activeTab]);
 
-  const fetchRequests = async () => {
-    const { data, error } = await supabase
-      .from('requests')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (data) {
-      setRequests(data);
+  const fetchRequests = async (isBackground = false) => {
+    if (!isBackground) setIsRefreshingRequests(true);
+    try {
+      const { data, error } = await supabase
+        .from('requests')
+        .select('id, firstName, lastName, email, level, status, created_at, photo')
+        .in('status', ['pending', 'approved'])
+        .order('created_at', { ascending: false });
+      if (!error && data) {
+        setRequests(data);
+      }
+    } catch (err) {
+      console.error("fetchRequests error:", err);
+    } finally {
+      if (!isBackground) setIsRefreshingRequests(false);
     }
   };
 
   const fetchLeaderboard = async () => {
-    const { data } = await supabase
-      .from('leaderboard')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (data) {
-      setLeaderboardResults(data);
+    try {
+      const { data, error } = await supabase
+        .from('leaderboard')
+        .select('id, username, level_num, score, created_at')
+        .order('created_at', { ascending: false });
+      if (!error && data) {
+        setLeaderboardResults(data);
+      }
+    } catch (err) {
+      console.error("fetchLeaderboard error:", err);
     }
   };
 
   const deleteLeaderboardEntry = async (id) => {
+    setLeaderboardResults(prev => prev.filter(item => item.id !== id));
     const { error } = await supabase
       .from('leaderboard')
       .delete()
       .eq('id', id);
-    if (!error) {
-      fetchLeaderboard();
-    } else {
+    if (error) {
       alert("Xatolik: " + (error.message || "Baza bilan aloqa yo'q"));
+      fetchLeaderboard();
     }
   };
 
   const updateRequestStatus = async (id, newStatus) => {
+    setRequests(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
     const { error } = await supabase
       .from('requests')
       .update({ status: newStatus })
       .eq('id', id);
-    if (!error) {
-      fetchRequests();
-    } else {
+    if (error) {
       alert("Xatolik yuz berdi: " + (error.message || "Baza bilan aloqa yo'q"));
+      fetchRequests();
     }
   };
 
   const deleteRequest = async (id) => {
+    setRequests(prev => prev.filter(r => r.id !== id));
     const { error } = await supabase
       .from('requests')
       .delete()
       .eq('id', id);
-    if (!error) {
-      fetchRequests();
-    } else {
+    if (error) {
       alert("O'chirishda xatolik: " + (error.message || "Baza bilan aloqa yo'q"));
+      fetchRequests();
     }
   };
 
@@ -123,7 +162,12 @@ function AdminPanel({
           </div>
           <div className="flex items-center gap-3 md:gap-4">
             <button 
-              onClick={() => setAppState('HOME')}
+              onClick={() => {
+                localStorage.removeItem('ic3_admin_auth');
+                localStorage.removeItem('ic3_admin_tab');
+                window.location.hash = '#/home';
+                setAppState('HOME');
+              }}
               className="text-white/80 hover:text-white flex items-center gap-1.5 text-xs md:text-sm font-medium transition-colors bg-transparent px-2 py-1.5 rounded-sm hover:bg-white/10"
               title="Bosh sahifaga qaytish"
             >
@@ -132,8 +176,11 @@ function AdminPanel({
             </button>
             <button 
               onClick={() => { 
+                localStorage.removeItem('ic3_admin_auth');
+                localStorage.removeItem('ic3_admin_tab');
+                window.location.hash = '#/home';
                 setAppState('HOME'); 
-                setRegistration({ firstName: '', lastName: '', birthDate: '', email: '', level: '' }); 
+                setRegistration({ firstName: '', lastName: '', email: '', level: '' }); 
               }} 
               className="border border-white/30 hover:bg-white/10 text-white px-3 py-1.5 md:px-4 md:py-2 rounded-sm text-xs md:text-sm font-medium transition-colors"
             >
@@ -147,19 +194,19 @@ function AdminPanel({
            <div className="w-full md:w-64 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-200 p-4 md:p-6 flex flex-row md:flex-col gap-2 overflow-x-auto flex-shrink-0">
               <div className="hidden md:block text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2">Menu</div>
               <button 
-                onClick={() => setActiveTab('dashboard')}
+                onClick={() => handleTabChange('dashboard')}
                 className={`text-left px-4 py-3 rounded-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-[#1a446b] text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'}`}
               >
                 Dashboard
               </button>
               <button 
-                onClick={() => setActiveTab('results')}
+                onClick={() => handleTabChange('results')}
                 className={`text-left px-4 py-3 rounded-sm font-medium transition-colors whitespace-nowrap ${activeTab === 'results' ? 'bg-[#1a446b] text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'}`}
               >
                 Imtihon Natijalari
               </button>
               <button 
-                onClick={() => setActiveTab('passwords')}
+                onClick={() => handleTabChange('passwords')}
                 className={`text-left px-4 py-3 rounded-sm font-medium transition-colors whitespace-nowrap ${activeTab === 'passwords' ? 'bg-[#1a446b] text-white shadow-sm' : 'text-gray-600 hover:bg-gray-100'}`}
               >
                 Parol bo'limi
@@ -171,36 +218,6 @@ function AdminPanel({
               
               {activeTab === 'dashboard' && (
                 <>
-                  {/* Summary Metric Cards */}
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
-                    <div className="bg-amber-50/70 border border-amber-200/80 rounded-lg p-3.5 sm:p-4 shadow-sm">
-                      <div className="text-[11px] font-bold text-amber-700 uppercase tracking-wider mb-1">Pending Requests</div>
-                      <div className="text-2xl sm:text-3xl font-extrabold text-amber-900">{pendingRequests.length}</div>
-                      <div className="text-[11px] text-amber-600 mt-1">Tasdiqlash kutilmoqda</div>
-                    </div>
-
-                    <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-lg p-3.5 sm:p-4 shadow-sm">
-                      <div className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider mb-1">Approved Users</div>
-                      <div className="text-2xl sm:text-3xl font-extrabold text-emerald-900">{approvedRequests.length}</div>
-                      <div className="text-[11px] text-emerald-600 mt-1">Imtihonga ruxsat berilgan</div>
-                    </div>
-
-                    <div className="bg-blue-50/70 border border-blue-200/80 rounded-lg p-3.5 sm:p-4 shadow-sm">
-                      <div className="text-[11px] font-bold text-[#1a446b] uppercase tracking-wider mb-1">Exams Taken</div>
-                      <div className="text-2xl sm:text-3xl font-extrabold text-[#1a446b]">{leaderboardResults.length}</div>
-                      <div className="text-[11px] text-blue-600 mt-1">Natijalar bazada mavjud</div>
-                    </div>
-
-                    <div className="bg-indigo-50/70 border border-indigo-200/80 rounded-lg p-3.5 sm:p-4 shadow-sm">
-                      <div className="text-[11px] font-bold text-indigo-700 uppercase tracking-wider mb-1">Average Score</div>
-                      <div className="text-2xl sm:text-3xl font-extrabold text-indigo-900">
-                        {leaderboardResults.length > 0 
-                          ? Math.round(leaderboardResults.reduce((sum, item) => sum + (item.score || 0), 0) / leaderboardResults.length)
-                          : 0}%
-                      </div>
-                      <div className="text-[11px] text-indigo-600 mt-1">O'rtacha o'zlashtirish</div>
-                    </div>
-                  </div>
 
                   {/* Requests Section */}
                   <div className="mb-12">
@@ -233,9 +250,13 @@ function AdminPanel({
                                </button>
                              )}
                            </div>
-                           <button onClick={fetchRequests} className="text-xs font-semibold text-[#1a446b] border border-[#1a446b]/20 px-3 py-1.5 rounded-sm hover:bg-blue-50 transition-colors whitespace-nowrap">
-                             Refresh List
-                           </button>
+                            <button 
+                              onClick={() => fetchRequests()} 
+                              disabled={isRefreshingRequests}
+                              className="text-xs font-semibold text-[#1a446b] border border-[#1a446b]/20 px-3 py-1.5 rounded-sm hover:bg-blue-50 transition-colors whitespace-nowrap disabled:opacity-50"
+                            >
+                              {isRefreshingRequests ? 'Yangilanmoqda...' : 'Refresh List'}
+                            </button>
                         </div>
                      </div>
                      {filteredPendingRequests.length === 0 ? (
@@ -285,7 +306,6 @@ function AdminPanel({
                                   <div className="min-w-0 flex-1">
                                      <div className="flex items-center gap-2 flex-wrap">
                                        <span className="font-bold text-gray-900 text-sm sm:text-base">{req.firstName} {req.lastName}</span>
-                                       {req.birth_date && <span className="text-xs text-gray-500">({req.birth_date})</span>}
                                        {req.photo ? (
                                          <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
                                            Face ID ✓
@@ -504,51 +524,84 @@ function AdminPanel({
                        Hali hech qanday imtihon natijalari saqlanmagan.
                      </div>
                    ) : (
-                     <div className="overflow-x-auto border border-gray-200 rounded-sm shadow-sm">
-                       <table className="w-full text-left text-xs md:text-sm">
-                         <thead className="bg-[#1a446b] text-white uppercase text-[10px] tracking-wider">
-                           <tr>
-                             <th className="p-3">#</th>
-                             <th className="p-3">F.I.SH / Foydalanuvchi</th>
-                             <th className="p-3">Level</th>
-                             <th className="p-3">Ball (%)</th>
-                             <th className="p-3">Sana</th>
-                             <th className="p-3 text-right">Amal</th>
-                           </tr>
-                         </thead>
-                         <tbody className="divide-y divide-gray-100 bg-white">
-                           {filteredLeaderboard.map((item, idx) => {
-                             const pct = item.score || 0;
-                             const isPassed = pct >= 70;
-                             const dateStr = item.created_at ? new Date(item.created_at).toLocaleString() : '-';
+                     <>
+                       <div className="overflow-x-auto border border-gray-200 rounded-sm shadow-sm">
+                         <table className="w-full text-left text-xs md:text-sm">
+                           <thead className="bg-[#1a446b] text-white uppercase text-[10px] tracking-wider">
+                             <tr>
+                               <th className="p-3">#</th>
+                               <th className="p-3">F.I.SH / Foydalanuvchi</th>
+                               <th className="p-3">Level</th>
+                               <th className="p-3">Ball (%)</th>
+                               <th className="p-3">Sana</th>
+                               <th className="p-3 text-right">Amal</th>
+                             </tr>
+                           </thead>
+                           <tbody className="divide-y divide-gray-100 bg-white">
+                             {filteredLeaderboard
+                               .slice((leaderboardPage - 1) * 30, leaderboardPage * 30)
+                               .map((item, idx) => {
+                                 const globalIdx = (leaderboardPage - 1) * 30 + idx + 1;
+                                 const pct = item.score || 0;
+                                 const isPassed = pct >= 70;
+                                 const dateStr = item.created_at ? new Date(item.created_at).toLocaleString() : '-';
 
-                             return (
-                               <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                                 <td className="p-3 font-semibold text-gray-500">{idx + 1}</td>
-                                 <td className="p-3 font-bold text-gray-800">{item.username || 'Noma\'lum'}</td>
-                                 <td className="p-3 font-semibold text-[#1a446b]">{item.level_num ? `${item.level_num}-Level` : '-'}</td>
-                                 <td className="p-3">
-                                   <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold ${
-                                     isPassed ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
-                                   }`}>
-                                     {pct}% {isPassed ? '(O\'tdi)' : '(Yiqildi)'}
-                                   </span>
-                                 </td>
-                                 <td className="p-3 text-gray-500 text-xs">{dateStr}</td>
-                                 <td className="p-3 text-right">
-                                   <button 
-                                     onClick={() => deleteLeaderboardEntry(item.id)} 
-                                     className="text-rose-600 hover:text-rose-800 font-semibold text-xs border border-rose-200 px-2 py-1 rounded hover:bg-rose-50"
-                                   >
-                                     O'chirish
-                                   </button>
-                                 </td>
-                               </tr>
-                             );
-                           })}
-                         </tbody>
-                       </table>
-                     </div>
+                                 return (
+                                   <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                                     <td className="p-3 font-semibold text-gray-500">{globalIdx}</td>
+                                     <td className="p-3 font-bold text-gray-800">{item.username || 'Noma\'lum'}</td>
+                                     <td className="p-3 font-semibold text-[#1a446b]">{item.level_num ? `${item.level_num}-Level` : '-'}</td>
+                                     <td className="p-3">
+                                       <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold ${
+                                         isPassed ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+                                       }`}>
+                                         {pct}% {isPassed ? '(O\'tdi)' : '(Yiqildi)'}
+                                       </span>
+                                     </td>
+                                     <td className="p-3 text-gray-500 text-xs">{dateStr}</td>
+                                     <td className="p-3 text-right">
+                                       <button 
+                                         onClick={() => deleteLeaderboardEntry(item.id)} 
+                                         className="text-rose-600 hover:text-rose-800 font-semibold text-xs border border-rose-200 px-2 py-1 rounded hover:bg-rose-50"
+                                       >
+                                         O'chirish
+                                       </button>
+                                     </td>
+                                   </tr>
+                                 );
+                             })}
+                           </tbody>
+                         </table>
+                       </div>
+
+                       {/* Pagination Bar */}
+                       {filteredLeaderboard.length > 30 && (
+                         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-sm text-xs">
+                           <span className="text-gray-600 font-medium">
+                             Ko'rsatilmoqda: <strong>{Math.min(filteredLeaderboard.length, (leaderboardPage - 1) * 30 + 1)} - {Math.min(filteredLeaderboard.length, leaderboardPage * 30)}</strong> / Jami: {filteredLeaderboard.length} ta
+                           </span>
+                           <div className="flex items-center gap-1.5">
+                             <button
+                               onClick={() => setLeaderboardPage(prev => Math.max(1, prev - 1))}
+                               disabled={leaderboardPage === 1}
+                               className="px-3 py-1.5 border border-gray-300 rounded-sm bg-white font-medium hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                             >
+                               &larr; Oldingi
+                             </button>
+                             <span className="px-2 py-1 font-bold text-[#1a446b]">
+                               {leaderboardPage} / {Math.ceil(filteredLeaderboard.length / 30)}
+                             </span>
+                             <button
+                               onClick={() => setLeaderboardPage(prev => Math.min(Math.ceil(filteredLeaderboard.length / 30), prev + 1))}
+                               disabled={leaderboardPage >= Math.ceil(filteredLeaderboard.length / 30)}
+                               className="px-3 py-1.5 border border-gray-300 rounded-sm bg-white font-medium hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                             >
+                               Keyingi &rarr;
+                             </button>
+                           </div>
+                         </div>
+                       )}
+                     </>
                    )}
                 </div>
               )}

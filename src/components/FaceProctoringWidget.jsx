@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { detectFaceInVideo, loadFaceModels } from '../utils/faceDetector';
 
-export default function FaceProctoringWidget({ studentName, level, onWarning }) {
+export default function FaceProctoringWidget({ studentName }) {
   const [isMinimized, setIsMinimized] = useState(false);
   const [status, setStatus] = useState('checking'); // 'checking' | 'active' | 'warning' | 'error'
   const [statusMessage, setStatusMessage] = useState('Proctoring faollashtirilmoqda...');
-  const [warningCount, setWarningCount] = useState(0);
 
   // Widget DOM havolasi
   const widgetRef = useRef(null);

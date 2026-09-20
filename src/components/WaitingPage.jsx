@@ -12,9 +12,13 @@ function WaitingPage({ registration, setAppState }) {
          <p className="text-gray-600 font-medium leading-relaxed">
             Permission request for <strong className="text-[#1a446b]">{registration.level}</strong> has been sent to admin.
          </p>
-         <p className="text-sm text-gray-400 mt-6 bg-gray-50 py-2 rounded-sm border border-gray-100 mb-6">Please wait for approval. Do not refresh the page.</p>
+         <p className="text-sm text-gray-500 mt-6 bg-gray-50 py-2 rounded-sm border border-gray-100 mb-6">Iltimos, admin tasdiqlashini kuting. Sahifa avtomatik yangilanadi.</p>
          <button 
-           onClick={() => setAppState('HOME')} 
+           onClick={() => {
+             localStorage.removeItem('ic3_session');
+             window.location.hash = '#/home';
+             setAppState('HOME');
+           }} 
            className="bg-transparent border border-[#1a446b] text-[#1a446b] px-6 py-2 rounded-sm font-semibold hover:bg-blue-50 transition-colors w-full"
          >
            Return to Home

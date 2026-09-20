@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-export default function AntiScreenCaptureShield({ registration = {}, sessionId }) {
+export default function AntiScreenCaptureShield({ registration = {} }) {
   const [isShieldActive, setIsShieldActive] = useState(false);
   const [shieldReason, setShieldReason] = useState('');
-  const [warningCount, setWarningCount] = useState(0);
   const triggerTimeoutRef = useRef(null);
 
   const activateShield = (reason) => {
@@ -20,9 +19,6 @@ export default function AntiScreenCaptureShield({ registration = {}, sessionId }
   const deactivateShield = () => {
     setIsShieldActive(false);
     setShieldReason('');
-    try {
-      document.body.style.filter = 'none';
-    } catch (e) {}
   };
 
   useEffect(() => {
@@ -42,7 +38,6 @@ export default function AntiScreenCaptureShield({ registration = {}, sessionId }
       if (e.key === 'PrintScreen' || e.keyCode === 44) {
         e.preventDefault();
         activateShield("Skrinshot olishga urinish (PrintScreen) aniqlandi!");
-        setWarningCount(c => c + 1);
         return;
       }
 
@@ -50,7 +45,6 @@ export default function AntiScreenCaptureShield({ registration = {}, sessionId }
       if ((e.key === 'S' || e.key === 's') && (e.shiftKey && (e.ctrlKey || e.metaKey))) {
         e.preventDefault();
         activateShield("Skrinshot vositasi (Snip & Sketch) ochildi!");
-        setWarningCount(c => c + 1);
         return;
       }
 
@@ -58,7 +52,6 @@ export default function AntiScreenCaptureShield({ registration = {}, sessionId }
       if (e.metaKey && e.shiftKey && (e.key === '3' || e.key === '4' || e.key === '5')) {
         e.preventDefault();
         activateShield("Skrinshot olishga urinish (macOS Screenshot) aniqlandi!");
-        setWarningCount(c => c + 1);
         return;
       }
 

@@ -55,9 +55,6 @@ img, canvas, svg, a {
   .grid-btn.current {
     @apply bg-[#1a446b] text-white border-[#1a446b] hover:bg-[#153655] shadow-sm;
   }
-  .grid-btn.completed {
-    @apply bg-green-50 border-green-200 text-green-700;
-  }
   
   /* Status Badges */
   .badge-outline {
@@ -68,20 +65,6 @@ img, canvas, svg, a {
   }
   .badge-outline.not-started {
     @apply border-gray-300 text-gray-500 bg-white;
-  }
-  
-  /* Options */
-  .option-btn {
-    @apply w-full text-left p-2 sm:p-2.5 bg-white border border-gray-200 rounded-sm mb-1.5 flex items-center gap-3 hover:border-gray-300 transition-all cursor-pointer;
-  }
-  .option-btn.selected {
-    @apply border-[#1a446b] bg-blue-50/30;
-  }
-  .option-letter {
-    @apply w-6 h-6 rounded-sm border border-gray-300 flex items-center justify-center bg-white text-gray-500 text-xs font-medium flex-shrink-0;
-  }
-  .option-btn.selected .option-letter {
-    @apply border-[#1a446b] text-[#1a446b] font-bold;
   }
 
   /* Right Sidebar Section Titles */

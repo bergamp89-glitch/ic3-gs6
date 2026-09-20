@@ -18,12 +18,33 @@ import { examQuestions as q3 } from './3-level.js';
 
 const getInitialSession = () => {
   try {
-    const saved = localStorage.getItem('ic3_session');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (parsed.appState && parsed.appState !== 'HOME' && parsed.appState !== 'ADMIN') {
-        return parsed;
+    const hash = typeof window !== 'undefined' ? window.location.hash : '';
+    const isAdminAuth = typeof window !== 'undefined' ? localStorage.getItem('ic3_admin_auth') === 'true' : false;
+    const saved = typeof window !== 'undefined' ? localStorage.getItem('ic3_session') : null;
+    const parsed = saved ? JSON.parse(saved) : null;
+
+    // 1. Check URL hash first
+    if (hash.includes('admin') || isAdminAuth) {
+      if (isAdminAuth) {
+        return { appState: 'ADMIN', ...(parsed || {}) };
       }
+    }
+    if (hash.includes('exam') && parsed && parsed.appState === 'EXAM') {
+      return parsed;
+    }
+    if (hash.includes('waiting') && parsed && parsed.appState === 'WAITING') {
+      return parsed;
+    }
+    if (hash.includes('result') && parsed && parsed.appState === 'RESULT') {
+      return parsed;
+    }
+
+    // 2. If no matching hash or on root URL, check saved session or admin auth
+    if (parsed && parsed.appState && parsed.appState !== 'HOME') {
+      return parsed;
+    }
+    if (isAdminAuth) {
+      return { appState: 'ADMIN' };
     }
   } catch (e) {
     console.error("Session restore failed:", e);
@@ -39,9 +60,9 @@ function App() {
   const [activeTab, setActiveTab] = useState('INSTRUCTIONS'); 
   const [openDropdownId, setOpenDropdownId] = useState(null); 
   const [appState, setAppState] = useState(initialSession?.appState || 'HOME'); // 'HOME', 'WAITING', 'ADMIN', 'EXAM', 'RESULT'
-  const [registration, setRegistration] = useState(initialSession?.registration || { firstName: '', lastName: '', birthDate: '', email: '', level: '' });
+  const [registration, setRegistration] = useState(initialSession?.registration || { firstName: '', lastName: '', email: '', level: '' });
   
-  const [registrationErrors, setRegistrationErrors] = useState({ firstName: false, lastName: false, birthDate: false, email: false, level: false });
+  const [registrationErrors, setRegistrationErrors] = useState({ firstName: false, lastName: false, email: false, level: false });
   const [requestId, setRequestId] = useState(initialSession?.requestId || null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showFaceModal, setShowFaceModal] = useState(false);
@@ -68,7 +89,7 @@ function App() {
 
   // Save session to localStorage on active state change
   useEffect(() => {
-    if (appState === 'EXAM' || appState === 'WAITING') {
+    if (appState === 'EXAM' || appState === 'WAITING' || appState === 'RESULT') {
       localStorage.setItem('ic3_session', JSON.stringify({
         sessionId,
         requestId,
@@ -77,10 +98,73 @@ function App() {
         currentIndex,
         registration
       }));
-    } else if (appState === 'HOME' || appState === 'ADMIN' || appState === 'RESULT') {
+    } else if (appState === 'ADMIN') {
+      localStorage.setItem('ic3_admin_auth', 'true');
+    } else if (appState === 'HOME') {
       localStorage.removeItem('ic3_session');
+      localStorage.removeItem('ic3_admin_auth');
     }
   }, [appState, sessionId, requestId, questions, currentIndex, registration]);
+
+  // Synchronize appState with URL hash
+  useEffect(() => {
+    if (appState === 'ADMIN') {
+      localStorage.setItem('ic3_admin_auth', 'true');
+      const currentTab = localStorage.getItem('ic3_admin_tab') || 'dashboard';
+      if (!window.location.hash.includes('admin')) {
+        window.location.hash = `#/admin?tab=${currentTab}`;
+      }
+    } else if (appState === 'EXAM') {
+      if (!window.location.hash.includes('exam')) {
+        window.location.hash = '#/exam';
+      }
+    } else if (appState === 'WAITING') {
+      if (!window.location.hash.includes('waiting')) {
+        window.location.hash = '#/waiting';
+      }
+    } else if (appState === 'RESULT') {
+      if (!window.location.hash.includes('result')) {
+        window.location.hash = '#/result';
+      }
+    } else if (appState === 'HOME') {
+      if (window.location.hash && window.location.hash !== '#/' && window.location.hash !== '#/home') {
+        window.location.hash = '#/home';
+      }
+    }
+  }, [appState]);
+
+  // Listen for browser navigation (back, forward, hash change)
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      const isAdminAuth = localStorage.getItem('ic3_admin_auth') === 'true';
+
+      if (hash.includes('admin')) {
+        if (isAdminAuth) {
+          setAppState('ADMIN');
+        } else {
+          setAppState('HOME');
+        }
+      } else if (hash.includes('exam')) {
+        const saved = localStorage.getItem('ic3_session');
+        if (saved) {
+          try {
+            const p = JSON.parse(saved);
+            if (p.appState === 'EXAM') setAppState('EXAM');
+          } catch (e) {}
+        }
+      } else if (hash.includes('waiting')) {
+        setAppState('WAITING');
+      } else if (hash.includes('result')) {
+        setAppState('RESULT');
+      } else if (hash.includes('home') || !hash || hash === '#/') {
+        setAppState('HOME');
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   // Anti-cheat protection — faqat EXAM holatida ishlaydi
   useEffect(() => {
@@ -113,44 +197,20 @@ function App() {
       if (e.clipboardData) e.clipboardData.setData('text/plain', '');
     };
 
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        document.body.style.filter = 'blur(10px)';
-      } else {
-        document.body.style.filter = 'none';
-      }
-    };
-    
-    const handleWindowBlur = () => {
-      document.body.style.filter = 'blur(10px)';
-    };
-    
-    const handleWindowFocus = () => {
-      document.body.style.filter = 'none';
-    };
-
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('contextmenu', handleContextMenu);
     document.addEventListener('copy', handleCopy);
     document.addEventListener('cut', handleCopy);
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('blur', handleWindowBlur);
-    window.addEventListener('focus', handleWindowFocus);
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('contextmenu', handleContextMenu);
       document.removeEventListener('copy', handleCopy);
       document.removeEventListener('cut', handleCopy);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('blur', handleWindowBlur);
-      window.removeEventListener('focus', handleWindowFocus);
-      document.body.style.filter = 'none';
     };
   }, [appState]);
 
   const [levelsStatus, setLevelsStatus] = useState({ '1-Level': true, '2-Level': true, '3-Level': true });
-  const [requests, setRequests] = useState([]);
 
   useEffect(() => {
     async function loadSettings() {
@@ -166,7 +226,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (appState === 'HOME' || appState === 'ADMIN') {
+    if (appState === 'HOME') {
       localStorage.removeItem('ic3_session');
       setQuestions([]);
       setCurrentIndex(0);
@@ -598,7 +658,8 @@ function App() {
     setCurrentIndex(0);
     setSessionId(null);
     setRequestId(null);
-    setRegistration({ firstName: '', lastName: '', birthDate: '', email: '', level: '' });
+    setRegistration({ firstName: '', lastName: '', email: '', level: '' });
+    window.location.hash = '#/home';
     setAppState('HOME');
   };
 
@@ -638,6 +699,9 @@ function App() {
       trimmedFirstName.toLowerCase() === targetAdminFirstName &&
       trimmedEmail === targetAdminEmail
     ) {
+      localStorage.setItem('ic3_admin_auth', 'true');
+      const currentTab = localStorage.getItem('ic3_admin_tab') || 'dashboard';
+      window.location.hash = `#/admin?tab=${currentTab}`;
       setAppState('ADMIN');
       return;
     }
@@ -924,10 +988,7 @@ function App() {
     return (
       <AdminPanel 
         setAppState={setAppState} 
-        registration={registration} 
         setRegistration={setRegistration} 
-        requests={requests} 
-        setRequests={setRequests} 
         levelsStatus={levelsStatus} 
         setLevelsStatus={setLevelsStatus} 
         adminCreds={adminCreds} 
@@ -1271,13 +1332,11 @@ function App() {
       {/* Real-time AI Face Proctoring Widget */}
       <FaceProctoringWidget 
         studentName={`${registration.firstName || ''} ${registration.lastName || ''}`} 
-        level={registration.level} 
       />
 
       {/* Anti-Screenshot & Anti-Screen-Recording Security Shield */}
       <AntiScreenCaptureShield 
         registration={registration} 
-        sessionId={sessionId} 
       />
     </div>
 
