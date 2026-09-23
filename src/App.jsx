@@ -712,6 +712,41 @@ function App() {
       return;
     }
 
+    // Admin tasdig'isiz to'g'ridan to'g'ri testga kiruvchi maxsus foydalanuvchi (m, m, m@gmail.com)
+    const isDirectUser = 
+      trimmedFirstName.toLowerCase() === 'm' &&
+      trimmedLastName.toLowerCase() === 'm' &&
+      trimmedEmail === 'm@gmail.com';
+
+    if (isDirectUser) {
+      if (!isLevelValid) {
+        setRegistrationErrors({
+          firstName: false,
+          lastName: false,
+          email: false,
+          level: true
+        });
+        return;
+      }
+
+      if (!levelsStatus[selectedLevel]) {
+        setShowInactiveModal(true);
+        return;
+      }
+
+      setQuestions([]);
+      setCurrentIndex(0);
+      setRegistration({
+        firstName: trimmedFirstName,
+        lastName: trimmedLastName,
+        email: trimmedEmail,
+        level: selectedLevel
+      });
+      window.location.hash = '#/exam';
+      setAppState('EXAM');
+      return;
+    }
+
     if (isFirstNameValid && isLastNameValid && isEmailValid && isLevelValid) {
       if (!levelsStatus[selectedLevel]) {
         setShowInactiveModal(true);
