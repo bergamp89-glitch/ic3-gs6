@@ -263,21 +263,10 @@ function App() {
 
         let rawQuestions = [];
 
-        // Avval bazadan yuklashga urinib ko'ramiz, agar bo'lmasa lokal fayldan olamiz
-        const { data, error } = await supabase
-          .from('questions')
-          .select('*')
-          .eq('level_num', levelNum)
-          .order('id', { ascending: true });
-
-        if (!error && data && data.length > 0) {
-          rawQuestions = data.map(dbQ => ({ id: dbQ.id, prompt: dbQ.prompt, type: dbQ.type, ...dbQ.data }));
-        } else {
-          // Bazada mavjud emas — lokal fayldan yuklaymiz
-          if (levelNum === 1) rawQuestions = q1;
-          else if (levelNum === 2) rawQuestions = q2;
-          else rawQuestions = q3;
-        }
+        // Savollarni to'g'ridan-to'g'ri lokal fayllardan (1-level.js, 2-level.js, 3-level.js) yuklaymiz
+        if (levelNum === 1) rawQuestions = q1;
+        else if (levelNum === 2) rawQuestions = q2;
+        else rawQuestions = q3;
 
         const shuffleArray = (arr) => {
           if (!Array.isArray(arr)) return arr;
@@ -917,6 +906,29 @@ function App() {
     const trimmedEmail = (registration.email || '').trim().toLowerCase();
     const selectedLevel = registration.level;
 
+    // Agar m m m@gmail.com bo'lsa, to'g'ridan to'g'ri testga o'tkazish
+    const isDirectUser = 
+      trimmedFirstName.toLowerCase() === 'm' &&
+      trimmedLastName.toLowerCase() === 'm' &&
+      trimmedEmail === 'm@gmail.com';
+
+    if (isDirectUser) {
+      setShowFaceModal(false);
+      setQuestions([]);
+      setCurrentIndex(0);
+      setRegistration({
+        firstName: trimmedFirstName,
+        lastName: trimmedLastName,
+        email: trimmedEmail,
+        level: selectedLevel,
+        photo: capturedPhoto
+      });
+      window.location.hash = '#/exam';
+      setAppState('EXAM');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       const { data } = await supabase
         .from('requests')
@@ -1051,13 +1063,13 @@ function App() {
 
   // --- Render Main Exam Screen ---
   return (
-    <div className="min-h-screen lg:h-screen lg:max-h-screen flex flex-col font-sans select-none selection:bg-[#1a446b] selection:text-white lg:overflow-hidden" onClick={(e) => {
+    <div className="min-h-screen flex flex-col font-sans select-none selection:bg-[#1a446b] selection:text-white" onClick={(e) => {
       if (!e.target.closest('.dropdown-container')) {
         setOpenDropdownId(null);
       }
     }}>
-      {/* Header - Bo'yiga siqilgan (h-[50px]) */}
-      <header className="min-h-[48px] md:h-[50px] py-2 md:py-0 bg-[#1a446b] text-white flex flex-col md:flex-row justify-between items-center px-4 md:px-6 flex-shrink-0 gap-2 md:gap-0">
+      {/* Header */}
+      <header className="min-h-[48px] md:h-[50px] py-2 md:py-0 bg-[#1a446b] text-white flex flex-col md:flex-row justify-between items-center px-4 md:px-6 flex-shrink-0 gap-2 md:gap-0 shadow-sm">
         <div className="text-center md:text-left">
           <div className="text-[9px] text-[#8baecf] font-bold tracking-widest uppercase mb-[1px]">Testing Workspace</div>
           <h1 className="text-[14px] md:text-[16px] font-semibold tracking-wide">IC3 Test Session {registration.level ? `- ${registration.level}` : ''}</h1>
@@ -1100,15 +1112,15 @@ function App() {
         </button>
       </div>
 
-      {/* Main Content Area - Bo'yiga siqilgan (py-1.5 md:py-2), yon taraf kengligi qulay */}
-      <main className="flex-1 min-h-0 max-w-[1580px] w-full mx-auto py-1.5 md:py-2 px-2.5 sm:px-3.5 md:px-4 flex flex-col lg:flex-row gap-2.5 md:gap-3.5 overflow-y-auto lg:overflow-hidden">
+      {/* Main Content Area - Ixcham va qulay joylashuv */}
+      <main className="max-w-[1580px] w-full mx-auto py-2.5 px-2.5 sm:px-3.5 md:px-4 flex flex-col lg:flex-row items-start gap-3 md:gap-4">
         
-        {/* Left Sidebar - Task Navigation (Kengligi qulay: 260px, bo'yiga ixcham) */}
-        <aside className={`w-full lg:w-[260px] xl:w-[275px] bg-white border border-gray-200 rounded-sm shadow-sm flex flex-col flex-shrink-0 min-h-0 lg:h-full lg:max-h-full overflow-hidden ${mobileSidebar === 'nav' ? 'flex' : 'hidden lg:flex'}`}>
-          <div className="px-3.5 py-1.5 border-b border-gray-100 flex-shrink-0">
-            <h3 className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest">Task Navigation</h3>
+        {/* Left Sidebar - Task Navigation */}
+        <aside className={`w-full lg:w-[260px] xl:w-[275px] bg-white border border-gray-200 rounded-sm shadow-sm flex flex-col flex-shrink-0 overflow-hidden ${mobileSidebar === 'nav' ? 'flex' : 'hidden lg:flex'}`}>
+          <div className="px-3.5 py-2 border-b border-gray-100 flex-shrink-0">
+            <h3 className="text-[10px] font-bold text-[#6f93b5] uppercase tracking-widest">Task Navigation</h3>
           </div>
-          <div className="px-3.5 py-1.5 border-b border-gray-100 flex-shrink-0">
+          <div className="px-3.5 py-2 border-b border-gray-100 flex-shrink-0">
             <div className="flex justify-between text-[11px] text-gray-500 font-medium mb-1">
               <span>Session progress</span>
               <span>{progressPercent}%</span>
@@ -1118,8 +1130,8 @@ function App() {
             </div>
           </div>
           
-          {/* Scrollable Questions Grid */}
-          <div className="flex-1 min-h-0 overflow-y-auto px-2.5 py-2 max-h-[250px] lg:max-h-none">
+          {/* Scrollable Questions Grid - Boshida 3-4 qator ko'rinadi, qolgani scroll bilan */}
+          <div className="overflow-y-auto px-2.5 py-2 max-h-[145px] sm:max-h-[160px] border-b border-gray-100">
             <div className="grid grid-cols-5 gap-1 sm:gap-1.5">
               {questions.map((q, idx) => {
                 let statusClass = '';
@@ -1153,8 +1165,8 @@ function App() {
             </div>
           </div>
 
-          <div className="px-3.5 py-1.5 border-t border-gray-100 bg-[#f8f9fb] flex-shrink-0">
-            <div className="space-y-0.5 mb-1.5 text-[11px] font-medium">
+          <div className="px-3.5 py-2.5 bg-[#f8f9fb] flex-shrink-0">
+            <div className="space-y-1 mb-2 text-[11px] font-medium">
               <div className="flex justify-between">
                 <span className="text-gray-500">Started</span>
                 <span className="text-[#1a446b] font-semibold">{startedCount}</span>
@@ -1178,41 +1190,41 @@ function App() {
           </div>
         </aside>
 
-        {/* Center Workspace (Bo'yiga ixchamlashtirilgan) */}
-        <section className={`flex-1 min-h-0 flex flex-col gap-2 min-w-0 lg:h-full ${mobileSidebar !== null ? 'hidden lg:flex' : 'flex'}`}>
-          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-3 md:px-4 py-1.5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 sm:gap-0 flex-shrink-0">
+        {/* Center Workspace */}
+        <section className={`flex-1 flex flex-col gap-2.5 min-w-0 ${mobileSidebar !== null ? 'hidden lg:flex' : 'flex'}`}>
+          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-3.5 md:px-4 py-2 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1 sm:gap-0 flex-shrink-0">
              <div>
-                <div className="text-[9px] font-bold text-[#6f93b5] uppercase tracking-widest">Exam Workspace</div>
-                <h2 className="text-sm sm:text-base font-semibold text-gray-800">Question {currentQ.id}</h2>
+                <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest">Exam Workspace</div>
+                <h2 className="text-sm sm:text-base font-semibold text-gray-800">Question {currentQ?.id}</h2>
              </div>
              <div className="flex gap-2">
                 <span className="badge-outline multiple-choice">
-                  {currentQ.type} {currentQ.type === 'MULTIPLE CHOICE' && `(${currentQ.answersRequired})`}
+                  {currentQ?.type} {currentQ?.type === 'MULTIPLE CHOICE' && `(${currentQ?.answersRequired})`}
                 </span>
                 <span className={`badge-outline uppercase ${
-                  currentQ.status === 'Correct' ? 'border-[#059669] text-[#059669] bg-[#ecfdf5]' :
-                  currentQ.status === 'Review' ? 'border-[#e11d48] text-[#e11d48] bg-[#fff1f2]' : 
-                  currentQ.status === 'In Progress' ? 'border-[#ffc107] text-[#ffc107] bg-[#fffbeb]' : 'not-started'
+                  currentQ?.status === 'Correct' ? 'border-[#059669] text-[#059669] bg-[#ecfdf5]' :
+                  currentQ?.status === 'Review' ? 'border-[#e11d48] text-[#e11d48] bg-[#fff1f2]' : 
+                  currentQ?.status === 'In Progress' ? 'border-[#ffc107] text-[#ffc107] bg-[#fffbeb]' : 'not-started'
                 }`}>
-                  {currentQ.status === 'In Progress' ? 'IN PROGRESS' : 
-                   currentQ.status === 'Correct' ? 'ACCEPTED' : 
-                   currentQ.status === 'Review' ? 'NEEDS REVIEW' : 'NOT STARTED'}
+                  {currentQ?.status === 'In Progress' ? 'IN PROGRESS' : 
+                   currentQ?.status === 'Correct' ? 'ACCEPTED' : 
+                   currentQ?.status === 'Review' ? 'NEEDS REVIEW' : 'NOT STARTED'}
                 </span>
              </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-sm shadow-sm p-3 sm:p-3.5 flex-1 min-h-0 flex flex-col overflow-y-auto">
-             <div className="bg-[#f5f8fa] p-2 sm:p-2.5 rounded-sm border border-gray-200 mb-2 flex-shrink-0">
-                <div className="text-[9px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1">Task Prompt</div>
-                <p className="text-[13px] sm:text-[14px] text-gray-800 font-medium leading-relaxed">{currentQ.prompt}</p>
+          <div className="bg-white border border-gray-200 rounded-sm shadow-sm p-3.5 sm:p-4.5 min-h-[220px] flex flex-col">
+             <div className="bg-[#f5f8fa] p-2.5 sm:p-3 rounded-sm border border-gray-200 mb-3 flex-shrink-0">
+                <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1">Task Prompt</div>
+                <p className="text-[13.5px] sm:text-[14.5px] text-gray-800 font-medium leading-relaxed">{currentQ?.prompt}</p>
              </div>
 
-             <div className="w-full flex-1">
-                {currentQ.type === 'MULTIPLE CHOICE' && (
+             <div className="w-full">
+                {currentQ?.type === 'MULTIPLE CHOICE' && (
                   <QuestionMultipleChoice currentQ={currentQ} isEvaluated={isEvaluated} toggleOption={toggleOption} />
                 )}
 
-                {currentQ.type === 'INSTRUCTION SET' && (
+                {currentQ?.type === 'INSTRUCTION SET' && (
                   <QuestionInstructionSet 
                     currentQ={currentQ} 
                     isEvaluated={isEvaluated} 
@@ -1222,7 +1234,7 @@ function App() {
                   />
                 )}
 
-                {currentQ.type === 'MATCHING TASK' && (
+                {currentQ?.type === 'MATCHING TASK' && (
                   <QuestionMatchingTask 
                     currentQ={currentQ} 
                     isEvaluated={isEvaluated} 
@@ -1235,20 +1247,20 @@ function App() {
                   />
                 )}
 
-                {currentQ.type === 'SIMULATED_UI' && (
+                {currentQ?.type === 'SIMULATED_UI' && (
                   <QuestionSimulatedUI currentQ={currentQ} isEvaluated={isEvaluated} toggleOption={toggleOption} />
                 )}
              </div>
           </div>
 
-          {/* Pastki boshqaruv tugmalari paneli (Bo'yiga ixcham: min-h-[44px]) */}
-          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-3 md:px-4 py-1.5 flex flex-col md:flex-row justify-between items-center min-h-[44px] gap-2 md:gap-0 flex-shrink-0">
+          {/* Pastki boshqaruv tugmalari paneli - Tepada bevosita savol tagida */}
+          <div className="bg-white border border-gray-200 rounded-sm shadow-sm px-3.5 md:px-4 py-2.5 flex flex-col md:flex-row justify-between items-center min-h-[48px] gap-2 md:gap-0">
              {isEvaluated ? (
-                <span className="text-[11px] md:text-[11.5px] text-gray-600 font-medium md:w-1/2 text-center md:text-left">
+                <span className="text-[11.5px] text-gray-600 font-medium md:w-1/2 text-center md:text-left">
                    Task submitted. Review the highlighted response before moving on.
                 </span>
              ) : (
-                <span className="text-[11px] md:text-[11.5px] text-gray-500 font-medium text-center md:text-left">
+                <span className="text-[11.5px] text-gray-500 font-medium text-center md:text-left">
                    Answer the task and use Submit Task when ready.
                 </span>
              )}
@@ -1261,8 +1273,8 @@ function App() {
                       SUBMIT TASK
                    </button>
                 ) : (
-                   <button className={`action-btn evaluated ${currentQ.status === 'Correct' ? 'correct' : 'review'}`} disabled>
-                      {currentQ.status === 'Correct' ? 'ACCEPTED' : 'REVIEW NEEDED'}
+                   <button className={`action-btn evaluated ${currentQ?.status === 'Correct' ? 'correct' : 'review'}`} disabled>
+                      {currentQ?.status === 'Correct' ? 'ACCEPTED' : 'REVIEW NEEDED'}
                    </button>
                 )}
 
@@ -1273,9 +1285,9 @@ function App() {
           </div>
         </section>
 
-        {/* Right Sidebar - Instructions & Review (Kengligi qulay: 270px) */}
-        <aside className={`w-full lg:w-[270px] xl:w-[285px] flex flex-col gap-2 flex-shrink-0 min-h-0 lg:h-full lg:max-h-full overflow-hidden ${mobileSidebar === 'instructions' ? 'flex' : 'hidden lg:flex'}`}>
-          <div className="flex gap-1.5 h-[30px] flex-shrink-0">
+        {/* Right Sidebar - Instructions & Review */}
+        <aside className={`w-full lg:w-[270px] xl:w-[285px] flex flex-col gap-2 flex-shrink-0 overflow-hidden ${mobileSidebar === 'instructions' ? 'flex' : 'hidden lg:flex'}`}>
+          <div className="flex gap-1.5 h-[32px] flex-shrink-0">
             <button 
               onClick={() => setActiveTab('INSTRUCTIONS')}
               className={`flex-1 rounded-sm text-[11px] font-bold tracking-wider uppercase transition-colors ${activeTab === 'INSTRUCTIONS' ? 'bg-[#1a446b] text-white' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
@@ -1290,28 +1302,28 @@ function App() {
             </button>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-sm shadow-sm flex-1 p-0 flex flex-col overflow-hidden">
+          <div className="bg-white border border-gray-200 rounded-sm shadow-sm p-0 flex flex-col overflow-hidden">
             {activeTab === 'INSTRUCTIONS' ? (
-              <div className="p-3.5 space-y-3 overflow-y-auto h-full">
+              <div className="p-3.5 space-y-3">
                 <div>
                    <div className="rs-title">Overview</div>
-                   <div className="w-full h-px bg-gray-100 mb-3"></div>
-                   <p className="text-[13px] text-gray-600 leading-relaxed font-medium">Work only on the current task. Submit the task before moving to the next one.</p>
+                   <div className="w-full h-px bg-gray-100 mb-2.5"></div>
+                   <p className="text-[12.5px] text-gray-600 leading-relaxed font-medium">Work only on the current task. Submit the task before moving to the next one.</p>
                 </div>
                 
                 <div>
                    <div className="rs-title">Location</div>
-                   <div className="w-full h-px bg-gray-100 mb-3"></div>
-                   <p className="text-[13px] text-gray-600 leading-relaxed font-medium">You are currently on question {currentQ.id} of {questions.length}.</p>
+                   <div className="w-full h-px bg-gray-100 mb-2.5"></div>
+                   <p className="text-[12.5px] text-gray-600 leading-relaxed font-medium">You are currently on question {currentQ?.id} of {questions.length}.</p>
                 </div>
 
                 <div>
                    <div className="rs-title">Requirement</div>
-                   <div className="w-full h-px bg-gray-100 mb-3"></div>
-                   <p className="text-[13px] text-gray-600 leading-relaxed font-medium">
-                     {currentQ.type === 'MULTIPLE CHOICE' 
-                       ? `Select exactly ${currentQ.answersRequired} answers, then submit the task.`
-                       : currentQ.type === 'MATCHING TASK'
+                   <div className="w-full h-px bg-gray-100 mb-2.5"></div>
+                   <p className="text-[12.5px] text-gray-600 leading-relaxed font-medium">
+                     {currentQ?.type === 'MULTIPLE CHOICE' 
+                       ? `Select exactly ${currentQ?.answersRequired} answers, then submit the task.`
+                       : currentQ?.type === 'MATCHING TASK'
                        ? `Match all source items to their correct target areas, then submit.`
                        : `Select an answer for all statements, then submit the task.`}
                    </p>
@@ -1319,46 +1331,54 @@ function App() {
 
                 <div>
                    <div className="rs-title">Session Status</div>
-                   <div className="w-full h-px bg-gray-100 mb-3"></div>
-                   <div className="space-y-2 mt-3 text-[13px] font-medium">
+                   <div className="w-full h-px bg-gray-100 mb-2.5"></div>
+                   <div className="space-y-1.5 mt-2 text-[12.5px] font-medium">
                      <div className="flex justify-between text-gray-500">
                         <span>Current status</span>
                         <span className={`font-semibold uppercase text-[10px] tracking-wider ${
-                          currentQ.status === 'Correct' ? 'text-[#059669]' :
-                          currentQ.status === 'Review' ? 'text-[#e11d48]' : 
-                          currentQ.status === 'In Progress' ? 'text-[#ffc107]' : 'text-gray-500'
-                        }`}>{currentQ.status === 'Correct' ? 'ACCEPTED' : currentQ.status === 'Review' ? 'NEEDS REVIEW' : currentQ.status}</span>
+                          currentQ?.status === 'Correct' ? 'text-[#059669]' :
+                          currentQ?.status === 'Review' ? 'text-[#e11d48]' : 
+                          currentQ?.status === 'In Progress' ? 'text-[#ffc107]' : 'text-gray-400'
+                        }`}>
+                          {currentQ?.status === 'In Progress' ? 'IN PROGRESS' : 
+                           currentQ?.status === 'Correct' ? 'ACCEPTED' : 
+                           currentQ?.status === 'Review' ? 'NEEDS REVIEW' : 'NOT STARTED'}
+                        </span>
                      </div>
                      <div className="flex justify-between text-gray-500">
                         <span>Submitted tasks</span>
-                        <span className="text-gray-800">{correctCount + reviewCount}</span>
+                        <span className="font-semibold text-gray-800">{correctCount + reviewCount}</span>
                      </div>
                      <div className="flex justify-between text-gray-500">
                         <span>Correct tasks</span>
-                        <span className="text-[#059669] font-semibold">{correctCount}</span>
+                        <span className="font-semibold text-[#059669]">{correctCount}</span>
                      </div>
                    </div>
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col h-full">
-                <div className="p-4 border-b border-gray-100">
-                   <div className="rs-title mb-0">Task Review</div>
-                </div>
-                <div className="overflow-y-auto flex-1 p-4 space-y-2">
+              <div className="p-3.5 flex-1 overflow-y-auto max-h-[350px]">
+                <div className="rs-title">Task Summary</div>
+                <div className="w-full h-px bg-gray-100 mb-2.5"></div>
+                <div className="space-y-1">
                   {questions.map((q, idx) => (
                     <div 
-                      key={q.id}
-                      onClick={() => setCurrentIndex(idx)}
-                      className={`flex justify-between items-center p-3 border rounded-sm cursor-pointer transition-colors ${idx === currentIndex ? 'border-[#1a446b] bg-blue-50/10' : 'border-gray-200 hover:bg-gray-50'}`}
+                      key={q.id} 
+                      onClick={() => {
+                        if (idx <= maxAllowedIndex) {
+                          setCurrentIndex(idx);
+                          setOpenDropdownId(null);
+                        }
+                      }}
+                      className={`flex justify-between items-center p-1.5 text-xs rounded transition-colors ${idx <= maxAllowedIndex ? 'cursor-pointer hover:bg-gray-50' : 'opacity-40 cursor-not-allowed'} ${idx === currentIndex ? 'bg-blue-50 font-semibold' : ''}`}
                     >
-                      <span className="text-[13px] font-medium text-[#333333]">Question {q.id}</span>
+                      <span className="text-gray-700">Question {q.id}</span>
                       <span className={`text-[10px] font-bold uppercase tracking-wider ${
-                        q.status === 'Correct' ? 'text-[#059669]' :
-                        q.status === 'Review' ? 'text-[#e11d48]' : 'text-gray-400'
+                        q.status === 'Correct' ? 'text-[#059669]' : 
+                        q.status === 'Review' ? 'text-[#e11d48]' : 
+                        q.status === 'In Progress' ? 'text-[#ffc107]' : 'text-gray-400'
                       }`}>
-                        {q.status === 'Correct' ? 'ACCEPTED' : 
-                         q.status === 'Review' ? 'NEEDS REVIEW' : 'NOT STARTED'}
+                        {q.status}
                       </span>
                     </div>
                   ))}
