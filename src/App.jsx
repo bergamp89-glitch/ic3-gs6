@@ -629,7 +629,13 @@ function App() {
       } else if (currentQ.type === 'MATCHING TASK') {
         const tgts = currentQ.targetAreas || [];
         const userAns = currentQ.userAnswers || {};
-        isCorrect = tgts.every(tgt => userAns[tgt.id] === tgt.correctAnswer);
+        isCorrect = tgts.every(tgt => {
+          const userPlacedSourceId = userAns[tgt.id];
+          if (!userPlacedSourceId) return false;
+          if (userPlacedSourceId === tgt.correctAnswer) return true;
+          const matchingEquivalent = tgts.find(t => t.correctAnswer === userPlacedSourceId);
+          return matchingEquivalent && matchingEquivalent.label === tgt.label;
+        });
       }
 
       setQuestions(prev => prev.map((q, i) => {
