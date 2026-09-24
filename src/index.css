@@ -67,11 +67,7 @@ img, canvas, svg, a {
     @apply border-gray-300 text-gray-500 bg-white;
   }
 
-  /* Right Sidebar Section Titles */
-  .rs-title {
-    @apply text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-wider mb-1.5;
-  }
-  
+
   /* Main Action Buttons */
   .action-btn {
     @apply px-4 sm:px-5 py-1.5 rounded-sm text-xs sm:text-[12px] font-bold tracking-wider uppercase transition-all duration-200 border cursor-pointer bg-[#1a446b] border-[#1a446b] text-white hover:bg-[#153655] shadow-sm hover:shadow-md;

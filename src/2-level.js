@@ -1281,31 +1281,6 @@ export const examQuestions = [
   },
   {
     "id": 45,
-    "prompt": "Move each positive or negative aspect of AI from the list on the left to its impact on the right.",
-    "type": "MATCHING",
-    "answersRequired": 3,
-    "options": [
-      {
-        "id": "A",
-        "text": "Personalization of content -> Creates specific content improving user engagement"
-      },
-      {
-        "id": "B",
-        "text": "Ethical concerns -> Reproduces biases that exist in the data it analyzes"
-      },
-      {
-        "id": "C",
-        "text": "Automation of repetitive tasks -> Frees up time for computer users to focus on more strategic actions"
-      }
-    ],
-    "correctAnswers": [
-      "A",
-      "B",
-      "C"
-    ]
-  },
-  {
-    "id": 46,
     "prompt": "Move each file extension from the list on the left to the correct description on the right.",
     "type": "MATCHING",
     "answersRequired": 4,
@@ -1335,7 +1310,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 47,
+    "id": 46,
     "prompt": "Which two statements about permissions of a locally stored word processing document are true? (Choose 2.)",
     "type": "MULTIPLE CHOICE",
     "answersRequired": 2,
@@ -1363,62 +1338,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 48,
-    "prompt": "You have separate Google accounts for school and personal use. You are logged into your personal account. You need to access a file that was shared with you through your school account's Google Drive. What should you do?",
-    "type": "SINGLE CHOICE",
-    "answersRequired": 1,
-    "options": [
-      {
-        "id": "A",
-        "text": "Share the file with your personal Google account."
-      },
-      {
-        "id": "B",
-        "text": "Copy the contents of the file into your personal account."
-      },
-      {
-        "id": "C",
-        "text": "Configure both accounts to use the same password."
-      },
-      {
-        "id": "D",
-        "text": "Switch from your personal Google account to your school account."
-      }
-    ],
-    "correctAnswers": [
-      "D"
-    ]
-  },
-  {
-    "id": 49,
-    "prompt": "Which two communication methods are asynchronous? (Choose 2.)",
-    "type": "MULTIPLE CHOICE",
-    "answersRequired": 2,
-    "options": [
-      {
-        "id": "A",
-        "text": "Telephoning"
-      },
-      {
-        "id": "B",
-        "text": "Emailing"
-      },
-      {
-        "id": "C",
-        "text": "Videoconferencing"
-      },
-      {
-        "id": "D",
-        "text": "Text messaging"
-      }
-    ],
-    "correctAnswers": [
-      "B",
-      "D"
-    ]
-  },
-  {
-    "id": 50,
+    "id": 47,
     "prompt": "You need to add next month's Student Government meeting to your calendar. Which two elements can you select to open the event dialog box? (Choose 2.)",
     "type": "MULTIPLE CHOICE",
     "answersRequired": 2,
@@ -1446,7 +1366,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 51,
+    "id": 48,
     "prompt": "Which three services are audio streaming services? (Choose 3.)",
     "type": "MULTIPLE CHOICE",
     "answersRequired": 3,
@@ -1483,7 +1403,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 52,
+    "id": 49,
     "prompt": "A middle school student joins a social media community made up of people who share his hobby. For each statement, select Yes if it would be an appropriate way to interact with the online community or No if it would not be.",
     "type": "YES_NO_MATRIX",
     "answersRequired": 4,
@@ -1517,7 +1437,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 53,
+    "id": 50,
     "prompt": "Move each term from the list on the left to its description on the right.",
     "type": "MATCHING",
     "answersRequired": 5,
@@ -1552,7 +1472,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 54,
+    "id": 51,
     "prompt": "Your job requires you to work at a computer for several hours each day. You are concerned that you will develop eye strain. For each action, select Yes if it will prevent eye strain or No if it will not.",
     "type": "YES_NO_MATRIX",
     "answersRequired": 4,
@@ -1586,7 +1506,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 55,
+    "id": 52,
     "prompt": "Move each type of in-app purchase from the list on the left to its description on the right.",
     "type": "MATCHING",
     "answersRequired": 4,
@@ -1616,7 +1536,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 56,
+    "id": 53,
     "prompt": "You need to send several high-resolution photos as an email attachment, but the file size is too large. Which action will make the files easier to share?",
     "type": "SINGLE CHOICE",
     "answersRequired": 1,
@@ -1643,7 +1563,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 57,
+    "id": 54,
     "prompt": "Move each workbook element from the list on the left to the correct definition on the right.",
     "type": "MATCHING",
     "answersRequired": 4,
@@ -1673,7 +1593,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 58,
+    "id": 55,
     "prompt": "Which step should you take to insert page numbers into your document?",
     "type": "SINGLE CHOICE",
     "answersRequired": 1,
@@ -1700,7 +1620,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 59,
+    "id": 56,
     "prompt": "For each of the four statements about best practices for social media accounts, determine whether each is True or False.",
     "type": "TRUE_FALSE_MATRIX",
     "answersRequired": 4,
@@ -1734,7 +1654,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 60,
+    "id": 57,
     "prompt": "For each of the three statements about web browsers, select Yes if the action is possible or No if it is not.",
     "type": "YES_NO_MATRIX",
     "answersRequired": 3,
@@ -1762,7 +1682,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 61,
+    "id": 58,
     "prompt": "You are using a new software program to create a presentation. You need to use a function that you are unfamiliar with. For each resource, select Yes if you could use it to find help or No if you could not.",
     "type": "YES_NO_MATRIX",
     "answersRequired": 4,
@@ -1796,40 +1716,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 62,
-    "prompt": "Which three are effective strategies for maintaining mental well-being while using technology? (Choose 3.)",
-    "type": "MULTIPLE CHOICE",
-    "answersRequired": 3,
-    "options": [
-      {
-        "id": "A",
-        "text": "Make time for regular face-to-face interactions"
-      },
-      {
-        "id": "B",
-        "text": "Take breaks from screens throughout the day"
-      },
-      {
-        "id": "C",
-        "text": "Stay up to date by checking social media often."
-      },
-      {
-        "id": "D",
-        "text": "Balance screen time with analog activities."
-      },
-      {
-        "id": "E",
-        "text": "Set notifications for every app on your device."
-      }
-    ],
-    "correctAnswers": [
-      "A",
-      "B",
-      "D"
-    ]
-  },
-  {
-    "id": 63,
+    "id": 59,
     "prompt": "You need to appropriately protect your privacy and security. In which two situations should you disable the camera on your online device? (Choose 2.)",
     "type": "MULTIPLE CHOICE",
     "answersRequired": 2,
@@ -1857,41 +1744,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 64,
-    "prompt": "You need to research the impacts of online learning and assess the relevance of your search results. For each statement, select Yes if the search result is relevant to your topic or No if it is not.",
-    "type": "YES_NO_MATRIX",
-    "answersRequired": 4,
-    "options": [
-      {
-        "id": "A",
-        "text": "An article about the benefits of education",
-        "answer": "No"
-      },
-      {
-        "id": "B",
-        "text": "A website offering educational resources for sale",
-        "answer": "No"
-      },
-      {
-        "id": "C",
-        "text": "A graph comparing test scores of students in online and in-person educational systems",
-        "answer": "Yes"
-      },
-      {
-        "id": "D",
-        "text": "An article in an educational magazine about teachers' online teaching experiences",
-        "answer": "Yes"
-      }
-    ],
-    "correctAnswers": [
-      "A:No",
-      "B:No",
-      "C:Yes",
-      "D:Yes"
-    ]
-  },
-  {
-    "id": 65,
+    "id": 60,
     "prompt": "A user adds a negative or critical comment in response to original content you posted online. How should you respond to the comment?",
     "type": "SINGLE CHOICE",
     "answersRequired": 1,
@@ -1918,7 +1771,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 66,
+    "id": 61,
     "prompt": "For each statement about rules and regulations concerning intellectual property, indicate whether it is True or False.",
     "type": "TRUE_FALSE_MATRIX",
     "answersRequired": 4,
@@ -1952,7 +1805,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 67,
+    "id": 62,
     "prompt": "Move each file access permission type from the list on the left to its definition on the right.",
     "type": "MATCHING",
     "answersRequired": 4,
@@ -1982,7 +1835,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 68,
+    "id": 63,
     "prompt": "You're having trouble printing from your computer. For each statement, select True if it is a method of confirming a successful connection to a printer or False if it is not.",
     "type": "TRUE_FALSE_MATRIX",
     "answersRequired": 3,
@@ -2010,7 +1863,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 69,
+    "id": 64,
     "prompt": "It is late at night, after work hours. You have a question for your supervisor. Match each type of question to the appropriate method of contacting your supervisor.",
     "type": "MATCHING",
     "answersRequired": 3,
@@ -2035,7 +1888,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 70,
+    "id": 65,
     "prompt": "For each statement about macros in an Excel workbook, select True or False.",
     "type": "TRUE_FALSE_MATRIX",
     "answersRequired": 4,
@@ -2069,7 +1922,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 71,
+    "id": 66,
     "prompt": "Your class is meeting in a video conference. You and three other students will take turns presenting information both on camera and while sharing your screens individually. Which three actions should you take before you present? (Choose 3.)",
     "type": "MULTIPLE CHOICE",
     "answersRequired": 3,
@@ -2106,7 +1959,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 72,
+    "id": 67,
     "prompt": "Which statement describes saving files to the cloud?",
     "type": "SINGLE CHOICE",
     "answersRequired": 1,
@@ -2133,7 +1986,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 73,
+    "id": 68,
     "prompt": "You are in a loud room. You connect headphones to your computer so you can hear the audio better, but sound still comes through the computer speakers instead of the headphones. You need the computer audio to come through the headphones instead of the speakers. What should you do?",
     "type": "SINGLE CHOICE",
     "answersRequired": 1,
@@ -2160,7 +2013,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 74,
+    "id": 69,
     "prompt": "Which two keys are part of the \"home row\" on a standard keyboard? (Choose 2.)",
     "type": "MULTIPLE CHOICE",
     "answersRequired": 2,
@@ -2196,34 +2049,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 75,
-    "prompt": "A teenage neighbor creates a social media account through which she pretends to be a 40-year-old man. The account profile includes photos of a man she found online. She connects through the account to others, including students at her school, and then sponsors an online fundraiser for her own benefit. What is your neighbor doing?",
-    "type": "SINGLE CHOICE",
-    "answersRequired": 1,
-    "options": [
-      {
-        "id": "A",
-        "text": "Trolling"
-      },
-      {
-        "id": "B",
-        "text": "Phishing"
-      },
-      {
-        "id": "C",
-        "text": "Catfishing"
-      },
-      {
-        "id": "D",
-        "text": "Cyberhacking"
-      }
-    ],
-    "correctAnswers": [
-      "C"
-    ]
-  },
-  {
-    "id": 76,
+    "id": 70,
     "prompt": "Review the list of tools: Google Docs, Google Meet, Microsoft Teams, Dropbox. Which two features are shared by ALL of these tools? (Choose 2.)",
     "type": "MULTIPLE CHOICE",
     "answersRequired": 2,
@@ -2246,12 +2072,12 @@ export const examQuestions = [
       }
     ],
     "correctAnswers": [
-      "C",
-      "D"
+      "A",
+      "C"
     ]
   },
   {
-    "id": 77,
+    "id": 71,
     "prompt": "For each statement about central processing units (CPUs), select True or False.",
     "type": "TRUE_FALSE_MATRIX",
     "answersRequired": 3,
@@ -2279,7 +2105,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 78,
+    "id": 72,
     "prompt": "The content shown on your computer monitor is difficult to see. The dark areas of the screen are too dark, and the bright areas of the screen are too bright. You need to adjust the monitor so you can see the content. Which monitor setting should you adjust?",
     "type": "SINGLE CHOICE",
     "answersRequired": 1,
@@ -2306,7 +2132,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 79,
+    "id": 73,
     "prompt": "For each of the three statements about encryption as it relates to your device and personal internet usage, indicate whether it is True or False.",
     "type": "TRUE_FALSE_MATRIX",
     "answersRequired": 3,
@@ -2319,7 +2145,7 @@ export const examQuestions = [
       {
         "id": "B",
         "text": "Biometric verification and passcodes are two security methods commonly used for device encryption.",
-        "answer": "True"
+        "answer": "False"
       },
       {
         "id": "C",
@@ -2329,12 +2155,12 @@ export const examQuestions = [
     ],
     "correctAnswers": [
       "A:False",
-      "B:True",
+      "B:False",
       "C:True"
     ]
   },
   {
-    "id": 80,
+    "id": 74,
     "prompt": "What are two universal design principles for computing hardware? (Choose 2.)",
     "type": "MULTIPLE CHOICE",
     "answersRequired": 2,
@@ -2362,7 +2188,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 81,
+    "id": 75,
     "prompt": "Which term represents the main concepts you are searching for in a search engine?",
     "type": "SINGLE CHOICE",
     "answersRequired": 1,
@@ -2389,7 +2215,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 82,
+    "id": 76,
     "prompt": "You received a zero on the assignment you turned in yesterday. You need to send an email to your teacher and a copy of the email to your parent. Use the method that allows your teacher to easily respond to both you and your parent. To answer, move each applicable email part from the list on the left to the correct location on the right.",
     "type": "MATCHING",
     "answersRequired": 4,
@@ -2419,7 +2245,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 83,
+    "id": 77,
     "prompt": "You need to determine whether an article presents factual or biased information. What are two signs that an article presents a biased view? (Choose 2.)",
     "type": "MULTIPLE CHOICE",
     "answersRequired": 2,
@@ -2447,7 +2273,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 84,
+    "id": 78,
     "prompt": "Your team is collaborating on an on-line project. You need to provide feedback to each other in a digital format. For each statement about digital feedback, select Yes if the behavior meets digital etiquette standards or No if it does not.",
     "type": "YES_NO_MATRIX",
     "answersRequired": 4,
@@ -2481,7 +2307,7 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 85,
+    "id": 79,
     "prompt": "Your class is learning to use a new software application. Each student has been assigned to master a different feature of the application. What are two ways students can improve their ability to use the assigned features? (Choose 2.)",
     "type": "MULTIPLE CHOICE",
     "answersRequired": 2,
@@ -2505,11 +2331,11 @@ export const examQuestions = [
     ],
     "correctAnswers": [
       "A",
-      "B"
+      "C"
     ]
   },
   {
-    "id": 86,
+    "id": 80,
     "prompt": "You take a video of a friend doing a silly dance during a party. You want to share the video with your mutual friends. You need to determine how to share the video in a way that demonstrates good digital etiquette. What should you do?",
     "type": "SINGLE CHOICE",
     "answersRequired": 1,
@@ -2534,5 +2360,312 @@ export const examQuestions = [
     "correctAnswers": [
       "B"
     ]
+  },
+  {
+    "id": 81,
+    "prompt": "You are electronically reviewing the rough draft of a report written by a classmate. Which two methods should you use in the document to provide constructive feedback to your classmate? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      {
+        "id": "A",
+        "text": "Suggest edits using Track Changes."
+      },
+      {
+        "id": "B",
+        "text": "Use capital letters to show what you would change."
+      },
+      {
+        "id": "C",
+        "text": "Use the Comments feature."
+      },
+      {
+        "id": "D",
+        "text": "Discuss the changes verbally."
+      }
+    ],
+    "correctAnswers": [
+      "A",
+      "C"
+    ]
+  },
+  {
+    "id": 82,
+    "prompt": "You are using a new software program to create a presentation. You need to use a function that you are unfamiliar with. For each resource, select Yes if you could use it to find help or No if you could not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      {
+        "id": "A",
+        "text": "The Help feature within the program.",
+        "answer": "Yes"
+      },
+      {
+        "id": "B",
+        "text": "The software installation instructions.",
+        "answer": "Yes"
+      },
+      {
+        "id": "C",
+        "text": "An online forum dedicated to the software.",
+        "answer": "Yes"
+      },
+      {
+        "id": "D",
+        "text": "The LinkedIn page for the software company.",
+        "answer": "No"
+      }
+    ],
+    "correctAnswers": [
+      "A:Yes",
+      "B:Yes",
+      "C:Yes",
+      "D:No"
+    ]
+  },
+  {
+    "id": 83,
+    "prompt": "You received a zero on the assignment you turned in yesterday. You need to send an email to your teacher and a copy of the email to your parent. Use the method that allows your teacher to easily respond to both you and your parent. Move each applicable email part to the correct location.",
+    "type": "MATCHING",
+    "answersRequired": 5,
+    "options": [
+      {
+        "id": "A",
+        "text": "From -> me@myschool.com"
+      },
+      {
+        "id": "B",
+        "text": "To -> teacher@myschool.com"
+      },
+      {
+        "id": "C",
+        "text": "Cc -> parent@myhome.com"
+      },
+      {
+        "id": "D",
+        "text": "Subject -> My grades"
+      },
+      {
+        "id": "E",
+        "text": "Body text -> Why did I receive a zero yesterday?"
+      }
+    ],
+    "correctAnswers": [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E"
+    ]
+  },
+  {
+    "id": 84,
+    "prompt": "You're having trouble printing from your computer. For each statement, select True if it is a method of confirming a successful connection to a printer or False if it is not.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      {
+        "id": "A",
+        "text": "For a direct-connected printer, replace the connection cable with a CAT5 cable.",
+        "answer": "False"
+      },
+      {
+        "id": "B",
+        "text": "Check the status of the printer connection in the Printers & Scanners setting window.",
+        "answer": "True"
+      },
+      {
+        "id": "C",
+        "text": "For an Ethernet-connected printer, ensure that the Ethernet cable is connected directly to the computer instead of through a switch or router.",
+        "answer": "False"
+      }
+    ],
+    "correctAnswers": [
+      "A:False",
+      "B:True",
+      "C:False"
+    ]
+  },
+  {
+    "id": 85,
+    "prompt": "Move each positive or negative aspect of AI from the list on the left to its impact on the right.",
+    "type": "MATCHING",
+    "answersRequired": 3,
+    "options": [
+      {
+        "id": "A",
+        "text": "Personalization of content -> Creates specific content improving user engagement"
+      },
+      {
+        "id": "B",
+        "text": "Ethical concerns -> Reproduces biases that exist in the data it analyzes"
+      },
+      {
+        "id": "C",
+        "text": "Automation of repetitive tasks -> Frees up time for computer users to focus on more strategic actions"
+      }
+    ],
+    "correctAnswers": [
+      "A",
+      "B",
+      "C"
+    ]
+  },
+  {
+    "id": 86,
+    "prompt": "You need to add next month's Student Government meeting to your calendar. Which two elements can you select to open the event dialog box? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      {
+        "id": "A",
+        "text": "The Create button"
+      },
+      {
+        "id": "B",
+        "text": "A date on the calendar (for example, March 8)"
+      },
+      {
+        "id": "C",
+        "text": "The Today button"
+      },
+      {
+        "id": "D",
+        "text": "The Month view selector"
+      }
+    ],
+    "correctAnswers": [
+      "A",
+      "B"
+    ]
+  },
+  {
+    "id": 87,
+    "prompt": "Move each file extension from the list on the left to the correct description on the right.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      {
+        "id": "A",
+        "text": "A text file that supports formatted text and graphics -> .rtf"
+      },
+      {
+        "id": "B",
+        "text": "A text file that supports only plain text in a linear format -> .txt"
+      },
+      {
+        "id": "C",
+        "text": "A highly compressed raster image file that supports the inclusion of multiple images in one file -> .gif"
+      },
+      {
+        "id": "D",
+        "text": "A raster image file with lossless compression that supports transparent, color-mapped, and 48-bit true-color images -> .png"
+      }
+    ],
+    "correctAnswers": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
+  },
+  {
+    "id": 88,
+    "prompt": "For each statement about rules and regulations concerning intellectual property, indicate whether it is True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      {
+        "id": "A",
+        "text": "The DMCA is a law intended to make it easier for copyright to be applied to original works by an artist or artists.",
+        "answer": "True"
+      },
+      {
+        "id": "B",
+        "text": "Fair Use and Public Domain govern the use of copyrighted materials for individual purposes, like teaching or in a piece of commentary.",
+        "answer": "False"
+      },
+      {
+        "id": "C",
+        "text": "Creative Commons standards include clear descriptions of what is required to use materials (photos, videos, music) that have CC standards and licenses applied to them.",
+        "answer": "True"
+      },
+      {
+        "id": "D",
+        "text": "Using copyrighted material, even if you have modified it by editing it so that it is not its original form, is illegal under current copyright rules.",
+        "answer": "False"
+      }
+    ],
+    "correctAnswers": [
+      "A:True",
+      "B:False",
+      "C:True",
+      "D:False"
+    ]
+  },
+  {
+    "id": 89,
+    "prompt": "A middle school student joins a social media community made up of people who share his hobby. For each statement, select Yes if it would be an appropriate way to interact with the online community or No if it would not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      {
+        "id": "A",
+        "text": "Expect other community members to treat the information he shares as private.",
+        "answer": "No"
+      },
+      {
+        "id": "B",
+        "text": "Introduce himself to the community members and provide his personal email address.",
+        "answer": "No"
+      },
+      {
+        "id": "C",
+        "text": "Reply to a comment on a thread stating that he disagrees, in a respectful tone.",
+        "answer": "Yes"
+      },
+      {
+        "id": "D",
+        "text": "Share a comment from the community with another group without stating who created the comment.",
+        "answer": "No"
+      }
+    ],
+    "correctAnswers": [
+      "A:No",
+      "B:No",
+      "C:Yes",
+      "D:No"
+    ]
+  },
+  {
+    "id": 90,
+    "prompt": "Sindi records a video for a school project. She only wants to use certain parts of the video, so she decides to edit it. Move each basic video editing technique from the list on the left to the correct definition on the right.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      {
+        "id": "A",
+        "text": "Join two video clips together -> Splice"
+      },
+      {
+        "id": "B",
+        "text": "Hide portions of a video frame -> Crop"
+      },
+      {
+        "id": "C",
+        "text": "Cut a video clip into two segments -> Split"
+      },
+      {
+        "id": "D",
+        "text": "Remove the beginning and end of the clip -> Trim"
+      }
+    ],
+    "correctAnswers": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ]
   }
 ];
+

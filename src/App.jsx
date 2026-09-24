@@ -62,7 +62,6 @@ function App() {
   const [sessionId, setSessionId] = useState(initialSession?.sessionId || null);
   const [questions, setQuestions] = useState(initialSession?.questions || []);
   const [currentIndex, setCurrentIndex] = useState(initialSession?.currentIndex ?? 0);
-  const [activeTab, setActiveTab] = useState('INSTRUCTIONS'); 
   const [openDropdownId, setOpenDropdownId] = useState(null); 
   const [appState, setAppState] = useState(initialSession?.appState || 'HOME'); // 'HOME', 'WAITING', 'ADMIN', 'EXAM', 'RESULT'
   const [registration, setRegistration] = useState(initialSession?.registration || { firstName: '', lastName: '', email: '', level: '' });
@@ -1130,22 +1129,14 @@ function App() {
         </div>
       </header>
 
-      {/* Mobile Sidebar Toggle */}
+      {/* Mobile Navigation Toggle */}
       <div className="lg:hidden flex bg-white border-b border-gray-200 sticky top-0 z-10 shadow-sm flex-shrink-0">
         <button 
           onClick={() => setMobileSidebar(mobileSidebar === 'nav' ? null : 'nav')}
           className={`flex-1 py-2 text-[11px] font-bold uppercase tracking-wider flex justify-center items-center gap-2 transition-colors ${mobileSidebar === 'nav' ? 'text-[#1a446b] border-b-2 border-[#1a446b] bg-blue-50/30' : 'text-gray-500 hover:bg-gray-50'}`}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-          Navigation
-        </button>
-        <div className="w-px bg-gray-200"></div>
-        <button 
-          onClick={() => setMobileSidebar(mobileSidebar === 'instructions' ? null : 'instructions')}
-          className={`flex-1 py-2 text-[11px] font-bold uppercase tracking-wider flex justify-center items-center gap-2 transition-colors ${mobileSidebar === 'instructions' ? 'text-[#1a446b] border-b-2 border-[#1a446b] bg-blue-50/30' : 'text-gray-500 hover:bg-gray-50'}`}
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          Instructions
+          Task Navigation
         </button>
       </div>
 
@@ -1322,108 +1313,6 @@ function App() {
           </div>
         </section>
 
-        {/* Right Sidebar - Instructions & Review */}
-        <aside className={`w-full lg:w-[270px] xl:w-[285px] flex flex-col gap-2 flex-shrink-0 overflow-hidden ${mobileSidebar === 'instructions' ? 'flex' : 'hidden lg:flex'}`}>
-          <div className="flex gap-1.5 h-[32px] flex-shrink-0">
-            <button 
-              onClick={() => setActiveTab('INSTRUCTIONS')}
-              className={`flex-1 rounded-sm text-[11px] font-bold tracking-wider uppercase transition-colors ${activeTab === 'INSTRUCTIONS' ? 'bg-[#1a446b] text-white' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
-            >
-              INSTRUCTIONS
-            </button>
-            <button 
-              onClick={() => setActiveTab('REVIEW')}
-              className={`flex-1 rounded-sm text-[11px] font-bold tracking-wider uppercase transition-colors ${activeTab === 'REVIEW' ? 'bg-[#1a446b] text-white' : 'bg-white text-gray-500 border border-gray-200 hover:bg-gray-50'}`}
-            >
-              REVIEW
-            </button>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-sm shadow-sm p-0 flex flex-col overflow-hidden">
-            {activeTab === 'INSTRUCTIONS' ? (
-              <div className="p-3.5 space-y-3">
-                <div>
-                   <div className="rs-title">Overview</div>
-                   <div className="w-full h-px bg-gray-100 mb-2.5"></div>
-                   <p className="text-[12.5px] text-gray-600 leading-relaxed font-medium">Work only on the current task. Submit the task before moving to the next one.</p>
-                </div>
-                
-                <div>
-                   <div className="rs-title">Location</div>
-                   <div className="w-full h-px bg-gray-100 mb-2.5"></div>
-                   <p className="text-[12.5px] text-gray-600 leading-relaxed font-medium">You are currently on question {currentQ?.id} of {questions.length}.</p>
-                </div>
-
-                <div>
-                   <div className="rs-title">Requirement</div>
-                   <div className="w-full h-px bg-gray-100 mb-2.5"></div>
-                   <p className="text-[12.5px] text-gray-600 leading-relaxed font-medium">
-                     {currentQ?.type === 'MULTIPLE CHOICE' 
-                       ? `Select exactly ${currentQ?.answersRequired} answers, then submit the task.`
-                       : currentQ?.type === 'MATCHING TASK'
-                       ? `Match all source items to their correct target areas, then submit.`
-                       : `Select an answer for all statements, then submit the task.`}
-                   </p>
-                </div>
-
-                <div>
-                   <div className="rs-title">Session Status</div>
-                   <div className="w-full h-px bg-gray-100 mb-2.5"></div>
-                   <div className="space-y-1.5 mt-2 text-[12.5px] font-medium">
-                     <div className="flex justify-between text-gray-500">
-                        <span>Current status</span>
-                        <span className={`font-semibold uppercase text-[10px] tracking-wider ${
-                          currentQ?.status === 'Correct' ? 'text-[#059669]' :
-                          currentQ?.status === 'Review' ? 'text-[#e11d48]' : 
-                          currentQ?.status === 'In Progress' ? 'text-[#ffc107]' : 'text-gray-400'
-                        }`}>
-                          {currentQ?.status === 'In Progress' ? 'IN PROGRESS' : 
-                           currentQ?.status === 'Correct' ? 'ACCEPTED' : 
-                           currentQ?.status === 'Review' ? 'NEEDS REVIEW' : 'NOT STARTED'}
-                        </span>
-                     </div>
-                     <div className="flex justify-between text-gray-500">
-                        <span>Submitted tasks</span>
-                        <span className="font-semibold text-gray-800">{correctCount + reviewCount}</span>
-                     </div>
-                     <div className="flex justify-between text-gray-500">
-                        <span>Correct tasks</span>
-                        <span className="font-semibold text-[#059669]">{correctCount}</span>
-                     </div>
-                   </div>
-                </div>
-              </div>
-            ) : (
-              <div className="p-3.5 flex-1 overflow-y-auto max-h-[350px]">
-                <div className="rs-title">Task Summary</div>
-                <div className="w-full h-px bg-gray-100 mb-2.5"></div>
-                <div className="space-y-1">
-                  {questions.map((q, idx) => (
-                    <div 
-                      key={q.id} 
-                      onClick={() => {
-                        if (idx <= maxAllowedIndex) {
-                          setCurrentIndex(idx);
-                          setOpenDropdownId(null);
-                        }
-                      }}
-                      className={`flex justify-between items-center p-1.5 text-xs rounded transition-colors ${idx <= maxAllowedIndex ? 'cursor-pointer hover:bg-gray-50' : 'opacity-40 cursor-not-allowed'} ${idx === currentIndex ? 'bg-blue-50 font-semibold' : ''}`}
-                    >
-                      <span className="text-gray-700">Question {q.id}</span>
-                      <span className={`text-[10px] font-bold uppercase tracking-wider ${
-                        q.status === 'Correct' ? 'text-[#059669]' : 
-                        q.status === 'Review' ? 'text-[#e11d48]' : 
-                        q.status === 'In Progress' ? 'text-[#ffc107]' : 'text-gray-400'
-                      }`}>
-                        {q.status}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </aside>
 
       </main>
 
