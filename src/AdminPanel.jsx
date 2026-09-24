@@ -163,6 +163,7 @@ function AdminPanel({
           <div className="flex items-center gap-3 md:gap-4">
             <button 
               onClick={() => {
+                sessionStorage.removeItem('ic3_admin_auth');
                 localStorage.removeItem('ic3_admin_auth');
                 localStorage.removeItem('ic3_admin_tab');
                 window.location.hash = '#/home';
@@ -176,6 +177,7 @@ function AdminPanel({
             </button>
             <button 
               onClick={() => { 
+                sessionStorage.removeItem('ic3_admin_auth');
                 localStorage.removeItem('ic3_admin_auth');
                 localStorage.removeItem('ic3_admin_tab');
                 window.location.hash = '#/home';

@@ -11,6 +11,7 @@ import QuestionSimulatedUI from './components/QuestionSimulatedUI';
 import FaceRegistrationModal from './components/FaceRegistrationModal';
 import FaceProctoringWidget from './components/FaceProctoringWidget';
 import AntiScreenCaptureShield from './components/AntiScreenCaptureShield';
+import AdminLoginModal from './components/AdminLoginModal';
 import { examQuestions as q1 } from './1-level.js';
 import { examQuestions as q2 } from './2-level.js';
 import { examQuestions as q3 } from './3-level.js';
@@ -19,15 +20,19 @@ import { examQuestions as q3 } from './3-level.js';
 const getInitialSession = () => {
   try {
     const hash = typeof window !== 'undefined' ? window.location.hash : '';
-    const isAdminAuth = typeof window !== 'undefined' ? localStorage.getItem('ic3_admin_auth') === 'true' : false;
+    const isAdminAuth = typeof window !== 'undefined' 
+      ? sessionStorage.getItem('ic3_admin_auth') === 'true' 
+      : false;
     const saved = typeof window !== 'undefined' ? localStorage.getItem('ic3_session') : null;
     const parsed = saved ? JSON.parse(saved) : null;
 
     // 1. Check URL hash first
-    if (hash.includes('admin') || isAdminAuth) {
+    if (hash.includes('admin')) {
       if (isAdminAuth) {
         return { appState: 'ADMIN', ...(parsed || {}) };
       }
+      // Ssilka orqali kirilganda parol so'rash modalini ochish
+      return { appState: 'HOME', showAdminLogin: true };
     }
     if (hash.includes('exam') && parsed && parsed.appState === 'EXAM') {
       return parsed;
@@ -66,6 +71,7 @@ function App() {
   const [requestId, setRequestId] = useState(initialSession?.requestId || null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showFaceModal, setShowFaceModal] = useState(false);
+  const [showAdminLoginModal, setShowAdminLoginModal] = useState(initialSession?.showAdminLogin || false);
   const [modalMode, setModalMode] = useState('ENROLL'); // 'ENROLL' | 'VERIFY'
   const [adminApprovedPhoto, setAdminApprovedPhoto] = useState(null);
   const [adminApprovedDescriptor, setAdminApprovedDescriptor] = useState(null);
@@ -99,9 +105,10 @@ function App() {
         registration
       }));
     } else if (appState === 'ADMIN') {
-      localStorage.setItem('ic3_admin_auth', 'true');
+      sessionStorage.setItem('ic3_admin_auth', 'true');
     } else if (appState === 'HOME') {
       localStorage.removeItem('ic3_session');
+      sessionStorage.removeItem('ic3_admin_auth');
       localStorage.removeItem('ic3_admin_auth');
     }
   }, [appState, sessionId, requestId, questions, currentIndex, registration]);
@@ -109,7 +116,7 @@ function App() {
   // Synchronize appState with URL hash
   useEffect(() => {
     if (appState === 'ADMIN') {
-      localStorage.setItem('ic3_admin_auth', 'true');
+      sessionStorage.setItem('ic3_admin_auth', 'true');
       const currentTab = localStorage.getItem('ic3_admin_tab') || 'dashboard';
       if (!window.location.hash.includes('admin')) {
         window.location.hash = `#/admin?tab=${currentTab}`;
@@ -127,25 +134,29 @@ function App() {
         window.location.hash = '#/result';
       }
     } else if (appState === 'HOME') {
-      if (window.location.hash && window.location.hash !== '#/' && window.location.hash !== '#/home') {
+      if (!showAdminLoginModal && window.location.hash && window.location.hash !== '#/' && window.location.hash !== '#/home' && !window.location.hash.includes('admin')) {
         window.location.hash = '#/home';
       }
     }
-  }, [appState]);
+  }, [appState, showAdminLoginModal]);
 
   // Listen for browser navigation (back, forward, hash change)
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      const isAdminAuth = localStorage.getItem('ic3_admin_auth') === 'true';
+      const isAdminAuth = sessionStorage.getItem('ic3_admin_auth') === 'true';
 
       if (hash.includes('admin')) {
         if (isAdminAuth) {
           setAppState('ADMIN');
+          setShowAdminLoginModal(false);
         } else {
+          // Ssilka orqali to'g'ridan to'g'ri kirganda parol so'rash oynasini ochish
           setAppState('HOME');
+          setShowAdminLoginModal(true);
         }
       } else if (hash.includes('exam')) {
+        setShowAdminLoginModal(false);
         const saved = localStorage.getItem('ic3_session');
         if (saved) {
           try {
@@ -154,10 +165,13 @@ function App() {
           } catch (e) {}
         }
       } else if (hash.includes('waiting')) {
+        setShowAdminLoginModal(false);
         setAppState('WAITING');
       } else if (hash.includes('result')) {
+        setShowAdminLoginModal(false);
         setAppState('RESULT');
       } else if (hash.includes('home') || !hash || hash === '#/') {
+        setShowAdminLoginModal(false);
         setAppState('HOME');
       }
     };
@@ -694,10 +708,11 @@ function App() {
       trimmedFirstName.toLowerCase() === targetAdminFirstName &&
       trimmedEmail === targetAdminEmail
     ) {
-      localStorage.setItem('ic3_admin_auth', 'true');
+      sessionStorage.setItem('ic3_admin_auth', 'true');
       const currentTab = localStorage.getItem('ic3_admin_tab') || 'dashboard';
       window.location.hash = `#/admin?tab=${currentTab}`;
       setAppState('ADMIN');
+      setShowAdminLoginModal(false);
       return;
     }
 
@@ -1001,6 +1016,21 @@ function App() {
     setIsSubmitting(false);
   };
 
+  const handleAdminLoginSuccess = () => {
+    sessionStorage.setItem('ic3_admin_auth', 'true');
+    setShowAdminLoginModal(false);
+    const currentTab = localStorage.getItem('ic3_admin_tab') || 'dashboard';
+    window.location.hash = `#/admin?tab=${currentTab}`;
+    setAppState('ADMIN');
+  };
+
+  const handleAdminLoginClose = () => {
+    setShowAdminLoginModal(false);
+    if (window.location.hash.includes('admin')) {
+      window.location.hash = '#/home';
+    }
+  };
+
   // --- Render Home Screen ---
   if (appState === 'HOME') {
     return (
@@ -1014,6 +1044,7 @@ function App() {
           isSubmitting={isSubmitting}
           showInactiveModal={showInactiveModal}
           setShowInactiveModal={setShowInactiveModal}
+          onOpenAdminLogin={() => setShowAdminLoginModal(true)}
         />
         <FaceRegistrationModal
           isOpen={showFaceModal}
@@ -1025,6 +1056,12 @@ function App() {
           adminApprovedDescriptor={adminApprovedDescriptor}
           registration={registration}
           isSubmitting={isSubmitting}
+        />
+        <AdminLoginModal
+          isOpen={showAdminLoginModal}
+          onClose={handleAdminLoginClose}
+          onSuccess={handleAdminLoginSuccess}
+          adminCreds={adminCreds}
         />
       </>
     );
