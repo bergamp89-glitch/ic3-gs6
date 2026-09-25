@@ -15,6 +15,9 @@ import AdminLoginModal from './components/AdminLoginModal';
 import { examQuestions as q1 } from './1-level.js';
 import { examQuestions as q2 } from './2-level.js';
 import { examQuestions as q3 } from './3-level.js';
+import { examQuestions as q1Ru } from './1-level-ru.js';
+import { examQuestions as q2Ru } from './2-level-ru.js';
+import { examQuestions as q3Ru } from './3-level-ru.js';
 
 
 const getInitialSession = () => {
@@ -64,7 +67,38 @@ function App() {
   const [currentIndex, setCurrentIndex] = useState(initialSession?.currentIndex ?? 0);
   const [openDropdownId, setOpenDropdownId] = useState(null); 
   const [appState, setAppState] = useState(initialSession?.appState || 'HOME'); // 'HOME', 'WAITING', 'ADMIN', 'EXAM', 'RESULT'
-  const [registration, setRegistration] = useState(initialSession?.registration || { firstName: '', lastName: '', email: '', level: '' });
+  
+  const [language, setLanguage] = useState(() => {
+    try {
+      if (initialSession?.registration?.language) return initialSession.registration.language;
+      const saved = localStorage.getItem('ic3_exam_language');
+      if (saved === 'ru' || saved === 'en') return saved;
+    } catch (e) {}
+    return 'en'; // Boshlang'ich default til: ingliz tili
+  });
+
+  const handleLanguageChange = (newLang) => {
+    setLanguage(newLang);
+    try {
+      localStorage.setItem('ic3_exam_language', newLang);
+    } catch (e) {}
+    setRegistration(prev => ({
+      ...prev,
+      language: newLang
+    }));
+  };
+
+  const isMatchingRequest = (r, lvl, lang) => {
+    if (!r) return false;
+    const rLevel = (r.level || '').trim();
+    const targetWithLang = `${lvl} (${lang.toUpperCase()})`;
+    if (rLevel === targetWithLang) return true;
+    if (r.language && r.language.toLowerCase() === lang.toLowerCase() && (rLevel === lvl || rLevel.startsWith(lvl))) return true;
+    if (lang === 'en' && rLevel === lvl) return true;
+    return false;
+  };
+
+  const [registration, setRegistration] = useState(initialSession?.registration || { firstName: '', lastName: '', email: '', level: '', language: 'en' });
   
   const [registrationErrors, setRegistrationErrors] = useState({ firstName: false, lastName: false, email: false, level: false });
   const [requestId, setRequestId] = useState(initialSession?.requestId || null);
@@ -270,16 +304,19 @@ function App() {
     async function loadQuestions() {
       if (appState === 'EXAM' && questions.length === 0) {
         let levelNum = 1;
-        if (registration.level === '1-Level') levelNum = 1;
-        if (registration.level === '2-Level') levelNum = 2;
-        if (registration.level === '3-Level') levelNum = 3;
+        const lvlStr = registration.level || '';
+        if (lvlStr.startsWith('1-Level')) levelNum = 1;
+        else if (lvlStr.startsWith('2-Level')) levelNum = 2;
+        else if (lvlStr.startsWith('3-Level')) levelNum = 3;
+
+        const isRussian = (registration.language === 'ru') || (language === 'ru') || lvlStr.includes('(RU)');
 
         let rawQuestions = [];
 
-        // Savollarni to'g'ridan-to'g'ri lokal fayllardan (1-level.js, 2-level.js, 3-level.js) yuklaymiz
-        if (levelNum === 1) rawQuestions = q1;
-        else if (levelNum === 2) rawQuestions = q2;
-        else rawQuestions = q3;
+        // Savollarni tanlangan til va darajaga qarab yuklaymiz
+        if (levelNum === 1) rawQuestions = isRussian ? q1Ru : q1;
+        else if (levelNum === 2) rawQuestions = isRussian ? q2Ru : q2;
+        else rawQuestions = isRussian ? q3Ru : q3;
 
         const shuffleArray = (arr) => {
           if (!Array.isArray(arr)) return arr;
@@ -334,7 +371,9 @@ function App() {
             normalizedQ.statements = (normalizedQ.options || []).map((opt, i) => ({
               id: opt.id || `s${i}`,
               text: opt.text,
-              options: q.type === 'TRUE_FALSE_MATRIX' ? ['True', 'False'] : ['Yes', 'No'],
+              options: q.type === 'TRUE_FALSE_MATRIX' 
+                ? (isRussian ? ['Верно', 'Неверно'] : ['True', 'False']) 
+                : (isRussian ? ['Да', 'Нет'] : ['Yes', 'No']),
               correctAnswer: opt.answer || opt.correctAnswer
             }));
           }
@@ -363,7 +402,7 @@ function App() {
       }
     }
     loadQuestions();
-  }, [appState, registration.level, questions.length]);
+  }, [appState, registration.level, registration.language, language, questions.length]);
 
   useEffect(() => {
     let intervalId;
@@ -380,13 +419,16 @@ function App() {
             clearInterval(intervalId);
             setQuestions([]);
             setCurrentIndex(0);
+            const approvedLang = data.language || (data.level?.includes('(RU)') ? 'ru' : 'en') || language;
             const approvedCredentials = {
               firstName: data.firstName,
               lastName: data.lastName,
               email: (data.email || '').trim().toLowerCase(),
               level: data.level,
+              language: approvedLang,
               photo: data.photo
             };
+            setLanguage(approvedLang);
             setRegistration(approvedCredentials);
             const { data: newSession } = await supabase
               .from('exam_sessions')
@@ -625,9 +667,23 @@ function App() {
           userAns.length === correctList.length &&
           userAns.every(ans => correctList.includes(ans));
       } else if (currentQ.type === 'INSTRUCTION SET') {
+        const normalizeAnswer = (val) => {
+          if (!val) return '';
+          const s = String(val).trim().toLowerCase();
+          if (s === 'true' || s === 'верно' || s === 'правда') return 'true';
+          if (s === 'false' || s === 'неверно' || s === 'ложь') return 'false';
+          if (s === 'yes' || s === 'да') return 'yes';
+          if (s === 'no' || s === 'нет') return 'no';
+          return s;
+        };
+
         const stmts = currentQ.statements || [];
         const userAns = currentQ.userAnswers || {};
-        isCorrect = stmts.every(stmt => userAns[stmt.id] === (stmt.correctAnswer || stmt.answer));
+        isCorrect = stmts.every(stmt => {
+          const u = normalizeAnswer(userAns[stmt.id]);
+          const c = normalizeAnswer(stmt.correctAnswer || stmt.answer);
+          return u === c;
+        });
       } else if (currentQ.type === 'MATCHING TASK') {
         const tgts = currentQ.targetAreas || [];
         const userAns = currentQ.userAnswers || {};
@@ -743,7 +799,8 @@ function App() {
         firstName: trimmedFirstName,
         lastName: trimmedLastName,
         email: trimmedEmail,
-        level: selectedLevel
+        level: selectedLevel,
+        language: language
       });
       window.location.hash = '#/exam';
       setAppState('EXAM');
@@ -766,8 +823,8 @@ function App() {
           .order('created_at', { ascending: false });
 
         if (!error && data && data.length > 0) {
-          // 1. Check if user has an APPROVED record for this specific level
-          const approved = data.find(r => r.status === 'approved' && r.level === selectedLevel);
+          // 1. Check if user has an APPROVED record for this specific level and language
+          const approved = data.find(r => r.status === 'approved' && isMatchingRequest(r, selectedLevel, language));
           if (approved) {
             // STRICT VALIDATION OF APPROVED CREDENTIALS:
 
@@ -799,6 +856,7 @@ function App() {
               lastName: approved.lastName,
               email: approved.email,
               level: approved.level,
+              language: approved.language || language,
               photo: approved.photo,
               descriptor: approved.descriptor || null
             });
@@ -811,12 +869,13 @@ function App() {
             return;
           }
 
-          // 2. Check if user is PENDING admin approval for this specific level
-          const pending = data.find(r => r.status === 'pending' && r.level === selectedLevel);
+          // 2. Check if user is PENDING admin approval for this specific level and language
+          const pending = data.find(r => r.status === 'pending' && isMatchingRequest(r, selectedLevel, language));
           if (pending) {
             setRequestId(pending.id);
             setIsSubmitting(false);
-            alert(`Sizning "${selectedLevel}" darajasi uchun ro'yxatdan o'tish so'rovingiz (${pending.firstName} ${pending.lastName}) yuborilgan, ammo admin tomonidan hali tasdiqlanmagan. Iltimos, admin tasdiqlashini kuting.`);
+            const displayLvl = pending.level || `${selectedLevel} (${language.toUpperCase()})`;
+            alert(`Sizning "${displayLvl}" uchun ro'yxatdan o'tish so'rovingiz (${pending.firstName} ${pending.lastName}) yuborilgan, ammo admin tomonidan hali tasdiqlanmagan. Iltimos, admin tasdiqlashini kuting.`);
             setAppState('WAITING');
             return;
           }
@@ -871,7 +930,8 @@ function App() {
         
       const activeSession = sessionData?.find(s => {
         const lvl = s.registration?.level || s.level;
-        return lvl === selectedLevel && s.app_state !== 'RESULT';
+        const lang = s.registration?.language || (lvl && lvl.includes('(RU)') ? 'ru' : 'en');
+        return isMatchingRequest({ level: lvl, language: lang }, selectedLevel, language) && s.app_state !== 'RESULT';
       });
 
       if (activeSession) {
@@ -890,7 +950,8 @@ function App() {
               firstName: trimmedFirstName, 
               lastName: trimmedLastName, 
               email: trimmedEmail, 
-              level: selectedLevel,
+              level: `${selectedLevel} (${language.toUpperCase()})`,
+              language: language,
               photo: verifiedPhoto
             }, 
             app_state: 'EXAM' 
@@ -935,6 +996,7 @@ function App() {
         lastName: trimmedLastName,
         email: trimmedEmail,
         level: selectedLevel,
+        language: language,
         photo: capturedPhoto
       });
       window.location.hash = '#/exam';
@@ -944,15 +1006,15 @@ function App() {
     }
 
     try {
+      const targetLevelWithLang = `${selectedLevel} (${language.toUpperCase()})`;
       const { data } = await supabase
         .from('requests')
-        .select('id, status')
+        .select('*')
         .ilike('email', trimmedEmail)
-        .eq('level', selectedLevel)
         .in('status', ['pending', 'approved']);
         
       if (data && data.length > 0) {
-        const pending = data.find(r => r.status === 'pending');
+        const pending = data.find(r => r.status === 'pending' && isMatchingRequest(r, selectedLevel, language));
         if (pending) {
           try {
             await supabase
@@ -975,7 +1037,8 @@ function App() {
         firstName: trimmedFirstName,
         lastName: trimmedLastName,
         email: trimmedEmail,
-        level: selectedLevel,
+        level: targetLevelWithLang,
+        language: language,
         photo: capturedPhoto,
         descriptor: capturedDescriptor,
         status: 'pending'
@@ -988,12 +1051,12 @@ function App() {
 
       if (insertErr) {
         console.error("Supabase insert error:", insertErr);
-        // Fallback without descriptor if column does not exist yet in DB
+        // Fallback without descriptor or language if columns do not exist yet in DB
         const fallbackPayload = {
           firstName: trimmedFirstName,
           lastName: trimmedLastName,
           email: trimmedEmail,
-          level: selectedLevel,
+          level: targetLevelWithLang,
           photo: capturedPhoto,
           status: 'pending'
         };
@@ -1044,6 +1107,8 @@ function App() {
           showInactiveModal={showInactiveModal}
           setShowInactiveModal={setShowInactiveModal}
           onOpenAdminLogin={() => setShowAdminLoginModal(true)}
+          language={language}
+          setLanguage={handleLanguageChange}
         />
         <FaceRegistrationModal
           isOpen={showFaceModal}

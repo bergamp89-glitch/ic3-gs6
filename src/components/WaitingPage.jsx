@@ -12,7 +12,18 @@ function WaitingPage({ registration, setAppState }) {
          <p className="text-gray-600 font-medium leading-relaxed">
             Permission request for <strong className="text-[#1a446b]">{registration.level}</strong> has been sent to admin.
          </p>
-         <p className="text-sm text-gray-500 mt-6 bg-gray-50 py-2 rounded-sm border border-gray-100 mb-6">Iltimos, admin tasdiqlashini kuting. Sahifa avtomatik yangilanadi.</p>
+         <div className="mt-3 flex justify-center">
+            {registration.level?.includes('(RU)') || registration.language === 'ru' ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-800 border border-amber-200 rounded-full text-xs font-bold">
+                <span>🇷🇺</span> Rus tili (RU) testi uchun so'rov
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-800 border border-blue-200 rounded-full text-xs font-bold">
+                <span>🇬🇧</span> Ingliz tili (EN) testi uchun so'rov
+              </span>
+            )}
+         </div>
+         <p className="text-sm text-gray-500 mt-5 bg-gray-50 py-2 rounded-sm border border-gray-100 mb-6">Iltimos, admin tasdiqlashini kuting. Sahifa avtomatik yangilanadi.</p>
          <button 
            onClick={() => {
              localStorage.removeItem('ic3_session');

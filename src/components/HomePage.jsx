@@ -9,7 +9,9 @@ function HomePage({
   isSubmitting, 
   showInactiveModal, 
   setShowInactiveModal,
-  onOpenAdminLogin
+  onOpenAdminLogin,
+  language = 'en',
+  setLanguage
 }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#e6ebf0] p-4">
@@ -21,21 +23,64 @@ function HomePage({
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
              </svg>
           </div>
-          <div className="relative z-10">
-             <div className="text-[11px] sm:text-xs font-bold text-[#8baecf] uppercase tracking-wider sm:tracking-widest mb-1 sm:mb-1.5">Practice Test / Assessment</div>
-             <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight sm:tracking-wide mb-1 sm:mb-1.5 md:mb-2 leading-tight">IC3 Digital Literacy Certification</h1>
-             <h2 className="text-sm sm:text-base md:text-lg text-blue-100 font-medium">Global Standard 6 (GS6)</h2>
-          </div>
+          <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+             <div>
+               <div className="text-[11px] sm:text-xs font-bold text-[#8baecf] uppercase tracking-wider sm:tracking-widest mb-1 sm:mb-1.5">Practice Test / Assessment</div>
+               <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight sm:tracking-wide mb-1 sm:mb-1.5 md:mb-2 leading-tight">IC3 Digital Literacy Certification</h1>
+               <h2 className="text-sm sm:text-base md:text-lg text-blue-100 font-medium">Global Standard 6 (GS6)</h2>
+             </div>
+
+             {/* Compact Language Selector */}
+              <div className="flex items-center self-start sm:self-center flex-shrink-0">
+                <div className="inline-flex p-0.5 bg-[#0e273f]/80 rounded border border-[#8baecf]/30 backdrop-blur-sm shadow-sm">
+                  <button
+                    type="button"
+                    onClick={() => setLanguage && setLanguage('en')}
+                    className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs font-semibold transition-all ${
+                      language === 'en'
+                        ? 'bg-white text-[#1a446b] font-bold shadow-sm'
+                        : 'text-[#8baecf] hover:text-white hover:bg-white/10'
+                    }`}
+                    title="English Test"
+                  >
+                    <span className="text-xs">🇬🇧</span>
+                    <span>English</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setLanguage && setLanguage('ru')}
+                    className={`flex items-center gap-1 px-2.5 py-1 rounded text-xs font-semibold transition-all ${
+                      language === 'ru'
+                        ? 'bg-white text-[#1a446b] font-bold shadow-sm'
+                        : 'text-[#8baecf] hover:text-white hover:bg-white/10'
+                    }`}
+                    title="Русский тест"
+                  >
+                    <span className="text-xs">🇷🇺</span>
+                    <span>Русский</span>
+                  </button>
+                </div>
+              </div>
+           </div>
         </div>
         
         {/* Content */}
         <div className="p-4 sm:p-6 md:p-10">
           <div className="max-w-xl mx-auto mb-6 md:mb-10">
             <div className="border border-gray-200 p-5 sm:p-7 md:p-8 rounded-md bg-white shadow-sm flex flex-col justify-center">
-               <h3 className="text-xs sm:text-sm font-bold text-[#1a446b] uppercase tracking-wider sm:tracking-widest mb-3 sm:mb-4 flex items-center gap-2">
-                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                 Registration & Test Setup
-               </h3>
+               <div className="flex items-center justify-between mb-3 sm:mb-4">
+                 <h3 className="text-xs sm:text-sm font-bold text-[#1a446b] uppercase tracking-wider sm:tracking-widest flex items-center gap-2">
+                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                   Registration & Test Setup
+                 </h3>
+                 <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${
+                   language === 'ru' 
+                     ? 'bg-amber-50 text-amber-800 border-amber-200' 
+                     : 'bg-blue-50 text-blue-800 border-blue-200'
+                 }`}>
+                   {language === 'ru' ? '🇷🇺 Rus tili (RU)' : '🇬🇧 Ingliz tili (EN)'}
+                 </span>
+               </div>
                <div className="space-y-4 sm:space-y-5">
                  <div>
                     <label className="block text-xs sm:text-[13px] font-bold text-gray-600 uppercase tracking-wider sm:tracking-widest mb-1.5 sm:mb-2">Select Test Level</label>
@@ -112,7 +157,7 @@ function HomePage({
             </div>
           </div>
 
-          <div className="flex flex-col items-center gap-3 pt-2">
+          <div className="flex flex-col items-center gap-2.5 pt-2">
              <button 
                type="button"
                onClick={handleStartExam} 
@@ -123,8 +168,11 @@ function HomePage({
                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                </svg>
-               START EXAM & FACE ID
+               {language === 'ru' ? 'START EXAM & FACE ID (RU)' : 'START EXAM & FACE ID (EN)'}
              </button>
+             <div className="text-[11.5px] text-gray-500 font-medium">
+               {language === 'ru' ? '🇷🇺 Savollar rus tilida taqdim etiladi' : '🇬🇧 Questions will be presented in English'}
+             </div>
           </div>
         </div>
       </div>

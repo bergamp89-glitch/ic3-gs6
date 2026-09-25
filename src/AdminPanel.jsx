@@ -46,7 +46,8 @@ function AdminPanel({
       const fullName = `${r.firstName || ''} ${r.lastName || ''}`.toLowerCase();
       const email = (r.email || '').toLowerCase();
       const level = (r.level || '').toLowerCase();
-      return fullName.includes(q) || email.includes(q) || level.includes(q);
+      const lang = (r.language || '').toLowerCase();
+      return fullName.includes(q) || email.includes(q) || level.includes(q) || lang.includes(q);
     });
   };
 
@@ -81,7 +82,7 @@ function AdminPanel({
     try {
       const { data, error } = await supabase
         .from('requests')
-        .select('id, firstName, lastName, email, level, status, created_at, photo')
+        .select('*')
         .in('status', ['pending', 'approved'])
         .order('created_at', { ascending: false });
       if (!error && data) {
@@ -327,6 +328,15 @@ function AdminPanel({
                                        <span className="font-mono text-gray-700 font-medium">{req.email}</span>
                                        <span>&bull;</span>
                                        <span className="font-bold text-[#1a446b] bg-blue-50 px-2 py-0.5 rounded-sm border border-blue-100">{req.level}</span>
+                                       {req.level?.includes('(RU)') || req.language === 'ru' ? (
+                                         <span className="text-[10px] font-bold text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded flex items-center gap-1">
+                                           <span>🇷🇺</span> RU
+                                         </span>
+                                       ) : (
+                                         <span className="text-[10px] font-bold text-sky-700 bg-sky-50 border border-sky-200 px-1.5 py-0.5 rounded flex items-center gap-1">
+                                           <span>🇬🇧</span> EN
+                                         </span>
+                                       )}
                                        {req.created_at && (
                                          <>
                                            <span>&bull;</span>
@@ -440,6 +450,15 @@ function AdminPanel({
                                        <span>{req.email}</span>
                                        <span>&bull;</span>
                                        <span className="font-semibold text-[#1a446b] bg-blue-50 px-1.5 py-0.5 rounded-sm">{req.level}</span>
+                                       {req.level?.includes('(RU)') || req.language === 'ru' ? (
+                                         <span className="text-[10px] font-bold text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded flex items-center gap-1">
+                                           <span>🇷🇺</span> RU
+                                         </span>
+                                       ) : (
+                                         <span className="text-[10px] font-bold text-sky-700 bg-sky-50 border border-sky-200 px-1.5 py-0.5 rounded flex items-center gap-1">
+                                           <span>🇬🇧</span> EN
+                                         </span>
+                                       )}
                                        {req.descriptor && (
                                          <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 rounded" title="128-o'lchamli AI Biometrik Vektori faol">
                                            Biometriya ✓

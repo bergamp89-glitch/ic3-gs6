@@ -16,19 +16,23 @@ function QuestionMatchingTask({
     ? currentQ.userAnswers
     : {};
 
+  const isRu = /[а-яА-ЯёЁ]/.test(currentQ?.prompt || '') || targetAreas.some(t => /[а-яА-ЯёЁ]/.test(t.label || ''));
+
   return (
     <div className="flex flex-col gap-3 mt-2 h-full">
       <div className="bg-[#f0f4f8] text-[#1a446b] text-xs font-semibold px-4 py-2 rounded-sm border border-[#1a446b]/20 flex items-center justify-between">
-        <span>💡 Direct Drag & Drop or tap an item to select and click a target area.</span>
+        <span>{isRu ? '💡 Перетащите элемент (Drag & Drop) или нажмите на элемент, затем выберите целевую область.' : '💡 Direct Drag & Drop or tap an item to select and click a target area.'}</span>
         {selectedSourceId && (
-          <span className="text-[#059669] font-bold">Item selected — now click a target area!</span>
+          <span className="text-[#059669] font-bold">{isRu ? 'Элемент выбран — теперь нажмите целевую область!' : 'Item selected — now click a target area!'}</span>
         )}
       </div>
 
       <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 flex-1 min-h-0">
         {/* Left Column - Source Items */}
         <div className="flex-1 border border-gray-200 rounded-sm p-3.5 sm:p-4 flex flex-col bg-white shadow-sm">
-          <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2.5">Source Items</div>
+          <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2.5">
+            {isRu ? 'Исходные элементы' : 'Source Items'}
+          </div>
           <div className="space-y-2.5 flex-1 overflow-y-auto pr-1">
             {sourceItems.map(src => {
                const placedTargetId = Object.keys(userAnswers).find(tId => userAnswers[tId] === src.id);
@@ -46,7 +50,7 @@ function QuestionMatchingTask({
                    {placedTarget && (
                      <div className="text-[9.5px] font-bold text-[#1a446b] uppercase tracking-widest mt-1.5 flex items-center gap-1">
                        <svg className="w-3 h-3 text-[#1a446b]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-                       Placed in: {placedTarget.label}
+                       {isRu ? 'Размещено в:' : 'Placed in:'} {placedTarget.label}
                      </div>
                    )}
                  </div>
@@ -57,7 +61,9 @@ function QuestionMatchingTask({
 
         {/* Right Column - Target Areas */}
         <div className="flex-1 border border-gray-200 rounded-sm p-3.5 sm:p-4 flex flex-col bg-white shadow-sm">
-          <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2.5">Target Areas</div>
+          <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest mb-2.5">
+            {isRu ? 'Целевые области' : 'Target Areas'}
+          </div>
           <div className="space-y-2.5 flex-1 overflow-y-auto pr-1">
             {targetAreas.map(tgt => {
                const placedSourceId = userAnswers[tgt.id];
@@ -91,7 +97,7 @@ function QuestionMatchingTask({
                      className={`border rounded-md p-4 transition-all duration-300 min-h-[76px] flex flex-col justify-center ${dropZoneClass} ${selectedSourceId && !isEvaluated ? 'cursor-pointer hover:ring-2 hover:ring-[#1a446b]/50' : ''}`}
                    >
                      {!placedSource ? (
-                       <div className="text-[13px]">{isEvaluated ? "No item placed" : selectedSourceId ? "Click here to place selected item" : "Drop an item here or click after selecting item"}</div>
+                       <div className="text-[13px]">{isEvaluated ? (isRu ? "Элемент не размещен" : "No item placed") : selectedSourceId ? (isRu ? "Нажмите сюда, чтобы разместить выбранный элемент" : "Click here to place selected item") : (isRu ? "Перетащите элемент сюда или нажмите после выбора" : "Drop an item here or click after selecting item")}</div>
                      ) : (
                        <div className="flex justify-between items-center w-full">
                          <div className={`text-[14px] font-medium ${isCorrectAnswer ? 'text-[#065f46]' : isWrongAnswer ? 'text-[#9f1239]' : 'text-[#1a446b]'}`}>
@@ -101,7 +107,7 @@ function QuestionMatchingTask({
                            <button 
                              onClick={(e) => { e.stopPropagation(); handleClearTarget(tgt.id); }}
                              className="border border-[#1a446b]/20 text-[#1a446b] bg-white rounded flex items-center justify-center p-1.5 hover:bg-[#1a446b] hover:text-white transition-colors ml-2 flex-shrink-0"
-                             title="Clear placement"
+                             title={isRu ? "Очистить" : "Clear placement"}
                            >
                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -113,13 +119,13 @@ function QuestionMatchingTask({
                      {isEvaluated && isCorrectAnswer && (
                        <div className="text-[11px] font-bold text-[#059669] uppercase tracking-widest mt-2 flex items-center gap-1">
                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                         Correct Answer
+                         {isRu ? 'Правильный ответ' : 'Correct Answer'}
                        </div>
                      )}
                      {isEvaluated && isWrongAnswer && (
                        <div className="text-[11px] font-bold text-[#e11d48] uppercase tracking-widest mt-2 flex items-center gap-1">
                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
-                         Incorrect (Correct is: {sourceItems.find(s => s.id === tgt.correctAnswer)?.text || tgt.correctAnswer})
+                         {isRu ? `Неверно (Правильно: ${sourceItems.find(s => s.id === tgt.correctAnswer)?.text || tgt.correctAnswer})` : `Incorrect (Correct is: ${sourceItems.find(s => s.id === tgt.correctAnswer)?.text || tgt.correctAnswer})`}
                        </div>
                      )}
                    </div>

@@ -1676,5 +1676,1596 @@ export const examQuestions = [
       { "id": "D", "text": "Create a Creative Commons license, allowing others to use your work with attribution." }
     ],
     "correctAnswers": ["C", "D"]
+  },
+  {
+    "id": 129,
+    "prompt": "You are the assistant coach of an adult soccer league. You collect registration information from each player. You decide to create a team contact list. Which information can you NOT share without the player's permission?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "First name and last name" },
+      { "id": "B", "text": "Team name and position" },
+      { "id": "C", "text": "City of residence" },
+      { "id": "D", "text": "Allergies" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 130,
+    "prompt": "You plan to get a job in information technology. You need to stay current with the latest digital technologies. What should you do?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Volunteer to create a monthly newsletter for a local school." },
+      { "id": "B", "text": "Subscribe to and read notifications from respected technology sites." },
+      { "id": "C", "text": "Write a monthly blog post about new technology that interests you." },
+      { "id": "D", "text": "Refresh your knowledge of digital technology by taking a new class every three years." }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 131,
+    "prompt": "Analyze the following statements about employment and how it relates to social media use and privacy. For each statement, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Employers are allowed to monitor your social media posts.", "answer": "True" },
+      { "id": "B", "text": "You can be fired for social media messages you post on your own time.", "answer": "True" },
+      { "id": "C", "text": "Employers can restrict what you post on your personal social media accounts.", "answer": "False" }
+    ],
+    "correctAnswers": ["A:True", "B:True", "C:False"]
+  },
+  {
+    "id": 132,
+    "prompt": "You copy a 30-second video clip from the internet. You do not know who created the video. Which scenario would NOT be fair use of the video clip?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "You use the video clip as part of a news report." },
+      { "id": "B", "text": "You create a political ad that includes the video clip." },
+      { "id": "C", "text": "You use the video clip to teach." },
+      { "id": "D", "text": "You create a parody that includes the video clip." }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 133,
+    "prompt": "What happens when you enlarge a small bitmap image that you save from a webpage?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "The image becomes pixelated." },
+      { "id": "B", "text": "The image file size decreases." },
+      { "id": "C", "text": "The image resolution decreases." },
+      { "id": "D", "text": "The image becomes clearer." }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 134,
+    "prompt": "You are working with internal team members to solve a hardware issue. Which three solutions would be most helpful? (Choose 3.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Share screenshots demonstrating the issue." },
+      { "id": "B", "text": "Provide possible solutions." },
+      { "id": "C", "text": "Share websites about software design." },
+      { "id": "D", "text": "Provide reasons a solution is not possible." },
+      { "id": "E", "text": "Focus on how tough the task is going to be." },
+      { "id": "F", "text": "Collaborate via team messaging with tips and ideas." }
+    ],
+    "correctAnswers": ["A", "B", "F"]
+  },
+  {
+    "id": 135,
+    "prompt": "You need to troubleshoot issues with your computer and smartphone. Move each troubleshooting step to its corresponding issue.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Check Task Manager for resource usage -> The computer screen freezes while you are working on a project." },
+      { "id": "B", "text": "Check the network connection -> Webpages load slowly while you are searching for information on the internet." },
+      { "id": "C", "text": "Check application permissions -> A camera shutter noise comes from your smartphone, but you are not taking photos." },
+      { "id": "D", "text": "Check the hard disk drive for a worn disk head -> When you start your computer, you hear a rhythmic ticking sound inside the case." }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 136,
+    "prompt": "For each of the four statements about digital communications with clients and coworkers, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Avoid directly stating the purpose of the message.", "answer": "False" },
+      { "id": "B", "text": "Use bullet points or lists to organize message details.", "answer": "True" },
+      { "id": "C", "text": "Use acronyms and abbreviations in all messages to keep them brief.", "answer": "False" },
+      { "id": "D", "text": "When you need a client to make a choice, provide multiple options to minimize back-and-forth.", "answer": "True" }
+    ],
+    "correctAnswers": ["A:False", "B:True", "C:False", "D:True"]
+  },
+  {
+    "id": 137,
+    "prompt": "Which of the following files can you NOT send through a standard email provider such as Gmail or Yahoo?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "A 5-minute podcast in MP3 format" },
+      { "id": "B", "text": "A 400-page plain-text file" },
+      { "id": "C", "text": "A 30-frame 1080p-resolution animated GIF" },
+      { "id": "D", "text": "A 1-minute 8K-resolution video in AVI format" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 138,
+    "prompt": "You are starting a home bakery business. You plan to create a website on which customers can place pickup and delivery orders. For which two reasons should you create a prototype of your order form? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "To reveal flaws in your design" },
+      { "id": "B", "text": "To enable customers to place orders before you launch the website" },
+      { "id": "C", "text": "To test whether the solution will work" },
+      { "id": "D", "text": "To advertise your business" }
+    ],
+    "correctAnswers": ["A", "C"]
+  },
+  {
+    "id": 139,
+    "prompt": "Which two actions describe ways to protect individual and corporate intellectual property? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Place a watermark over all publicly shared content." },
+      { "id": "B", "text": "Put a disclaimer in all your posts stating that all content is your intellectual property." },
+      { "id": "C", "text": "Create a Creative Commons license, allowing others to use your work with attribution." },
+      { "id": "D", "text": "Create a digital portfolio that is accessible to everyone on the internet." }
+    ],
+    "correctAnswers": ["A", "C"]
+  },
+  {
+    "id": 140,
+    "prompt": "You are searching the internet for facts and information to use for a research project, but your results are not giving you the answers you expected. For each statement, select True if it is an effective online research method, or False if it is ineffective.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Refine your search terms to better match your topic.", "answer": "True" },
+      { "id": "B", "text": "Paste the text of the assignment into a search engine.", "answer": "False" },
+      { "id": "C", "text": "Use Boolean operators with the keywords in your search.", "answer": "True" }
+    ],
+    "correctAnswers": ["A:True", "B:False", "C:True"]
+  },
+  {
+    "id": 141,
+    "prompt": "Move each visual representation goal from the list on the left to its most effective visual format on the right.",
+    "type": "MATCHING",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Illustrate simple part-to-whole relationships within a small data set -> Pie chart" },
+      { "id": "B", "text": "Show how one or more data series change over time -> Line graph" },
+      { "id": "C", "text": "Show the correlation and distribution of a large amount of data -> Scatter plot" }
+    ],
+    "correctAnswers": ["A", "B", "C"]
+  },
+  {
+    "id": 142,
+    "prompt": "Jackson is working at a tech store. A customer calls in to ask about a faulty laptop. The laptop is an older model, and there are newer, more updated versions available to purchase in the store. What is the best first step for Jackson to take to understand the issue?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Explain to the customer that the laptop is probably too old to fix." },
+      { "id": "B", "text": "Suggest that the customer buy a new laptop." },
+      { "id": "C", "text": "Tell the customer to come into the store right away for a refund." },
+      { "id": "D", "text": "Ask the customer about any error messages." }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 143,
+    "prompt": "For each of the three statements about practices designed to keep your knowledge and awareness of new technologies current, select whether it is True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Understanding monetization and employment practices will give you a better sense of the motivations behind the content that you consume online.", "answer": "True" },
+      { "id": "B", "text": "Using public beta applications can offer hints at adoption of industry trends and technology updates.", "answer": "True" },
+      { "id": "C", "text": "Due to editing and researching requirements, broadcast news has the highest standards in terms of coverage accuracy, timeliness and rigor.", "answer": "False" }
+    ],
+    "correctAnswers": ["A:True", "B:True", "C:False"]
+  },
+  {
+    "id": 144,
+    "prompt": "You are conducting online research. You find a selection of videos that appear to support your hypothesis. You need to determine whether a video has been altered to change the original message. Which two methods of audio editing would indicate that the video has been altered to change the message? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Closed captions have been added to the original audio." },
+      { "id": "B", "text": "A voice-over identifying the cameraperson has been added to the end of the video." },
+      { "id": "C", "text": "The original audio has been replaced by a music soundtrack." },
+      { "id": "D", "text": "Words have been rearranged and inserted." }
+    ],
+    "correctAnswers": ["C", "D"]
+  },
+  {
+    "id": 145,
+    "prompt": "You plan to sell your computer. You delete your personal files from your hard drive and then empty the Recycle Bin or Trash. What data remains on your hard drive?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "None. The reference to the files on the hard drive and the file data are completely removed." },
+      { "id": "B", "text": "The reference to the files on the hard drive is deleted. The file data remains." },
+      { "id": "C", "text": "All of it. The reference to the files on the hard drive remains. The file data remains." },
+      { "id": "D", "text": "The reference to the files on the hard drive remains. The file data is completely removed." }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 146,
+    "prompt": "For each of the four statements, select Yes if it is a good reason to run a virus scan or No if it is not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Your computer starts to run more slowly than usual.", "answer": "Yes" },
+      { "id": "B", "text": "A pop-up ad appeared on a website you visited.", "answer": "No" },
+      { "id": "C", "text": "A program on your computer begins operations on its own, without you initiating it.", "answer": "Yes" },
+      { "id": "D", "text": "You receive an email message from an online store after placing an order there.", "answer": "No" }
+    ],
+    "correctAnswers": ["A:Yes", "B:No", "C:Yes", "D:No"]
+  },
+  {
+    "id": 147,
+    "prompt": "What type of software license is automatically updated and includes monthly or yearly fees? The user can continue to use the software as long as the fee is paid.",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Open-source" },
+      { "id": "B", "text": "Cloud computing" },
+      { "id": "C", "text": "Software model" },
+      { "id": "D", "text": "Software subscription" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 148,
+    "prompt": "You need to plan a project that will use a cyclical design process. Move each cyclical design process step to its correct order in the project.",
+    "type": "MATCHING",
+    "answersRequired": 5,
+    "options": [
+      { "id": "A", "text": "Identify project requirements -> Step 1" },
+      { "id": "B", "text": "Generate ideas -> Step 2" },
+      { "id": "C", "text": "Develop the prototype -> Step 3" },
+      { "id": "D", "text": "Test the prototype -> Step 4" },
+      { "id": "E", "text": "Refine the prototype -> Step 5" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D", "E"]
+  },
+  {
+    "id": 149,
+    "prompt": "Your team has just completed a client review, and the client is not happy with the product. They have requested multiple changes to the product to address the problems, and they need the product to be fixed as quickly as possible. How should you efficiently complete their revisions?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Assign the same task to multiple team members to avoid missing any of the remaining tasks." },
+      { "id": "B", "text": "Assign all work to the most experienced team member so the rest of the team can work on other projects." },
+      { "id": "C", "text": "Assign responsibilities so work is evenly distributed among team members." },
+      { "id": "D", "text": "Assign all tasks to the entire team so everyone will collaborate on the remaining tasks." }
+    ],
+    "correctAnswers": ["C"]
+  },
+  {
+    "id": 150,
+    "prompt": "You are creating content for a website and need to follow accessibility standards. Move each accessibility standard specification on the left to its correct standard on the right.",
+    "type": "MATCHING",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Sans serif -> The preferred font style" },
+      { "id": "B", "text": "16 px -> The minimum recommended font size for website body text" },
+      { "id": "C", "text": "4.5:1 -> The minimum contrast ratio between the font color and background color" }
+    ],
+    "correctAnswers": ["A", "B", "C"]
+  },
+  {
+    "id": 151,
+    "prompt": "You need to find drivers for a Windows 10 laptop. Device Manager shows 'unknown device' for several components. What should you do?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Purchase device driver software from the store where the computer was purchased." },
+      { "id": "B", "text": "Use the model number of the machine to locate the Drivers page on the laptop manufacturer's website." },
+      { "id": "C", "text": "Restart the computer and use the Windows 10 repair tool." },
+      { "id": "D", "text": "From Device Manager, scan for hardware changes." }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 152,
+    "prompt": "Your teacher requires you to store your assignments in a specific folder in the cloud. The school's cloud storage platform has versioning turned on. What does this enable you to do?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Access your files from any operating system" },
+      { "id": "B", "text": "Retrieve old versions of your files from the cloud" },
+      { "id": "C", "text": "Access your files from any version of the cloud storage app" },
+      { "id": "D", "text": "Retrieve files that you've deleted from the cloud" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 153,
+    "prompt": "Which three actions are good strategies for being a successful member of a team? (Choose 3.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Keep the discussion light and lively." },
+      { "id": "B", "text": "Use team messaging to collaborate with tips and ideas." },
+      { "id": "C", "text": "Share and accept feedback during the process." },
+      { "id": "D", "text": "Be prompt and focused during meetings." },
+      { "id": "E", "text": "Never pressure team members about deadlines." },
+      { "id": "F", "text": "Use reply all to keep everyone up to date." }
+    ],
+    "correctAnswers": ["B", "C", "D"]
+  },
+  {
+    "id": 154,
+    "prompt": "You encounter a video on social media that you suspect might be a deepfake generated by AI. For each of the four statements, select Yes if the action would help you determine if the video is fake or No if it would not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Assume that because the video contains a statement unlikely to be said by the speaker that the video is trustworthy.", "answer": "No" },
+      { "id": "B", "text": "Search online for some of the specific quotes from the video to see if they are being featured by reputable news organizations.", "answer": "Yes" },
+      { "id": "C", "text": "Consider the motivations of the originators and sharers of the video.", "answer": "Yes" },
+      { "id": "D", "text": "Check the comments on the video to see if there are accusations of impropriety or other issues.", "answer": "Yes" }
+    ],
+    "correctAnswers": ["A:No", "B:Yes", "C:Yes", "D:Yes"]
+  },
+  {
+    "id": 155,
+    "prompt": "A story about a college test prep study guide appears in your social media news feed. The story says that a recent study of 1000 students showed that students who used this specific study guide scored 25% higher when they used this specific study guide. One renowned college professor associated with the study stated, 'If students do not use this guide, they might not earn the scores they need to be admitted to a college or university.' You identify two common logical fallacies in the content and realize that the story may be inaccurate or biased. Which two logical fallacies does the story contain? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Ad hominem (against the person): attacking the person and not the issue" },
+      { "id": "B", "text": "Appeal to authority: relying on one expert, named or unnamed, as the basis for an argument" },
+      { "id": "C", "text": "False dilemma: limiting the possible choices to avoid consideration of another choice" },
+      { "id": "D", "text": "Appeal to tradition: ignoring past problems and assuming that the way things were is better than they are now" }
+    ],
+    "correctAnswers": ["B", "C"]
+  },
+  {
+    "id": 156,
+    "prompt": "For each of the four statements about technology-driven automation, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Automation will displace some existing job roles.", "answer": "True" },
+      { "id": "B", "text": "Automation will lead to the creation of new job roles.", "answer": "True" },
+      { "id": "C", "text": "Activities that include social interactions are more likely than others to be automated.", "answer": "False" },
+      { "id": "D", "text": "Activities that include physical tasks in predictable environments are more likely than others to be automated.", "answer": "True" }
+    ],
+    "correctAnswers": ["A:True", "B:True", "C:False", "D:True"]
+  },
+  {
+    "id": 157,
+    "prompt": "Electronic waste (e-waste) refers to used electronics that are discarded, donated, or given to a recycler. For each of the four statements about e-waste, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Over 60% of e-waste is recycled.", "answer": "False" },
+      { "id": "B", "text": "E-waste is the slowest growing form of waste worldwide.", "answer": "False" },
+      { "id": "C", "text": "E-waste contains precious metals like gold and silver that can be recovered and reused.", "answer": "True" },
+      { "id": "D", "text": "E-waste contains toxic metals like lead and mercury that cause human illnesses if they leach into groundwater.", "answer": "True" }
+    ],
+    "correctAnswers": ["A:False", "B:False", "C:True", "D:True"]
+  },
+  {
+    "id": 158,
+    "prompt": "For your science class, you need to clean and analyze data for presentation. Which of these software applications should you use?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Google Sheets" },
+      { "id": "B", "text": "Miro" },
+      { "id": "C", "text": "Microsoft PowerPoint" },
+      { "id": "D", "text": "Canva" },
+      { "id": "E", "text": "Adobe InDesign" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 159,
+    "prompt": "You are performing online research for a class. For each of the four search topics, select Yes if a Boolean search will help to identify relevant results faster or No if it will not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Safaris outside of Africa", "answer": "Yes" },
+      { "id": "B", "text": "General information about zebras", "answer": "No" },
+      { "id": "C", "text": "A specific quote by a specific author", "answer": "Yes" },
+      { "id": "D", "text": "Elephants in the southern hemisphere", "answer": "Yes" }
+    ],
+    "correctAnswers": ["A:Yes", "B:No", "C:Yes", "D:Yes"]
+  },
+  {
+    "id": 160,
+    "prompt": "Which term describes the text embedded with an image that describes the image's visual content to be read aloud by a screen reader for individuals with visual impairments?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Alt text" },
+      { "id": "B", "text": "Header" },
+      { "id": "C", "text": "Caption" },
+      { "id": "D", "text": "Blockquote" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 161,
+    "prompt": "You need to maximize your online privacy. For each of the four actions, select Yes if it contributes to online privacy or No if it does not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Stay logged into websites.", "answer": "No" },
+      { "id": "B", "text": "Delete cookies after using the browser.", "answer": "Yes" },
+      { "id": "C", "text": "Use the same password for multiple accounts.", "answer": "No" },
+      { "id": "D", "text": "Use Private Browsing mode to maintain anonymity.", "answer": "Yes" }
+    ],
+    "correctAnswers": ["A:No", "B:Yes", "C:No", "D:Yes"]
+  },
+  {
+    "id": 162,
+    "prompt": "For each of the three statements about improving the reach and success of a digital marketing campaign, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Use buttons linking to specific URLs in graphics or documents to increase traffic compared to text-based calls to action.", "answer": "True" },
+      { "id": "B", "text": "Using an A/B test is a good way to determine which messaging is most effective for moving an audience to action.", "answer": "True" },
+      { "id": "C", "text": "Use built-in analytics tools to discover information about the effectiveness of a medium or platform at driving traffic to a specific objective.", "answer": "True" }
+    ],
+    "correctAnswers": ["A:True", "B:True", "C:True"]
+  },
+  {
+    "id": 163,
+    "prompt": "You are creating a flowchart. Move each symbol description to its corresponding symbol.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Decision: indicates a decision point between two or more paths in the chart. -> Diamond" },
+      { "id": "B", "text": "Data: can represent any type of data in a flowchart. -> Parallelogram" },
+      { "id": "C", "text": "Terminator: indicates the beginning or end of a process. -> Oval" },
+      { "id": "D", "text": "Delay: indicates a delay in the process. -> Delay / D-shaped symbol" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 164,
+    "prompt": "You are the leader of a digital design team. Your team is creating a poster for a local fundraising event. You send a draft of the poster to the client. The client requests changes that you and your team members believe will make the poster less attractive and less effective. You need to communicate effectively with the client about the design changes. Which three actions should you take? (Choose 3.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Create a mockup of the poster with the client's changes and send it to the client." },
+      { "id": "B", "text": "Focus the discussion on the design choices, rather than your emotional response to the client's changes." },
+      { "id": "C", "text": "Ask the client to explain the reasons for the changes and the impact they will have on the poster." },
+      { "id": "D", "text": "Remind the client that your team has the knowledge and experience to create an effective final poster design." },
+      { "id": "E", "text": "Tell the client that their ideas are not welcome." },
+      { "id": "F", "text": "Tell the client you don't want to make the changes." }
+    ],
+    "correctAnswers": ["A", "B", "C"]
+  },
+  {
+    "id": 165,
+    "prompt": "You purchase a software program to complete a specific project. After you finish the project, a friend asks to borrow the program. You need to determine whether this is an acceptable use of the software. Where can you find this information?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Electronic Software Rating Board (ESRB)" },
+      { "id": "B", "text": "End User License Agreement (EULA)" },
+      { "id": "C", "text": "Content Management System (CMS)" },
+      { "id": "D", "text": "Access Control List (ACL)" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 166,
+    "prompt": "Your Windows 10 computer has Microsoft Edge, Microsoft Internet Explorer, and Microsoft Google Chrome installed. Every time you click a link to a website in an email message, the website opens in Microsoft Edge. You want to open links in Google Chrome instead. In Windows 10, where can you configure this setting?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Task Manager" },
+      { "id": "B", "text": "Notifications" },
+      { "id": "C", "text": "Email Privacy Settings" },
+      { "id": "D", "text": "Default Apps" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 167,
+    "prompt": "Which software program can be used to create pivot tables?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Publisher" },
+      { "id": "B", "text": "PowerPoint" },
+      { "id": "C", "text": "Word" },
+      { "id": "D", "text": "Excel" },
+      { "id": "E", "text": "Pages" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 168,
+    "prompt": "For each of the four statements about contributing constructively to a project team, select Yes if the action is appropriate or No if it is not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Offer to lead the group so you can steer the project's direction.", "answer": "No" },
+      { "id": "B", "text": "Avoid conflicts by agreeing with every suggestion.", "answer": "No" },
+      { "id": "C", "text": "Point out group members' mistakes and offer to fix them.", "answer": "No" },
+      { "id": "D", "text": "Listen carefully to your teammates' ideas before offering feedback.", "answer": "Yes" }
+    ],
+    "correctAnswers": ["A:No", "B:No", "C:No", "D:Yes"]
+  },
+  {
+    "id": 169,
+    "prompt": "You are in a virtual meeting with some of your classmates while working on a project. Everyone is having a hard time deciding on the project goals and responsibilities for the team. Which two behaviors promote mutual understanding in this conversation? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Decide you should meet again at a later time." },
+      { "id": "B", "text": "Email your teacher to ask for different teammates." },
+      { "id": "C", "text": "Paraphrase the ideas you have heard so far." },
+      { "id": "D", "text": "Ask open-ended questions for teammates to answer." }
+    ],
+    "correctAnswers": ["C", "D"]
+  },
+  {
+    "id": 170,
+    "prompt": "For each of the three statements about quotation marks in search queries, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Quotation marks ensure exact phrase matching.", "answer": "True" },
+      { "id": "B", "text": "Quotation marks broaden search results.", "answer": "False" },
+      { "id": "C", "text": "Quotation marks reduce irrelevant results.", "answer": "True" }
+    ],
+    "correctAnswers": ["A:True", "B:False", "C:True"]
+  },
+  {
+    "id": 171,
+    "prompt": "For each of the four statements about protecting someone else's personally identifiable information (PII), select Yes if the action protects PII or No if it does not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Sharing a coworker's phone number in a private message without asking", "answer": "No" },
+      { "id": "B", "text": "Tagging a friend in a location post without telling them", "answer": "No" },
+      { "id": "C", "text": "Asking for permission before sharing a friend's photo on social media", "answer": "Yes" },
+      { "id": "D", "text": "Posting a friend's email address in a public forum", "answer": "No" }
+    ],
+    "correctAnswers": ["A:No", "B:No", "C:Yes", "D:No"]
+  },
+  {
+    "id": 172,
+    "prompt": "For each of the three statements about video editing, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Adding captions improves accessibility.", "answer": "True" },
+      { "id": "B", "text": "Increasing file size always improves quality.", "answer": "False" },
+      { "id": "C", "text": "Removing background noise enhances audio clarity.", "answer": "True" }
+    ],
+    "correctAnswers": ["A:True", "B:False", "C:True"]
+  },
+  {
+    "id": 173,
+    "prompt": "Move each hardware resource from the list on the left to what it provides on the right.",
+    "type": "MATCHING",
+    "answersRequired": 5,
+    "options": [
+      { "id": "A", "text": "CPU speed and number of cores -> Processing speed" },
+      { "id": "B", "text": "RAM size and speed -> Memory amount" },
+      { "id": "C", "text": "Wattage supplied to the computer -> Power needs" },
+      { "id": "D", "text": "Disk space and speed -> Storage type" },
+      { "id": "E", "text": "How the GPU renders images -> Graphics power" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D", "E"]
+  },
+  {
+    "id": 174,
+    "prompt": "For each of the three statements about resolving issues collaboratively, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Listening to all team members' input helps identify the root cause.", "answer": "True" },
+      { "id": "B", "text": "Holding individuals accountable by identifying errors publicly improves collaboration.", "answer": "False" },
+      { "id": "C", "text": "Documenting agreed-upon solutions supports accountability.", "answer": "True" }
+    ],
+    "correctAnswers": ["A:True", "B:False", "C:True"]
+  },
+  {
+    "id": 175,
+    "prompt": "Your school requires multifactor login. Which login process fulfills this requirement?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "A student logs in with a password. Then they type in a code from an app on their phone." },
+      { "id": "B", "text": "A student logs in with a password. Then they answer security questions." }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 176,
+    "prompt": "Which option is an example of workplace privacy best practice?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Using a coworker's login credentials to finish a task quickly" },
+      { "id": "B", "text": "Leaving printed documents with client information on your desk overnight" },
+      { "id": "C", "text": "Sharing customer details in an unrelated team chat" },
+      { "id": "D", "text": "Encrypting files that contain customer data before sending them" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 177,
+    "prompt": "Move each file format from the list on the left to its typical use on the right.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "High-quality audio format -> WAV" },
+      { "id": "B", "text": "Compressed video format -> MP4" },
+      { "id": "C", "text": "Image format supporting transparency -> PNG" },
+      { "id": "D", "text": "Compressed image format that permanently loses some image quality -> JPEG" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 178,
+    "prompt": "Match each communication tool to its best use.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Task tracking -> Project management platform" },
+      { "id": "B", "text": "Real-time team updates -> Instant messaging" },
+      { "id": "C", "text": "Face-to-face discussion -> Video call" },
+      { "id": "D", "text": "Formal documentation -> Email" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 179,
+    "prompt": "Match each digital collaboration term on the left to its correct description on the right.",
+    "type": "MATCHING",
+    "answersRequired": 5,
+    "options": [
+      { "id": "A", "text": "Quick communication between team members -> Messaging" },
+      { "id": "B", "text": "Working together on shared tasks or projects -> Collaboration" },
+      { "id": "C", "text": "Protects sensitive information by securing data -> Encryption" },
+      { "id": "D", "text": "Connects different tools or systems to work together -> Integration" },
+      { "id": "E", "text": "Provides summaries and insights from collected data -> Reporting" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D", "E"]
+  },
+  {
+    "id": 180,
+    "prompt": "A client reports a confidentiality issue with a shared project file. Which two actions should you take first? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Create a duplicate file and continue work in the new version" },
+      { "id": "B", "text": "Temporarily restrict access to the file while you investigate" },
+      { "id": "C", "text": "Forward the issue to the technical team without reviewing it" },
+      { "id": "D", "text": "Review the client's concern and confirm the details" }
+    ],
+    "correctAnswers": ["B", "D"]
+  },
+  {
+    "id": 181,
+    "prompt": "Move each search strategy from the list on the left to its scenario on the right.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Exclude irrelevant topics -> Use NOT" },
+      { "id": "B", "text": "Search for an exact phrase -> Use quotation marks" },
+      { "id": "C", "text": "Narrow to a specific domain -> Use site: operator" },
+      { "id": "D", "text": "Broaden results to include alternatives -> Use OR" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 182,
+    "prompt": "Match the scenario or risk on the left to the corresponding security action or mitigation on the right.",
+    "type": "MATCHING",
+    "answersRequired": 5,
+    "options": [
+      { "id": "A", "text": "Unwanted device access using old fingerprints or face data -> Disabling biometric authentication" },
+      { "id": "B", "text": "Private files and passwords coming back to the device -> Clearing cloud account synchronization" },
+      { "id": "C", "text": "Unwanted access to accounts and personal data by new user -> Removing authentication credentials" },
+      { "id": "D", "text": "New user recovering your private files from storage -> Data wiping and secure deletion" },
+      { "id": "E", "text": "Losing important work or personal documents forever -> Backing up critical files before transfer" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D", "E"]
+  },
+  {
+    "id": 183,
+    "prompt": "For each of the three statements about internal team communication, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Documenting discussions allows for easier follow up on pending action items.", "answer": "True" },
+      { "id": "B", "text": "Confirming understanding increases conflict.", "answer": "False" },
+      { "id": "C", "text": "Discussing side topics enhances problem solving.", "answer": "False" }
+    ],
+    "correctAnswers": ["A:True", "B:False", "C:False"]
+  },
+  {
+    "id": 184,
+    "prompt": "For each of the three statements about chart selection, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "A line chart is ideal for comparing categories at one point in time.", "answer": "False" },
+      { "id": "B", "text": "A pie chart is best for showing parts of a whole.", "answer": "True" },
+      { "id": "C", "text": "A bar chart is useful for comparing values across categories.", "answer": "True" }
+    ],
+    "correctAnswers": ["A:False", "B:True", "C:True"]
+  },
+  {
+    "id": 185,
+    "prompt": "You are setting up a home office. For each statement, select True if it describes an Ergonomic setup, or False if it is Non-Ergonomic.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Screen tilted upward", "answer": "False" },
+      { "id": "B", "text": "Keyboard positioned for neutral wrist alignment", "answer": "True" },
+      { "id": "C", "text": "A stool with adjustable seat positioning", "answer": "False" },
+      { "id": "D", "text": "Monitor at eye level", "answer": "True" }
+    ],
+    "correctAnswers": ["A:False", "B:True", "C:False", "D:True"]
+  },
+  {
+    "id": 186,
+    "prompt": "Which two actions demonstrate responsible handling of someone else's account information? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Writing down a coworker's password for convenience" },
+      { "id": "B", "text": "Using another person's account to complete a task" },
+      { "id": "C", "text": "Refusing to share someone's login credentials with others" },
+      { "id": "D", "text": "Logging out after using a shared computer" }
+    ],
+    "correctAnswers": ["C", "D"]
+  },
+  {
+    "id": 187,
+    "prompt": "Move each behavior from the list on the left to its scenario on the right.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "You adapt to a new project timeline without complaint -> Flexibility" },
+      { "id": "B", "text": "You provide feedback that focuses on solutions -> Constructive criticism" },
+      { "id": "C", "text": "You clarify unclear instructions before starting work -> Proactive communication" },
+      { "id": "D", "text": "A teammate struggles with a task, and you offer help -> Supportiveness" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 188,
+    "prompt": "Move each troubleshooting action from the list on the left to its purpose on the right.",
+    "type": "MATCHING",
+    "answersRequired": 5,
+    "options": [
+      { "id": "A", "text": "Determine if recently installed apps are causing conflicts with system drivers -> Turn off new software" },
+      { "id": "B", "text": "Record specific info about the problem to find patterns -> Write down error messages" },
+      { "id": "C", "text": "Clear temporary files and reset hardware to fix short-term errors -> Restart the device" },
+      { "id": "D", "text": "Make sure the computer can communicate with the network and other devices -> Check device connection" },
+      { "id": "E", "text": "Evaluate system records and events to find root causes and timing -> Look at system logs" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D", "E"]
+  },
+  {
+    "id": 189,
+    "prompt": "Which characteristic most strongly suggests bias in a news article?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "The article presents multiple viewpoints on the issue" },
+      { "id": "B", "text": "The article includes only one perspective and dismisses others" },
+      { "id": "C", "text": "The article cites data from government and academic sources" },
+      { "id": "D", "text": "The article uses neutral language and factual evidence" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 190,
+    "prompt": "A project team is behind schedule on a project that is essential for meeting the company's yearly goals. How can you contribute constructively?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Tell your manager who is responsible for the project being behind schedule" },
+      { "id": "B", "text": "Offer to take on additional tasks or help prioritize work" },
+      { "id": "C", "text": "Wait for the manager to assign new responsibilities" },
+      { "id": "D", "text": "Suggest canceling the project to avoid failure" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 191,
+    "prompt": "Which two behaviors promote understanding of issues during a virtual meeting? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Avoid summarizing to save time" },
+      { "id": "B", "text": "Turn video off for all participants" },
+      { "id": "C", "text": "Disable transcription" },
+      { "id": "D", "text": "Ask participants to clarify unclear statements" },
+      { "id": "E", "text": "Take notes and confirm key points" }
+    ],
+    "correctAnswers": ["D", "E"]
+  },
+  {
+    "id": 192,
+    "prompt": "Which visual design practice makes a bar chart easier to read and interpret?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Adding gradient backgrounds" },
+      { "id": "B", "text": "Eliminating all gridlines" },
+      { "id": "C", "text": "Removing axis labels" },
+      { "id": "D", "text": "Using a legend or key" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 193,
+    "prompt": "Move each electronic waste management concept from the left to its definition on the right.",
+    "type": "MATCHING",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Materials in e-waste that can harm human health and the environment -> Hazardous" },
+      { "id": "B", "text": "The process of extracting valuable and reusable metals from discarded electronics -> Recovering" }
+    ],
+    "correctAnswers": ["A", "B"]
+  },
+  {
+    "id": 194,
+    "prompt": "For each of the three statements about assessing online information, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "A site with a clear author and date is more likely to be reliable.", "answer": "True" },
+      { "id": "B", "text": "Cross-checking facts with multiple sources improves accuracy.", "answer": "True" },
+      { "id": "C", "text": "Social media posts are just as authoritative as peer-reviewed academic sources.", "answer": "False" }
+    ],
+    "correctAnswers": ["A:True", "B:True", "C:False"]
+  },
+  {
+    "id": 195,
+    "prompt": "Which two actions reflect best practices for digital citizenship? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Sharing unverified rumors to warn friends" },
+      { "id": "B", "text": "Keeping up with changes in online safety guidelines" },
+      { "id": "C", "text": "Reporting cyberbullying to a trusted authority" },
+      { "id": "D", "text": "Posting others' personal information to expose alleged wrongdoing" }
+    ],
+    "correctAnswers": ["B", "C"]
+  },
+  {
+    "id": 196,
+    "prompt": "You are gathering system information to help you fix a problem with your computer. Which three types of data would help most when troubleshooting technical issues? (Choose 3.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Operating system version and available system updates" },
+      { "id": "B", "text": "List of all the files stored in the user downloads folder" },
+      { "id": "C", "text": "Hardware details, including processor, memory, and storage size" },
+      { "id": "D", "text": "Complete browsing history and website visit logs" },
+      { "id": "E", "text": "Network adapter type and current connection state" }
+    ],
+    "correctAnswers": ["A", "C", "E"]
+  },
+  {
+    "id": 197,
+    "prompt": "Match each scenario to the correct communication strategy.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "You need to encourage participation in a discussion -> Ask open-ended questions" },
+      { "id": "B", "text": "Your audience is unfamiliar with technical terms -> Provide examples" },
+      { "id": "C", "text": "You are communicating with a college admissions representative -> Use formal tone" },
+      { "id": "D", "text": "Your team is confused about the project schedule -> Use clear deadlines" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 198,
+    "prompt": "For each of the three statements about digital citizenship, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Reporting illegal or harmful online activity to the appropriate authorities is a best practice for digital citizenship.", "answer": "True" },
+      { "id": "B", "text": "Keeping your digital knowledge current is unnecessary once you learn basic online safety.", "answer": "False" },
+      { "id": "C", "text": "It is acceptable to share someone else's private information online if you believe you have a good reason.", "answer": "False" }
+    ],
+    "correctAnswers": ["A:True", "B:False", "C:False"]
+  },
+  {
+    "id": 199,
+    "prompt": "Which two methods strengthen account security through multifactor authentication? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Using a password and a security question" },
+      { "id": "B", "text": "Using a password and a fingerprint scan" },
+      { "id": "C", "text": "Using two different passwords for the same account" },
+      { "id": "D", "text": "Using a password and a one-time code sent to a mobile device" }
+    ],
+    "correctAnswers": ["B", "D"]
+  },
+  {
+    "id": 200,
+    "prompt": "Match each tool to the scenario in which you would use it.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "You are in a meeting and need to answer a question for a coworker who is in a different meeting -> Instant messaging" },
+      { "id": "B", "text": "You need to collaborate with your classmates on a research paper -> Shared document editor" },
+      { "id": "C", "text": "You need to interview someone in a different location for a project -> Video conferencing" },
+      { "id": "D", "text": "You need to generate a schedule and coordinate tasks for a small team -> Project management software" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 201,
+    "prompt": "For each of the three statements about narrowing search results, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Using quotation marks narrows results.", "answer": "True" },
+      { "id": "B", "text": "Adding more keywords narrows results.", "answer": "True" },
+      { "id": "C", "text": "Using OR between keywords narrows results.", "answer": "False" }
+    ],
+    "correctAnswers": ["A:True", "B:True", "C:False"]
+  },
+  {
+    "id": 202,
+    "prompt": "Which two features of cloud storage help prevent data loss when multiple users edit the same file? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "File sharing permissions" },
+      { "id": "B", "text": "Encryption" },
+      { "id": "C", "text": "File compression" },
+      { "id": "D", "text": "Version history" }
+    ],
+    "correctAnswers": ["A", "D"]
+  },
+  {
+    "id": 203,
+    "prompt": "Your company has software version 4.7.2. An update to version 4.7.3 is now available. Which changes would you expect in this update?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Big new features and new design" },
+      { "id": "B", "text": "Complete rewrite of the software" },
+      { "id": "C", "text": "Removal of old features" },
+      { "id": "D", "text": "Bug fixes and small improvements" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 204,
+    "prompt": "Move each software update type on the left to its corresponding description on the right.",
+    "type": "MATCHING",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Significant architectural redesign or breaking new features -> Major update" },
+      { "id": "B", "text": "New features and capabilities added in a backward-compatible manner -> Minor update" },
+      { "id": "C", "text": "Bug fixes, security patches, and minor corrections with no new features -> Patch update" }
+    ],
+    "correctAnswers": ["A", "B", "C"]
+  },
+  {
+    "id": 205,
+    "prompt": "For each of the four statements about maintaining someone else's privacy online, select Yes if the action maintains privacy or No if it does not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Sharing your location and tagging the friends you are with", "answer": "No" },
+      { "id": "B", "text": "Asking friends before tagging them in a photo", "answer": "Yes" },
+      { "id": "C", "text": "Posting your friend's address for an online party invitation", "answer": "No" },
+      { "id": "D", "text": "Sharing a friend's birthday publicly without asking", "answer": "No" }
+    ],
+    "correctAnswers": ["A:No", "B:Yes", "C:No", "D:No"]
+  },
+  {
+    "id": 206,
+    "prompt": "You are trying to share a video on a social networking platform. You receive an error that the file is too large. Which action ensures that your video file can be shared quickly without losing quality?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Converting the file to an encrypted format" },
+      { "id": "B", "text": "Converting the file to a compressed format" },
+      { "id": "C", "text": "Splitting the file into multiple parts manually" },
+      { "id": "D", "text": "Changing the file extension to a smaller format" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 207,
+    "prompt": "You are working on a shared document and notice conflicting edits from a teammate. Which two actions should you take to resolve the issue? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Contact the teammate to understand their changes before finalizing" },
+      { "id": "B", "text": "Revert the document to an earlier version without notifying anyone" },
+      { "id": "C", "text": "Create a separate copy of the document and continue working alone" },
+      { "id": "D", "text": "Add a comment explaining your changes and request feedback" }
+    ],
+    "correctAnswers": ["A", "D"]
+  },
+  {
+    "id": 208,
+    "prompt": "For each of the three statements about managing interpersonal digital communication, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Using clear subject lines improves message clarity.", "answer": "True" },
+      { "id": "B", "text": "Responding with one-word answers promotes engagement.", "answer": "False" },
+      { "id": "C", "text": "Adjusting tone based on audience is important.", "answer": "False" }
+    ],
+    "correctAnswers": ["A:True", "B:False", "C:False"]
+  },
+  {
+    "id": 209,
+    "prompt": "You are a high school student who has been spending long hours on a laptop completing assignments and playing games. Recently, you started experiencing wrist pain and shoulder discomfort. Which action is the most effective way to reduce the physical risks associated with this situation?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Wear blue light filtering glasses during all computer use" },
+      { "id": "B", "text": "Use an external keyboard and mouse with an adjustable chair and desk" },
+      { "id": "C", "text": "Switch to a laptop with a higher screen resolution for better image quality" },
+      { "id": "D", "text": "Use noise-canceling headphones to improve focus and reduce fatigue" },
+      { "id": "E", "text": "Move your laptop to the bedroom so you can lie down while you work" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 210,
+    "prompt": "Which two practices are appropriate when interacting with external clients to understand issues? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Share confidential internal details to build trust" },
+      { "id": "B", "text": "Use clear and professional language" },
+      { "id": "C", "text": "Ask open-ended questions to gather information" },
+      { "id": "D", "text": "Keep the conversation brief to respect the client's time" }
+    ],
+    "correctAnswers": ["B", "C"]
+  },
+  {
+    "id": 211,
+    "prompt": "Move each evaluation step from the list on the left to its correct goal on the right.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Verify publication date -> Ensure the information is current" },
+      { "id": "B", "text": "Compare with other sources -> Validate accuracy through cross-checking" },
+      { "id": "C", "text": "Check author credentials -> Confirm expertise of the source" },
+      { "id": "D", "text": "Review the site's domain -> Determine the type of organization associated with the site" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 212,
+    "prompt": "Move each principle from the list on the left to its correct action on the right.",
+    "type": "MATCHING",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "You listen without interrupting when teammates are sharing ideas -> Respectful communication" },
+      { "id": "B", "text": "You meet deadlines for your assigned tasks -> Accountability" },
+      { "id": "C", "text": "Each person contributes their expertise to a project with a tight deadline -> Collaboration" }
+    ],
+    "correctAnswers": ["A", "B", "C"]
+  },
+  {
+    "id": 213,
+    "prompt": "Which action demonstrates responsible digital citizenship?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Posting personal details of others without consent" },
+      { "id": "B", "text": "Sharing unverified news articles to raise awareness" },
+      { "id": "C", "text": "Reporting harmful online behavior to the appropriate authority" },
+      { "id": "D", "text": "Ignoring suspicious online activity to avoid involvement" }
+    ],
+    "correctAnswers": ["C"]
+  },
+  {
+    "id": 214,
+    "prompt": "You have been asked to update the software on your friend's older computer. Before doing so, you need to make sure the old hardware can run the new software. Move each compatibility check step from the list on the left to its correct step in order on the right.",
+    "type": "MATCHING",
+    "answersRequired": 5,
+    "options": [
+      { "id": "A", "text": "Check every system specs against what the software needs at a minimum -> Step one" },
+      { "id": "B", "text": "Find hardware parts that slow down performance -> Step two" },
+      { "id": "C", "text": "Estimate the budget and make a plan for upgrades -> Step three" },
+      { "id": "D", "text": "Decide which devices must be upgraded and which can stay -> Step four" },
+      { "id": "E", "text": "Plan to test the system and train users on the new software -> Step five" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D", "E"]
+  },
+  {
+    "id": 215,
+    "prompt": "Which factor indicates that an online article is credible?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "The article includes multiple advertisements and pop-ups" },
+      { "id": "B", "text": "The article uses persuasive language and emotional appeals" },
+      { "id": "C", "text": "The article has a recent publication date and is from reputable sources" },
+      { "id": "D", "text": "The article appears on a popular social media platform" }
+    ],
+    "correctAnswers": ["C"]
+  },
+  {
+    "id": 216,
+    "prompt": "A teammate suggests changing the review process to include more stakeholders, but the project deadline is tight. Which option is an example of constructive feedback to give to the team member?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Your idea won't work; half of the stakeholders won't respond. I have worked with them before and I know them." },
+      { "id": "B", "text": "I like your ideas, but I worry they push us past our schedule. Can we choose one or two key stakeholders instead?" },
+      { "id": "C", "text": "That's not how we usually do things. Stakeholders don't like it when we change things." },
+      { "id": "D", "text": "We don't have time for new ideas right now. This project is already close to failing." }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 217,
+    "prompt": "Move each accessibility principle from the list on the left to its correct example on the right.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Keyboard navigation is available -> Operable" },
+      { "id": "B", "text": "Content works with assistive technology -> Robust" },
+      { "id": "C", "text": "Clear and simple language is used -> Understandable" },
+      { "id": "D", "text": "Images have alt text -> Perceivable" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 218,
+    "prompt": "Which legal term refers to the protection of original works such as books, music, and software from unlimited use?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Fair use" },
+      { "id": "B", "text": "Patents" },
+      { "id": "C", "text": "Copyright" },
+      { "id": "D", "text": "Trademarks" }
+    ],
+    "correctAnswers": ["C"]
+  },
+  {
+    "id": 219,
+    "prompt": "Move each computer hardware component from the list on the left to its primary function on the right.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Executes instructions and processes calculations for the system -> CPU" },
+      { "id": "B", "text": "Accelerates graphics rendering and image processing -> GPU" },
+      { "id": "C", "text": "Provides fast, temporary memory for running applications -> RAM" },
+      { "id": "D", "text": "Displays visual output and user interface to the user -> Monitor" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 220,
+    "prompt": "Select True or False for each statement about digital citizenship.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Using strong passwords is part of maintaining good digital citizenship.", "answer": "True" },
+      { "id": "B", "text": "Digital citizenship includes respecting others' rights and privacy online.", "answer": "True" },
+      { "id": "C", "text": "Ignoring harmful online behavior is considered responsible digital citizenship.", "answer": "False" }
+    ],
+    "correctAnswers": ["A:True", "B:True", "C:False"]
+  },
+  {
+    "id": 221,
+    "prompt": "Move each protection method from the list on the left to its correct purpose on the right.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Protects confidential business information -> Non-disclosure agreement (NDA)" },
+      { "id": "B", "text": "Secures digital files from unauthorized access -> Encryption" },
+      { "id": "C", "text": "Asserts ownership of creative work -> Copyright notice" },
+      { "id": "D", "text": "Deters unauthorized image use -> Watermark" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 222,
+    "prompt": "You are troubleshooting a computer issue. Move each specification from the list on the left to the problem it helps diagnose on the right.",
+    "type": "MATCHING",
+    "answersRequired": 5,
+    "options": [
+      { "id": "A", "text": "Do software needs match the installed system version? -> Operating system version and updates" },
+      { "id": "B", "text": "Are there internet connection problems and slow data speeds? -> Network adapter and connection type" },
+      { "id": "C", "text": "Are conflicts between apps or outdated drivers causing crashes? -> Installed software and other driver versions" },
+      { "id": "D", "text": "Does the device have enough resources to run apps smoothly? -> Processor and RAM details" },
+      { "id": "E", "text": "Is slow performance being caused by not enough disk space? -> Storage size and free space" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D", "E"]
+  },
+  {
+    "id": 223,
+    "prompt": "A worker needs to make sure that the same web browser always opens HTML files and web links. What is the best way to do this?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Make desktop shortcuts for each HTML file" },
+      { "id": "B", "text": "Go to system settings to set default programs" },
+      { "id": "C", "text": "Reinstall the browser with admin rights" },
+      { "id": "D", "text": "Pick the browser each time a link opens" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 224,
+    "prompt": "Which activity is part of refining a prototype in a cyclical design process?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Approving the final product for release" },
+      { "id": "B", "text": "Setting the project budget" },
+      { "id": "C", "text": "Gathering initial requirements" },
+      { "id": "D", "text": "Adjusting design based on user feedback" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 225,
+    "prompt": "Move each version number update from the list on the left to its correct description on the right.",
+    "type": "MATCHING",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Version that lets you try out new features before everyone gets it -> 3.9 to 4.0 Beta" },
+      { "id": "B", "text": "Small improvements and new optional features while other features stay the same -> 3.0 to 3.1" },
+      { "id": "C", "text": "Big redesign that may change the way you work with the program -> 2.0 to 3.0" },
+      { "id": "D", "text": "Important repairs and security fixes with no new features -> 16.2 to 16.3" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D"]
+  },
+  {
+    "id": 226,
+    "prompt": "Which two actions occur during the initial phase of a cyclical design process? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Approving the product for release" },
+      { "id": "B", "text": "Testing prototypes with users" },
+      { "id": "C", "text": "Creating a prototype" },
+      { "id": "D", "text": "Considering design constraints" },
+      { "id": "E", "text": "Identifying requirements" }
+    ],
+    "correctAnswers": ["D", "E"]
+  },
+  {
+    "id": 227,
+    "prompt": "For each of the three statements about accessibility, select whether it is Accurate or Inaccurate.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Alt text helps users with visual impairments.", "answer": "True" },
+      { "id": "B", "text": "Captions improve accessibility for visual impairments.", "answer": "False" },
+      { "id": "C", "text": "High-contrast colors improve readability.", "answer": "True" }
+    ],
+    "correctAnswers": ["A:True", "B:False", "C:True"]
+  },
+  {
+    "id": 228,
+    "prompt": "Move each computer interface feature from the list on the left to its primary purpose on the right.",
+    "type": "MATCHING",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Commands for opening, saving, printing, and managing documents -> File menus" },
+      { "id": "B", "text": "Alerts the user to system events, updates, and application messages -> Notification systems" }
+    ],
+    "correctAnswers": ["A", "B"]
+  },
+  {
+    "id": 229,
+    "prompt": "For each of the three statements about flowcharts, select whether it is Accurate or Inaccurate.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Flowcharts are most efficient for visually representing complex data.", "answer": "False" },
+      { "id": "B", "text": "Arrows indicate the sequence of steps in flowcharts.", "answer": "True" },
+      { "id": "C", "text": "Intentionally chosen shapes can improve readability.", "answer": "True" }
+    ],
+    "correctAnswers": ["A:False", "B:True", "C:True"]
+  },
+  {
+    "id": 230,
+    "prompt": "Which visualization is used for illustrating the sequence of steps in a process?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Pie chart: Used to show proportions or percentages of a whole." },
+      { "id": "B", "text": "Flowchart: Specifically designed to show a sequence of steps, a workflow, or process from start to finish." },
+      { "id": "C", "text": "Column chart: Used to compare different categories or show changes over time." },
+      { "id": "D", "text": "Histogram: Used to show the frequency distribution of a dataset." }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 231,
+    "prompt": "For each of the three statements about cloud versioning, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Version history is useful for collaborative editing.", "answer": "True" },
+      { "id": "B", "text": "Cloud versioning keeps a history of changes made to a file.", "answer": "True" },
+      { "id": "C", "text": "Cloud versioning requires users to manually save a separate file for every change.", "answer": "False" }
+    ],
+    "correctAnswers": ["A:True", "B:True", "C:False"]
+  },
+  {
+    "id": 232,
+    "prompt": "In cloud computing, what does SaaS stand for?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Platform as a Service" },
+      { "id": "B", "text": "Software as a Service" },
+      { "id": "C", "text": "Infrastructure as a Service" },
+      { "id": "D", "text": "Storage as a Service" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 233,
+    "prompt": "What is a 'Digital Footprint'?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Physical footprints left near server hardware" },
+      { "id": "B", "text": "The trail of data you leave behind when using the internet or digital devices" },
+      { "id": "C", "text": "Only photos posted on social media" },
+      { "id": "D", "text": "An internet speed test metric" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 234,
+    "prompt": "What is the primary objective of a phishing attack?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "To speed up computer performance" },
+      { "id": "B", "text": "To deceive users into revealing sensitive information (passwords, credit cards)" },
+      { "id": "C", "text": "To increase Wi-Fi network bandwidth" },
+      { "id": "D", "text": "To update antivirus definitions" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 235,
+    "prompt": "Why is Two-Factor Authentication (2FA) recommended?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "To make computer displays brighter" },
+      { "id": "B", "text": "To add an extra layer of security beyond just a password" },
+      { "id": "C", "text": "To download files faster" },
+      { "id": "D", "text": "To reduce mobile data consumption" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 236,
+    "prompt": "In data analytics, what are the primary characteristics of 'Big Data'?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Volume, Velocity, and Variety" },
+      { "id": "B", "text": "Only text-based documents" },
+      { "id": "C", "text": "Offline-only storage capability" },
+      { "id": "D", "text": "Requirement of a single computer processor" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 237,
+    "prompt": "Which of the following is NOT an operating system?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Microsoft Windows" },
+      { "id": "B", "text": "Linux Ubuntu" },
+      { "id": "C", "text": "Microsoft Excel" },
+      { "id": "D", "text": "macOS" }
+    ],
+    "correctAnswers": ["C"]
+  },
+  {
+    "id": 238,
+    "prompt": "What do SSL/TLS certificates ensure on a website?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Faster image loading times" },
+      { "id": "B", "text": "Encrypted and secure data transmission between browser and server" },
+      { "id": "C", "text": "Fewer popup advertisements" },
+      { "id": "D", "text": "Attractive visual web design" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 239,
+    "prompt": "What is the primary purpose of a VPN (Virtual Private Network)?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "To expand physical computer memory" },
+      { "id": "B", "text": "To provide online privacy and establish a secure encrypted tunnel" },
+      { "id": "C", "text": "To connect local printers" },
+      { "id": "D", "text": "To edit video files" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 240,
+    "prompt": "What does a 'Creative Commons' license signify?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Only paid enterprise software content" },
+      { "id": "B", "text": "Flexible copyright licenses allowing creators to specify how others can use their work" },
+      { "id": "C", "text": "Government-only classified documents" },
+      { "id": "D", "text": "A video game ESRB rating" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 241,
+    "prompt": "In programming and logic, what is an 'Algorithm'?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "A document written strictly in English" },
+      { "id": "B", "text": "A step-by-step set of precise instructions designed to solve a problem" },
+      { "id": "C", "text": "The hard drive storage capacity" },
+      { "id": "D", "text": "A type of ethernet cable" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 242,
+    "prompt": "In a relational database, what is the function of a PRIMARY KEY?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "To uniquely identify each record (row) in a table" },
+      { "id": "B", "text": "To change the color theme of the database" },
+      { "id": "C", "text": "To store user account passwords exclusively" },
+      { "id": "D", "text": "To rename data files" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 243,
+    "prompt": "What does IoT (Internet of Things) refer to?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Interconnection of smartphones only" },
+      { "id": "B", "text": "Everyday physical objects connected to the internet capable of collecting and sharing data" },
+      { "id": "C", "text": "Satellite navigation systems exclusively" },
+      { "id": "D", "text": "Wired local area networks" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 244,
+    "prompt": "Which practice represents a strong password rule?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Using only your birth year" },
+      { "id": "B", "text": "Combining uppercase/lowercase letters, numbers, and symbols into a long string" },
+      { "id": "C", "text": "Using your first and last name" },
+      { "id": "D", "text": "Using standard sequences like '123456'" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 245,
+    "prompt": "Why are software updates important?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Only to add new arcade games" },
+      { "id": "B", "text": "To patch security vulnerabilities and improve stability and performance" },
+      { "id": "C", "text": "To make the computer heavier" },
+      { "id": "D", "text": "To intentionally slow down internet browsing" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 246,
+    "prompt": "What are 'Spam' messages?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Critical system service notifications" },
+      { "id": "B", "text": "Unsolicited, bulk digital messages sent indiscriminately for advertising or malicious intent" },
+      { "id": "C", "text": "Personal emails from close friends" },
+      { "id": "D", "text": "Official system alerts" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 247,
+    "prompt": "Which of the following are types of Malware (Malicious Software)?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Viruses, Trojans, Ransomware" },
+      { "id": "B", "text": "Microsoft Word, Excel" },
+      { "id": "C", "text": "Google Chrome, Safari" },
+      { "id": "D", "text": "Windows Update Assistant" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 248,
+    "prompt": "Which of the following is a cloud storage service?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Google Drive / OneDrive" },
+      { "id": "B", "text": "Notepad" },
+      { "id": "C", "text": "Calculator" },
+      { "id": "D", "text": "Paint" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 249,
+    "prompt": "What does 'Netiquette' mean?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Proper manners and conduct expected when communicating online" },
+      { "id": "B", "text": "Computer hardware cleaning procedures" },
+      { "id": "C", "text": "Programming language syntax rules" },
+      { "id": "D", "text": "Methods for boosting network speeds" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 250,
+    "prompt": "What is the purpose of creating a data backup?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "To fill up empty hard drive space" },
+      { "id": "B", "text": "To preserve critical data and prevent permanent loss from hardware failure or attacks" },
+      { "id": "C", "text": "To test internet download speeds" },
+      { "id": "D", "text": "To compress file sizes" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 251,
+    "prompt": "What is a core capability of Artificial Intelligence (AI)?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Strictly executing rigid, pre-programmed static rules" },
+      { "id": "B", "text": "Learning from data, recognizing patterns, and making autonomous decisions" },
+      { "id": "C", "text": "Playing audio files only" },
+      { "id": "D", "text": "Reducing electrical power usage" }
+    ],
+    "correctAnswers": ["B"]
   }
 ];
