@@ -1,4 +1,4 @@
-export const examQuestions = [
+﻿export const examQuestions = [
   {
     "id": 1,
     "prompt": "Which action best demonstrates an understanding of intellectual property guidelines when reusing someone's work?",
@@ -3267,5 +3267,717 @@ export const examQuestions = [
       { "id": "D", "text": "Reducing electrical power usage" }
     ],
     "correctAnswers": ["B"]
+  },
+  {
+    "id": 252,
+    "prompt": "Which practice helps keep your online accounts secure?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Share your password with trusted friends" },
+      { "id": "B", "text": "Use the same password for all accounts" },
+      { "id": "C", "text": "Use strong, unique passwords for each account" },
+      { "id": "D", "text": "Write your password on paper near your computer" }
+    ],
+    "correctAnswers": ["C"]
+  },
+  {
+    "id": 253,
+    "prompt": "For each statement about evaluating online sources, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Web pages are more credible if they cite sources for their content", "answer": "True" },
+      { "id": "B", "text": "You know a source is reliable when the website address ends in .org", "answer": "False" },
+      { "id": "C", "text": "Consulting multiple sources is a good way to determine a site's accuracy", "answer": "True" },
+      { "id": "D", "text": "A search engine differentiates between good and bad sites. The first results are usually the most reliable", "answer": "False" }
+    ],
+    "correctAnswers": ["A:True", "B:False", "C:True", "D:False"]
+  },
+  {
+    "id": 254,
+    "prompt": "What is the first thing you should consider when preparing a digital presentation to ensure it can be viewed effectively on various devices?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Use many transitions and animations" },
+      { "id": "B", "text": "Optimize file size of images and videos for quick loading" },
+      { "id": "C", "text": "Use fancy decorative fonts" },
+      { "id": "D", "text": "Put as much text as possible on slides" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 255,
+    "prompt": "Which term describes unwanted email messages that are sent in bulk?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Spam" },
+      { "id": "B", "text": "Malware" },
+      { "id": "C", "text": "Phishing" },
+      { "id": "D", "text": "Encryption" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 256,
+    "prompt": "You are tasked with designing a website. Which two website criteria are design constraints? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "It must be quick to load." },
+      { "id": "B", "text": "It must provide a method for students to indicate why they will be absent." },
+      { "id": "C", "text": "It must be complete in two weeks." },
+      { "id": "D", "text": "It must be easy to use." }
+    ],
+    "correctAnswers": ["A", "C"]
+  },
+  {
+    "id": 257,
+    "prompt": "You need to plan a project that will use a cyclical design process. Move each task on the left to its correct step in the order on the right.",
+    "type": "MATCHING",
+    "answersRequired": 5,
+    "options": [
+      { "id": "A", "text": "Identify project requirements -> Step 1" },
+      { "id": "B", "text": "Generate ideas -> Step 2" },
+      { "id": "C", "text": "Develop the prototype -> Step 3" },
+      { "id": "D", "text": "Test the prototype -> Step 4" },
+      { "id": "E", "text": "Refine the prototype -> Step 5" }
+    ],
+    "correctAnswers": ["A", "B", "C", "D", "E"]
+  },
+  {
+    "id": 258,
+    "prompt": "Which two are appropriate web page elements that may require the use of the alt text attribute? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Index" },
+      { "id": "B", "text": "Table of Contents" },
+      { "id": "C", "text": "Lengthy URL" },
+      { "id": "D", "text": "Caption" },
+      { "id": "E", "text": "Image" }
+    ],
+    "correctAnswers": ["C", "E"]
+  },
+  {
+    "id": 259,
+    "prompt": "What can be performed to remove any personal information from a device?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "A quick scan" },
+      { "id": "B", "text": "Software updates" },
+      { "id": "C", "text": "A factory reset" },
+      { "id": "D", "text": "Device shutdown" }
+    ],
+    "correctAnswers": ["C"]
+  },
+  {
+    "id": 260,
+    "prompt": "Your smartphone has not received text messages for several hours and will not make outbound calls. Which is the FIRST troubleshooting step?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "If you have a SIM card, replace it." },
+      { "id": "B", "text": "Perform a factory reset." },
+      { "id": "C", "text": "Power your phone off and back on." },
+      { "id": "D", "text": "Call technical support." }
+    ],
+    "correctAnswers": ["C"]
+  },
+  {
+    "id": 261,
+    "prompt": "You want websites to automatically open in Firefox. On Android or iPhone, where can you change the setting that controls which browser opens automatically?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Task Manager" },
+      { "id": "B", "text": "In the browser settings" },
+      { "id": "C", "text": "Email Settings" },
+      { "id": "D", "text": "In your phone's App store" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 262,
+    "prompt": "Which two software tools would be best to build tables, charts, and visual representations of raw data? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Google Sheets" },
+      { "id": "B", "text": "Microsoft Excel" },
+      { "id": "C", "text": "Adobe Illustrator" },
+      { "id": "D", "text": "Affinity Designer" },
+      { "id": "E", "text": "Intuit QuickBooks" }
+    ],
+    "correctAnswers": ["A", "B"]
+  },
+  {
+    "id": 263,
+    "prompt": "Which of these file formats is capable of holding audio, video, and other media by containing data rather than code?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "MP3" },
+      { "id": "B", "text": "MP4" },
+      { "id": "C", "text": "WMA" },
+      { "id": "D", "text": "WAV" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 264,
+    "prompt": "How does color contrast affect the visually impaired?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Increasing contrast between an object and its background makes the object more visible." },
+      { "id": "B", "text": "Offering a variety of colors makes focusing easier for the visually impaired." },
+      { "id": "C", "text": "Color contrast has no effect on the visually impaired." },
+      { "id": "D", "text": "Increasing contrast between an object and its background makes the object less visible." }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 265,
+    "prompt": "What is the name of human ideas, which are internationally protected by either copyright, patent, trademark, or trade secret?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Imaginary Property" },
+      { "id": "B", "text": "Real Property" },
+      { "id": "C", "text": "Tangible Property" },
+      { "id": "D", "text": "Intellectual Property" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 266,
+    "prompt": "Which is the highest screen resolution?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "1366 x 768" },
+      { "id": "B", "text": "1920 x 1080" },
+      { "id": "C", "text": "1440 x 900" },
+      { "id": "D", "text": "1536 x 864" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 267,
+    "prompt": "Which software application is used to access websites on the internet?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Attribution" },
+      { "id": "B", "text": "Email Client" },
+      { "id": "C", "text": "Browser" },
+      { "id": "D", "text": "Public Domain" }
+    ],
+    "correctAnswers": ["C"]
+  },
+  {
+    "id": 268,
+    "prompt": "What are two consequences of posting one's current location while away on vacation? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Others will know the user's location" },
+      { "id": "B", "text": "Others will not believe the user is away" },
+      { "id": "C", "text": "Others will go on vacation" },
+      { "id": "D", "text": "Others will know that the user's home is vacant" },
+      { "id": "E", "text": "Others will think the user is home" }
+    ],
+    "correctAnswers": ["A", "D"]
+  },
+  {
+    "id": 269,
+    "prompt": "Which term describes a means of giving credit to a source when their information is used?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Search Operators" },
+      { "id": "B", "text": "Chart" },
+      { "id": "C", "text": "Encryption" },
+      { "id": "D", "text": "Citation" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 270,
+    "prompt": "You need to decrease video loading time on your company's website. Will each action make the video load faster (Yes) or not (No)?",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Increase the video bitrate", "answer": "No" },
+      { "id": "B", "text": "Convert the video to HTML5", "answer": "Yes" },
+      { "id": "C", "text": "Decrease the video resolution", "answer": "Yes" },
+      { "id": "D", "text": "Replace the video with an uncompressed version", "answer": "No" }
+    ],
+    "correctAnswers": ["A:No", "B:Yes", "C:Yes", "D:No"]
+  },
+  {
+    "id": 271,
+    "prompt": "Your team is creating a website for a local business. You arrange a virtual meeting with the business owner. How should you configure the chat feature for this meeting?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Allow chat communication between all meeting participants." },
+      { "id": "B", "text": "Allow chat communication only between you and the client." },
+      { "id": "C", "text": "Turn off the chat function completely." },
+      { "id": "D", "text": "Allow chat communication only between you and your team members." }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 272,
+    "prompt": "How can you ensure your contributions to a project team are most effective?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "By being open to suggestions and willing to adapt your ideas" },
+      { "id": "B", "text": "By focusing only on your own tasks" },
+      { "id": "C", "text": "By always taking the lead" },
+      { "id": "D", "text": "By withholding your ideas" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 273,
+    "prompt": "Sophia's group is working on a class project, but they're unsure how to start. The teacher has already given instructions but the group is having a hard time getting started. What is the best approach for Sophia to help the team identify the issue?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Ask everyone to give their input on how to begin" },
+      { "id": "B", "text": "Wait until the next day to see if anyone comes up with an idea" },
+      { "id": "C", "text": "Begin working independently until the group decides what to do" },
+      { "id": "D", "text": "Let one person decide for the group" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 274,
+    "prompt": "Emma needs to send a quick reminder about homework to her study group. Which method is most appropriate?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Post it on her school's Instagram page." },
+      { "id": "B", "text": "Send a brief group text message with the homework reminder." },
+      { "id": "C", "text": "Call each person individually and remind them" },
+      { "id": "D", "text": "Ask her teacher to send a reminder email to her study group" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 275,
+    "prompt": "A friend is being bullied. Who should your friend report the bullying to? Move each situation from the list on the left to its corresponding authority on the right.",
+    "type": "MATCHING",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "The bully threatens to hurt your friend physically -> Law enforcement" },
+      { "id": "B", "text": "The bully writes insults from social media posts on your friend's gym class locker -> School faculty" },
+      { "id": "C", "text": "The bully posts a series of insults about your friend on a hacked social media account. -> Social media provider" }
+    ],
+    "correctAnswers": ["A", "B", "C"]
+  },
+  {
+    "id": 276,
+    "prompt": "You are working with classmates on a team project. Your part of the project is due in three days. You realize that you need more time to finish. You have an online meeting with your classmates tomorrow. What should you do?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Explain why you haven't made enough progress." },
+      { "id": "B", "text": "Wait to communicate with the team until after you complete your part of the project." },
+      { "id": "C", "text": "Tell the team you took on too much" },
+      { "id": "D", "text": "Describe what you have accomplished and ask for help with the rest" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 277,
+    "prompt": "You see a post online in which a person is threatening to commit a harmful act. What is the first action you should take?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Notify your local law enforcement by telephone or emergency text message if available" },
+      { "id": "B", "text": "Take a screenshot of the post and wait to see if the harmful act is committed." },
+      { "id": "C", "text": "Reply to the post and convince the original poster not to commit this act." },
+      { "id": "D", "text": "Share the post to your own social media audience to warn others about the threat." }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 278,
+    "prompt": "What is the key to contributing constructively to a project team?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Providing feedback that helps improve the team's work" },
+      { "id": "B", "text": "Focusing only on your assigned tasks" },
+      { "id": "C", "text": "Avoiding conflicts by agreeing with all ideas" },
+      { "id": "D", "text": "Completing tasks faster than the other group members" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 279,
+    "prompt": "Determine if each action helps identify if an online video is fake (Yes) or not (No).",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Assume that because the video contains a statement unlikely to be said by the speaker that the video is trustworthy.", "answer": "No" },
+      { "id": "B", "text": "Search online for some of the specific quotes from the video to see if they are being featured by reputable news organizations.", "answer": "Yes" },
+      { "id": "C", "text": "Consider the motivations of the originators and sharers of the video", "answer": "Yes" },
+      { "id": "D", "text": "Check the comments on the video to see if there are accusations of impropriety or other issues.", "answer": "Yes" }
+    ],
+    "correctAnswers": ["A:No", "B:Yes", "C:Yes", "D:Yes"]
+  },
+  {
+    "id": 280,
+    "prompt": "You have been asked to address unhappy and angry customer reviews online. You need to determine how to customize your message for the audience. For each customization, select True if you should implement it or False if you should not.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Offer solutions to the problems the customers express.", "answer": "True" },
+      { "id": "B", "text": "Apologize only if the customers have a valid complaint.", "answer": "False" },
+      { "id": "C", "text": "Tell unhappy customers that many other customers have given positive reviews of your company.", "answer": "False" }
+    ],
+    "correctAnswers": ["A:True", "B:False", "C:False"]
+  },
+  {
+    "id": 281,
+    "prompt": "Your team is using Microsoft 365 to collaborate on a project. For each statement about Microsoft 365 collaboration, select True or False.",
+    "type": "TRUE_FALSE_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Multiple people can edit a document at the same time.", "answer": "True" },
+      { "id": "B", "text": "Microsoft Teams can be used to meet virtually with team members.", "answer": "True" },
+      { "id": "C", "text": "You can store and share files with others by using Microsoft OneDrive.", "answer": "True" },
+      { "id": "D", "text": "When you share a document with others, you can restrict their ability to edit it", "answer": "True" }
+    ],
+    "correctAnswers": ["A:True", "B:True", "C:True", "D:True"]
+  },
+  {
+    "id": 282,
+    "prompt": "Liam is working on his math homework but doesn't understand how to solve question 12 in the 'Fractions 4.1' assignment. What should Liam write in the subject line when emailing his teacher about this issue?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Help Needed for Fractions 4.1, Question 12" },
+      { "id": "B", "text": "(no subject)" },
+      { "id": "C", "text": "Teacher I Need HELP Email Me Back NOW" },
+      { "id": "D", "text": "Urgent Help" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 283,
+    "prompt": "What is an advantage of collaborating within a team to resolve an issue?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "It allows for diverse perspectives to generate solutions." },
+      { "id": "B", "text": "It ensures external resources are unnecessary" },
+      { "id": "C", "text": "It eliminates the need for individual leadership." },
+      { "id": "D", "text": "It balances speed and quality when addressing problems." }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 284,
+    "prompt": "What is a digital language made up of binary digits, which are ones and zeros that allow hardware and software to communicate and work together?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Grammarly" },
+      { "id": "B", "text": "Binary-Coded Machine Language" },
+      { "id": "C", "text": "Page Orientation" },
+      { "id": "D", "text": "Public Domain" }
+    ],
+    "correctAnswers": ["B"]
+  },
+  {
+    "id": 285,
+    "prompt": "If someone chooses to share their account information with a close friend, what should that friend do with the information?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Keep the information safe and confidential" },
+      { "id": "B", "text": "Impersonate the friend as a joke" },
+      { "id": "C", "text": "Steal and share personally identifiable information" },
+      { "id": "D", "text": "Use the information to make unauthorized purchases" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 286,
+    "prompt": "What should digital users have current knowledge of to protect their data and devices? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "The latest technology" },
+      { "id": "B", "text": "Internet wormholes" },
+      { "id": "C", "text": "Early computer history" },
+      { "id": "D", "text": "Compromised data and vulnerabilities" }
+    ],
+    "correctAnswers": ["A", "D"]
+  },
+  {
+    "id": 287,
+    "prompt": "Which type of license gives customers the right to modify and reuse the software?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Free and Open Source Software (FOSS)" },
+      { "id": "B", "text": "Boolean Search" },
+      { "id": "C", "text": "Computer Model Number" },
+      { "id": "D", "text": "Synchronous Editing" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 288,
+    "prompt": "Which two are the most popular ways to distinguish between paragraph headings and body text on a website? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Use a larger font for headings than body text." },
+      { "id": "B", "text": "Use the same font for both headings and body text." },
+      { "id": "C", "text": "Use only serif fonts." },
+      { "id": "D", "text": "Use a heavier font weight (bold) or distinct style for headings than body text." }
+    ],
+    "correctAnswers": ["A", "D"]
+  },
+  {
+    "id": 289,
+    "prompt": "The browser you use is Chrome. You would like to add an extension that will automatically display Spanish web pages in English. Which extension will allow the Chrome browser to display Spanish web pages in English?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Google Translate" },
+      { "id": "B", "text": "Read-a-Loud" },
+      { "id": "C", "text": "Screencastify" },
+      { "id": "D", "text": "Dark Reader" }
+    ],
+    "correctAnswers": ["A"]
+  },
+  {
+    "id": 290,
+    "prompt": "You work at a call center. Your job is to resolve customer issues and retain their business. For each statement, select Yes if it builds customer confidence towards resolving issues, or No if it does not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 5,
+    "options": [
+      { "id": "A", "text": "After the customer presents the problem, paraphrase what the customer said.", "answer": "Yes" },
+      { "id": "B", "text": "Tell the customer how much the company values their business.", "answer": "Yes" },
+      { "id": "C", "text": "If the customer sounds angry or frustrated, suggest they take their business elsewhere.", "answer": "No" },
+      { "id": "D", "text": "Respond with the same language the customer uses to show that you can relate to them, even if the language is vulgar.", "answer": "No" },
+      { "id": "E", "text": "Reassure the customer that you will resolve the issue.", "answer": "Yes" }
+    ],
+    "correctAnswers": ["A:Yes", "B:Yes", "C:No", "D:No", "E:Yes"]
+  },
+  {
+    "id": 291,
+    "prompt": "What are two reasons for software versioning? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Enables customers to recognize updated versions." },
+      { "id": "B", "text": "Allows software publishers to more efficiently track sales." },
+      { "id": "C", "text": "Allows retailers to charge more money." },
+      { "id": "D", "text": "Allows programmers to track changes." },
+      { "id": "E", "text": "Enables computing devices to use less memory." }
+    ],
+    "correctAnswers": ["A", "D"]
+  },
+  {
+    "id": 292,
+    "prompt": "Which two scenarios require that you cite a reference? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "You copy a paragraph from a webpage" },
+      { "id": "B", "text": "You describe a current event you saw on the news" },
+      { "id": "C", "text": "You are writing an opinion" },
+      { "id": "D", "text": "You quote lyrics from a song." }
+    ],
+    "correctAnswers": ["A", "D"]
+  },
+  {
+    "id": 293,
+    "prompt": "Which three actions might compromise your online privacy? (Choose 3.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Downloading files from official verified repositories" },
+      { "id": "B", "text": "Posting in a public forum" },
+      { "id": "C", "text": "Searching using incognito mode" },
+      { "id": "D", "text": "Allowing and keeping browser cookies" },
+      { "id": "E", "text": "Using the same login and password for multiple accounts" },
+      { "id": "F", "text": "Opening unverified email attachments" }
+    ],
+    "correctAnswers": ["D", "E", "F"]
+  },
+  {
+    "id": 294,
+    "prompt": "Which three situations would compromise your privacy by allowing your email message to be available to an employer or school administration? (Choose 3.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Send the email from a smartphone using the work account." },
+      { "id": "B", "text": "Send the email from a work computer using the work account." },
+      { "id": "C", "text": "Send the email from a work computer using the school account." },
+      { "id": "D", "text": "Send the email from a personal phone using a personal account." },
+      { "id": "E", "text": "Send the email from a personal laptop connected to home Wi-Fi." }
+    ],
+    "correctAnswers": ["A", "B", "C"]
+  },
+  {
+    "id": 295,
+    "prompt": "Which are two types of legal claims that relate to unauthorized publication of personal and private information? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Posting Evaluations of a Contractor's Performance" },
+      { "id": "B", "text": "Sharing an IP Address" },
+      { "id": "C", "text": "Browsing Habits collected by Cookies" },
+      { "id": "D", "text": "Publication of Private Facts" },
+      { "id": "E", "text": "Using the Name or Likeness of Another" }
+    ],
+    "correctAnswers": ["D", "E"]
+  },
+  {
+    "id": 296,
+    "prompt": "Which two software tools would be best to compose a flowchart? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Intuit QuickBooks" },
+      { "id": "B", "text": "Affinity Designer" },
+      { "id": "C", "text": "Microsoft Visio" },
+      { "id": "D", "text": "SmartDraw" },
+      { "id": "E", "text": "Adobe Illustrator" }
+    ],
+    "correctAnswers": ["C", "D"]
+  },
+  {
+    "id": 297,
+    "prompt": "A team of college students are creating content for a website. Their instructor has advised them it is important that they follow accessibility standards for using fonts. Select Yes if the action stated follows accessibility standards or No if it will not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "Serif fonts should be used because they are the easiest to read online.", "answer": "No" },
+      { "id": "B", "text": "Body text font sizes should be between 15-25px.", "answer": "Yes" },
+      { "id": "C", "text": "Optimal length of a line of text is 45-90 characters. The ideal width is 66 characters.", "answer": "Yes" },
+      { "id": "D", "text": "White space between headers and body text should be between 15-30px.", "answer": "Yes" }
+    ],
+    "correctAnswers": ["A:No", "B:Yes", "C:Yes", "D:Yes"]
+  },
+  {
+    "id": 298,
+    "prompt": "Which is the best way to achieve online privacy at your workplace?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Delete all cookies after doing personal shopping on your work computer." },
+      { "id": "B", "text": "Send personal emails using your work account." },
+      { "id": "C", "text": "Make sure nobody is looking when you surf the Internet." },
+      { "id": "D", "text": "Don't use work equipment to do anything personal" }
+    ],
+    "correctAnswers": ["D"]
+  },
+  {
+    "id": 299,
+    "prompt": "To communicate the results of data sets, it is helpful to display them visually. Identify the appropriate visual format to express the described data set. Select Yes if the visual format is appropriate or No if it is not.",
+    "type": "YES_NO_MATRIX",
+    "answersRequired": 4,
+    "options": [
+      { "id": "A", "text": "A Table would be best to illustrate simple part-to-whole relationships within a small data set.", "answer": "No" },
+      { "id": "B", "text": "To show trends that change over time, you should use a Line Graph.", "answer": "Yes" },
+      { "id": "C", "text": "Displaying sales volumes of various products can be represented with a Column Chart.", "answer": "Yes" },
+      { "id": "D", "text": "Displaying a comparative ranking of data, can be represented with a Bar Chart.", "answer": "Yes" }
+    ],
+    "correctAnswers": ["A:No", "B:Yes", "C:Yes", "D:Yes"]
+  },
+  {
+    "id": 300,
+    "prompt": "Multifactor authentication (MFA) helps provide added security to an account by requiring two or more credentials to be entered when logging in. Which are three common credentials? (Choose 3.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Fingerprint" },
+      { "id": "B", "text": "Date" },
+      { "id": "C", "text": "PIN" },
+      { "id": "D", "text": "Username" },
+      { "id": "E", "text": "Password" }
+    ],
+    "correctAnswers": ["A", "C", "E"]
+  },
+  {
+    "id": 301,
+    "prompt": "You are searching a job database website for 'project manager' positions that work with SQL. But, you don't speak Spanish. Your first attempt entering just the keywords 'project manager' returned too many results that had nothing to do with SQL or required Spanish language skills. You decide to narrow your results using a Boolean search. Which Boolean search would be appropriate to return only project manager positions involving SQL, but not Spanish language skills?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "\"Project Manager\" AND SQL AND Spanish" },
+      { "id": "B", "text": "\"Project Manager\" AND NOT SQL AND Spanish" },
+      { "id": "C", "text": "\"Project Manager\" AND SQL AND NOT Spanish" },
+      { "id": "D", "text": "\"Project Manager\" AND NOT (SQL OR Spanish)" }
+    ],
+    "correctAnswers": ["C"]
+  },
+  {
+    "id": 302,
+    "prompt": "Which two circumstances would create a new cloud version in Google Docs? (Choose 2.)",
+    "type": "MULTIPLE CHOICE",
+    "answersRequired": 2,
+    "options": [
+      { "id": "A", "text": "Uploading a new file" },
+      { "id": "B", "text": "Copying a folder" },
+      { "id": "C", "text": "Viewing contents of a folder" },
+      { "id": "D", "text": "Adding a comment to a Google Doc" },
+      { "id": "E", "text": "Downloading a file" }
+    ],
+    "correctAnswers": ["A", "D"]
+  },
+  {
+    "id": 303,
+    "prompt": "Match each authentication factor to its category: Biometric, Possession, or Knowledge.",
+    "type": "MATCHING",
+    "answersRequired": 3,
+    "options": [
+      { "id": "A", "text": "Fingerprints and facial recognition -> Biometric factors" },
+      { "id": "B", "text": "Smartphones and employee access cards -> Possession factors" },
+      { "id": "C", "text": "Passwords and personal identification numbers (PINs) -> Knowledge factors" }
+    ],
+    "correctAnswers": ["A", "B", "C"]
+  },
+  {
+    "id": 304,
+    "prompt": "Where in Microsoft Word can you change the preference to prevent automatic capitalization of the first letter of sentences?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "In the computer operating system preferences" },
+      { "id": "B", "text": "In the Office Language Preferences" },
+      { "id": "C", "text": "In the AutoCorrect Options settings" },
+      { "id": "D", "text": "In the Grammar & Refinements settings" }
+    ],
+    "correctAnswers": ["C"]
+  },
+  {
+    "id": 305,
+    "prompt": "What is one of the most important actions you can take to protect your privacy after browsing the Internet on a shared computer?",
+    "type": "SINGLE CHOICE",
+    "answersRequired": 1,
+    "options": [
+      { "id": "A", "text": "Delete your browser cookies and history" },
+      { "id": "B", "text": "Switch to a different browser" },
+      { "id": "C", "text": "Stay logged into the last website you visit" },
+      { "id": "D", "text": "Use the same login and password for multiple web sites" }
+    ],
+    "correctAnswers": ["A"]
   }
 ];
