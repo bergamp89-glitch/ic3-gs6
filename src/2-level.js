@@ -2388,5 +2388,1076 @@
                                "A",
                                "C"
                            ]
+    },
+    {
+        "id":  82,
+        "prompt":  "For each statement about cloud computing, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Cloud-based applications must be manually updated.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Cloud-based storage and applications have no possibility of service outage.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "You can access files in cloud storage from anywhere if you are connected to the internet.",
+                            "answer":  "True"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:False",
+                               "B:False",
+                               "C:True"
+                           ]
+    },
+    {
+        "id":  83,
+        "prompt":  "You write an essay. A classmate reviews the essay and suggests corrections as shown. You need to permanently implement the corrections in your document. Which button should you select?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "New Comment"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Delete"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Track Changes"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Accept"
+                        },
+                        {
+                            "id":  "E",
+                            "text":  "Reject"
+                        },
+                        {
+                            "id":  "F",
+                            "text":  "Compare"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D"
+                           ]
+    },
+    {
+        "id":  84,
+        "prompt":  "What is the primary purpose of using heading styles in a document?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "To create structure and enable a table of contents"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "To change the font size for visual differentiation"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "To highlight important keywords throughout the document"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "To add color for emphasis in the text"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A"
+                           ]
+    },
+    {
+        "id":  85,
+        "prompt":  "What are two effects of FOMO (fear of missing out)? (Choose 2.)",
+        "type":  "MULTIPLE CHOICE",
+        "answersRequired":  2,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Decreased motivation"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Increased humility"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Decreased self esteem"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Increased social media use"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "C",
+                               "D"
+                           ]
+    },
+    {
+        "id":  86,
+        "prompt":  "Bryce is experiencing anxiety and depression due to his fear of missing out (FOMO). What are two symptoms or effects of his FOMO? (Choose 2.)",
+        "type":  "MULTIPLE CHOICE",
+        "answersRequired":  2,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "He becomes nervous when giving a class presentation."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Whenever he enjoys an activity, he must immediately update his status online."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "He needs to understand all the \"in jokes\" his friends post on social media."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "He worries that his grades will suffer if he does not complete his homework."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "B",
+                               "C"
+                           ]
+    },
+    {
+        "id":  87,
+        "prompt":  "For each statement about the difference between CPUs and GPUs, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "You typically upgrade a laptop GPU by replacing the display.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Some CPUs have a built-in GPU and don\u0027t rely on a graphics card.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Many modern computers and game systems have only a GPU and not a CPU.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Modern GPUs run increasingly complex workloads, including deep learning and artificial intelligence.",
+                            "answer":  "True"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:False",
+                               "B:True",
+                               "C:False",
+                               "D:True"
+                           ]
+    },
+    {
+        "id":  88,
+        "prompt":  "To create an effective presentation, which method would best animate slide content?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Apply animations to all elements to keep audience engaged."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Use slide transitions that complement the presentation\u0027s theme."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Animate only text elements, leaving images static."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Avoid using transitions and animations altogether."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "B"
+                           ]
+    },
+    {
+        "id":  89,
+        "prompt":  "For each statement about portable media device security, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "You should disable the Autorun and Autoplay features for all removable media devices.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "You should keep your work and personal files on separate media devices and never plug a personal device into a work computer or vice versa.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "If you find a media storage device and don\u0027t know who it belongs to, plug the device into your computer to find information about its owner.",
+                            "answer":  "False"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:True",
+                               "B:True",
+                               "C:False"
+                           ]
+    },
+    {
+        "id":  90,
+        "prompt":  "What is the name of the technology in which large groups of remote servers are networked to allow sharing of data-processing tasks, centralized data storage, and online access to computer services or resources?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Virtual private network (VPN)"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Cloud data storage"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Virtual machine (VM)"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Cloud computing"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D"
+                           ]
+    },
+    {
+        "id":  91,
+        "prompt":  "Move each description from the list on the left to the corresponding Boolean search string on the right.",
+        "type":  "MATCHING",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Returns results excluding one word -\u003e buffalo NOT bison"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Returns results for either word if another word is included -\u003e (fish OR turtles) AND pacific ocean"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Returns results for either word -\u003e lions OR tigers"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A",
+                               "B",
+                               "C"
+                           ]
+    },
+    {
+        "id":  92,
+        "prompt":  "A student is going to miss an appointment for an internship interview. He sends the following email message to the interviewer:\n\n\"Dear Ms. Smith,\nI will be bizzy during my interview time so I need to reschedule I HOPE THIS IS OKAY!!!!!!\nThnx!!!!\"\n\nWhich element of the email message displays appropriate email etiquette?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Punctuation"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Capitalization"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Grammar"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Greeting"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D"
+                           ]
+    },
+    {
+        "id":  93,
+        "prompt":  "A school principal is composing an email message to parents about the importance of all students arriving at school on time. He needs to use the most appropriate and effective method of communication. What should the principal do?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Send one message to a contact group that includes only the students\u0027 email addresses."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Send one message to all parents using the Bcc field."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Send a message to the parent of each student who has been tardy."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Send one message to all parents using the Cc field."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "B"
+                           ]
+    },
+    {
+        "id":  94,
+        "prompt":  "Move each presentation term from the list on the left to its definition on the right.",
+        "type":  "MATCHING",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "A file that contains ready-made styles -\u003e Template"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "A special effect used to introduce slides -\u003e Transition"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "A slide that controls the design of the associated slide layouts -\u003e Master"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "A visual effect that moves placeholders, text, and images on and off slides -\u003e Animation"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A",
+                               "B",
+                               "C",
+                               "D"
+                           ]
+    },
+    {
+        "id":  95,
+        "prompt":  "What are two benefits of working collaboratively? (Choose 2.)",
+        "type":  "MULTIPLE CHOICE",
+        "answersRequired":  2,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "It develops interpersonal relationships among peers."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "It enforces a unified working style for all team members."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "It isn\u0027t affected by the failure of a single team member to perform."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "It promotes a more complete understanding of the topic."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A",
+                               "D"
+                           ]
+    },
+    {
+        "id":  96,
+        "prompt":  "You need to create a calendar event for a regular lunch meeting that will happen every Wednesday. Which option should you choose?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Does not repeat"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Daily"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Weekly on Wednesday"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Monthly"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A"
+                           ]
+    },
+    {
+        "id":  97,
+        "prompt":  "Which practice should be used when sharing photos online?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Always tag everyone in the photo to make sure they see it."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Share photos on your public account of your friends and family."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Always include the names of everyone in the photo to give proper credit."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Add captions that provide context to the photos."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D"
+                           ]
+    },
+    {
+        "id":  98,
+        "prompt":  "Internet commerce providers sell various goods and services online. Classify each item as Goods or Services.",
+        "type":  "MATCHING",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Bluetooth headset -\u003e Goods"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Network router -\u003e Goods"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Software subscription -\u003e Services"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Cloud storage -\u003e Services"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A",
+                               "B",
+                               "C",
+                               "D"
+                           ]
+    },
+    {
+        "id":  99,
+        "prompt":  "You find a social media post that shares inaccurate and misleading medical information. You decide to respond to the post. For each response, select Yes if it adheres to appropriate digital etiquette or No if it does not.",
+        "type":  "YES_NO_MATRIX",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "\"WRONG! Did you do ANY RESEARCH before posting this?\"",
+                            "answer":  "No"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "\"Many doctors, including Jane Smith of Harvard Medical School, disagree.\"",
+                            "answer":  "Yes"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "\"It can be difficult to research everything, but there are many different sources to look at concerning this issue.\"",
+                            "answer":  "Yes"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "\"This is just wrong and makes you look foolish! Obviously you didn\u0027t look at the research from Harvard Medical School.\"",
+                            "answer":  "No"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:No",
+                               "B:Yes",
+                               "C:Yes",
+                               "D:No"
+                           ]
+    },
+    {
+        "id":  100,
+        "prompt":  "You are creating a project proposal document with a partner who is on the other side of the country. As you and your partner add content to the document, you both need to work collaboratively to revise the proposal. In what sequence should the actions be performed?",
+        "type":  "MATCHING",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Create a new document and upload it to cloud storage. -\u003e Step 1"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Share a link to the document. -\u003e Step 2"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Add comments and track changes in the document. -\u003e Step 3"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Review and accept or reject comments and changes. -\u003e Step 4"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A",
+                               "B",
+                               "C",
+                               "D"
+                           ]
+    },
+    {
+        "id":  101,
+        "prompt":  "What is the primary advantage of using file compression?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Decreased file security"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Improved file readability"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Increased file size"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Faster data transfer"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D"
+                           ]
+    },
+    {
+        "id":  102,
+        "prompt":  "Match each file extension to its corresponding file format description.",
+        "type":  "MATCHING",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "A compressed video that is optimal for devices with limited storage space. -\u003e .mp4"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "A compressed audio file that is optimal for devices such as tablets and smartphones. -\u003e .mp3"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "A digital audio container for storing compressed or uncompressed audio data, often used for CD audio. -\u003e .wav"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A",
+                               "B",
+                               "C"
+                           ]
+    },
+    {
+        "id":  103,
+        "prompt":  "You and your classmates are reading each other\u0027s shared digital documents. The document you are reading is well written, but you notice a factual error. You need to respectfully indicate the error to the author in a document comment. Which two actions should you take? (Choose 2.)",
+        "type":  "MULTIPLE CHOICE",
+        "answersRequired":  2,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Point out the error without explanation."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Write the correction in capital letters to ensure that the author will see it."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Keep the tone of your correction positive."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Provide the correct information in your comment if you have it."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "C",
+                               "D"
+                           ]
+    },
+    {
+        "id":  104,
+        "prompt":  "Your company wants to improve the design of an electric ride-on vehicle it manufactures. You need to survey retail customers who purchased the vehicle and provide usable feedback to help achieve the goal. For each question, select Yes if it will elicit usable feedback or No if it will not.",
+        "type":  "YES_NO_MATRIX",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Do you like the vehicle?",
+                            "answer":  "No"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "What would make the vehicle better?",
+                            "answer":  "Yes"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "What are the most important features of the vehicle?",
+                            "answer":  "Yes"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Would you recommend this ride-on vehicle to a friend?",
+                            "answer":  "No"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:No",
+                               "B:Yes",
+                               "C:Yes",
+                               "D:No"
+                           ]
+    },
+    {
+        "id":  105,
+        "prompt":  "You need to research whether a snake is a good pet to have. You enter the search term \"Do snakes make good pets?\" into the search box of your web browser and get the four results shown. Which search result presents a different perspective from the other three?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "11 Best Pet Snakes for Beginners"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Snakes as Pets"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "How to Choose the Best Pet Snake For You"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Do Snakes Make Good Pets? — Snakes are wild animals and should never be kept as pets."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D"
+                           ]
+    },
+    {
+        "id":  106,
+        "prompt":  "You are preparing to write a research paper. You find a scientific study that relates to your topic. You need to determine whether the study is credible. For each statement, select Yes if you should consider it when determining the credibility of the study or No if you should not.",
+        "type":  "YES_NO_MATRIX",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "The popularity of the study",
+                            "answer":  "No"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "The organization that funded the study",
+                            "answer":  "Yes"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "The entity that published the study results",
+                            "answer":  "Yes"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:No",
+                               "B:Yes",
+                               "C:Yes"
+                           ]
+    },
+    {
+        "id":  107,
+        "prompt":  "You are working on your laptop computer in a sunny outside area. You need to minimize eyestrain. Which monitor setting should you adjust?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Sharpness"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Scale"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Contrast"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Brightness"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D"
+                           ]
+    },
+    {
+        "id":  108,
+        "prompt":  "Select the option that allows you to secure Windows files or folders from unauthorized access.",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "File is ready for archiving"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Allow this file to have contents indexed in addition to file properties"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Compress contents to save disk space"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Encrypt contents to secure data"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D"
+                           ]
+    },
+    {
+        "id":  109,
+        "prompt":  "Your friend asks you to review a PowerPoint presentation they created for their Honors History class. You find the presentation layout to be chaotic and disorganized. Which two visual unity guidelines should you tell your friend to follow? (Choose 2.)",
+        "type":  "MULTIPLE CHOICE",
+        "answersRequired":  2,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Use a wide variety of fonts, colors, and backgrounds on each slide."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Apply the design principles of repetition, alignment, and proximity."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Maintain consistency across all presentation elements."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Center the text and visual elements on each slide."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "B",
+                               "C"
+                           ]
+    },
+    {
+        "id":  110,
+        "prompt":  "When responding to an email, what is the best practice?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Reply immediately if you are busy."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Take your time to provide a thoughtful response."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Use reply all to make responses faster."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "BCC your friend on important emails."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "B"
+                           ]
+    },
+    {
+        "id":  111,
+        "prompt":  "For each statement about webcam security, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "It is recommended that everyone cover their webcam when not in use.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "All webcams include a recording light that cannot be disabled through software.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Disabling a webcam in your computer settings protects against any unauthorized access.",
+                            "answer":  "False"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:True",
+                               "B:False",
+                               "C:False"
+                           ]
+    },
+    {
+        "id":  112,
+        "prompt":  "What is the benefit of selecting a printer as the system default?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "The default printer will automatically be selected when you click Print."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "The default printer will remain powered on at all times."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "The default printer can receive print jobs from any device connected to the internet."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "The default printer can notify you when it is low on ink or toner."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A"
+                           ]
+    },
+    {
+        "id":  113,
+        "prompt":  "You maintain personal and professional social media accounts. Which two items should you post to your professional social media account? (Choose 2.)",
+        "type":  "MULTIPLE CHOICE",
+        "answersRequired":  2,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Your formal profile picture"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "A technical certification that you possess"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "A complaint about a current coworker"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "A picture of your family playing a game"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A",
+                               "B"
+                           ]
+    },
+    {
+        "id":  114,
+        "prompt":  "What is encryption primarily used for?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "To protect data from unauthorized access."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "To automatically fix errors in data."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "To make files easier to access."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "To improve the speed of data transfer between devices."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A"
+                           ]
+    },
+    {
+        "id":  115,
+        "prompt":  "What is a good rule to follow when responding to online comments?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Respond with respect, even if you disagree."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Ignore all comments, even if they are aggressive."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Delete comments that you don\u0027t agree with."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Only reply if you agree with the comment"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A"
+                           ]
+    },
+    {
+        "id":  116,
+        "prompt":  "For what purpose can you use all the following tools?\n• Google Docs\n• Google Meet\n• Microsoft Teams\n• Dropbox",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "File storage"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Collaboration"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Content creation"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Video chat"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "B"
+                           ]
+    },
+    {
+        "id":  117,
+        "prompt":  "For each statement about web browsers, select Yes if you can perform the task or No if you cannot.",
+        "type":  "YES_NO_MATRIX",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Customize browser buttons, menus, or toolbars",
+                            "answer":  "Yes"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Change the preprogrammed browser home page",
+                            "answer":  "Yes"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Add plug-ins and extensions to a browser for additional functionality",
+                            "answer":  "Yes"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:Yes",
+                               "B:Yes",
+                               "C:Yes"
+                           ]
+    },
+    {
+        "id":  118,
+        "prompt":  "Who owns the copyright to content that is generated solely by Artificial Intelligence (AI)?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "The person who wrote the prompt used to generate the content."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "The company that publishes and maintains the AI model servers."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "The developer who wrote the code for the AI model that generated the content."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "No one — all AI-generated content is automatically in the public domain."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D"
+                           ]
+    },
+    {
+        "id":  119,
+        "prompt":  "You are creating a digital slideshow presentation to earn money for your club. You search online for a song to remix and add to your presentation. Which Creative Commons license allows you to remix the song for your presentation?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "CC BY-NC-ND"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "CC BY-SA"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "CC BY-NC-SA"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "CC BY-ND"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "B"
+                           ]
     }
 ];
