@@ -1,4 +1,4 @@
-﻿export const examQuestions = [
+export const examQuestions = [
     {
         "id":  1,
         "prompt":  "What is the process of converting data into an unrecognizable form that requires the use of a key to return the data to plain text?",
@@ -3458,6 +3458,756 @@
                     ],
         "correctAnswers":  [
                                "B"
+                           ]
+    },
+    {
+        "id":  120,
+        "prompt":  "For each of the four statements about version history and file compression, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Version history lets you view or restore an earlier saved version of a file.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Uploading a new file to replace an old one automatically removes the old file\u0027s version history.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Compressing multiple files into a ZIP file makes them easier to upload.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Compressing a video into a ZIP file reduces the audio and visual quality.",
+                            "answer":  "False"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:True",
+                               "B:False",
+                               "C:True",
+                               "D:False"
+                           ]
+    },
+    {
+        "id":  121,
+        "prompt":  "You are making a sales brochure for your company, and the image you want to use is labeled Creative Commons, For Non-Commercial Use, Requires Attribution (CC BY-NC). What should you do?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Use the image if the brochure will be free to download."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Use the image without making edits."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Don\u0027t use the image and find something else."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Use with credit because the image is allowed for business."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "C"
+                           ]
+    },
+    {
+        "id":  122,
+        "prompt":  "For each of the four statements about forms, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Required fields must be completed before submission.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Forms may include CAPTCHA for security.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Forms can include file upload options.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Submitting a form automatically saves a copy to your local drive or email.",
+                            "answer":  "False"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:True",
+                               "B:True",
+                               "C:True",
+                               "D:False"
+                           ]
+    },
+    {
+        "id":  123,
+        "prompt":  "You are working on a document with a group of classmates and need to track, collect, and manage feedback in the shared draft without creating conflicting copies. Which two actions should you choose? (Choose 2.)",
+        "type":  "MULTIPLE CHOICE",
+        "answersRequired":  2,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Have each reviewer use Suggesting/Track Changes in their own copy and email it back."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Turn off version history to reduce file clutter."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Move feedback into group chat outside the document."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Add comments with @mentions in the shared document."
+                        },
+                        {
+                            "id":  "E",
+                            "text":  "Enable Suggesting/Track Changes to label edits by user."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D",
+                               "E"
+                           ]
+    },
+    {
+        "id":  124,
+        "prompt":  "For each of the four statements about computer hardware components, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "The CPU is an output device that shows information to users.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "A GPU is a processing device that handles pictures and graphics.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Processing devices change input data into useful output.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "RAM is a processing device because it stores data for a short time.",
+                            "answer":  "False"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:False",
+                               "B:True",
+                               "C:True",
+                               "D:False"
+                           ]
+    },
+    {
+        "id":  125,
+        "prompt":  "Which option protects a file by requiring authentication before access?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Add a password that is required to open the file."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Limit editing to tracked changes."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Protect the document for comments only."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Mark the file as Read-only."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A"
+                           ]
+    },
+    {
+        "id":  126,
+        "prompt":  "For each of the three statements about creating and managing identities online, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Keeping personal views about hot topics away from your work online presence helps keep good digital boundaries.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Having different email addresses for work and personal use is a good way to manage multiple digital identities.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Making different usernames for work sites and personal sites is too hard and not needed.",
+                            "answer":  "False"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:True",
+                               "B:True",
+                               "C:False"
+                           ]
+    },
+    {
+        "id":  127,
+        "prompt":  "Move each hardware feature from the list on the left to the primarily inclusive need it addresses on the right.",
+        "type":  "MATCHING",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "High-contrast, large-label keycaps -\u003e Improve key visibility for users with low vision"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Headsets with in-line volume control and standard 3.5 mm jacks -\u003e Allow private listening and volume adjustment"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Front-mounted USB ports and wide knee clearance -\u003e Easier connection of peripherals; accommodate wheelchair users"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Monitors on tilt-and-swivel adjustable arms -\u003e Reduce glare/neck strain; positioning for different heights"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A",
+                               "B",
+                               "C",
+                               "D"
+                           ]
+    },
+    {
+        "id":  128,
+        "prompt":  "You are creating a step-by-step guide for nontechnical community members who will print it at home. Which two actions should you do? (Choose 2.)",
+        "type":  "MULTIPLE CHOICE",
+        "answersRequired":  2,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Add captions to your videos so the information is printed."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Share the design source file (.psd) for editing."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Use plain language and numbered steps."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Export a printer-friendly PDF with high contrast."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "C",
+                               "D"
+                           ]
+    },
+    {
+        "id":  129,
+        "prompt":  "For each of the three statements about language and regional settings, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Regional settings can affect date and time formats.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Language settings can be configured for individual user profiles.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Changing the system language automatically translates all third-party apps.",
+                            "answer":  "False"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:True",
+                               "B:True",
+                               "C:False"
+                           ]
+    },
+    {
+        "id":  130,
+        "prompt":  "For each of the four statements about instant messaging in the workplace, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Respond with \"OK\" to all messages.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Keep messages short and relevant.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Avoid sending messages outside work hours unless urgent.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Use emojis and GIFs to replace words in formal communications.",
+                            "answer":  "False"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:False",
+                               "B:True",
+                               "C:True",
+                               "D:False"
+                           ]
+    },
+    {
+        "id":  131,
+        "prompt":  "For each of the four statements about digital etiquette in a large video meeting, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Demonstrate good etiquette by testing your audio/video before the meeting starts.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Mute your microphone when you are not speaking.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Unmuting your microphone is better than using Q\u0026A or chat tools to ask questions.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Joining a session with a clear display name is an example of good digital etiquette.",
+                            "answer":  "True"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:True",
+                               "B:True",
+                               "C:False",
+                               "D:True"
+                           ]
+    },
+    {
+        "id":  132,
+        "prompt":  "You are creating a company report in a word processing application. The report has multiple headings and body text sections. Your manager asks you to ensure that all headings have the same font, size, and color, and that the body text is consistent throughout the document. Which feature should you use to apply the consistent formatting throughout the document?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Paragraph spacing"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Styles"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Font color"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Text effects"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "B"
+                           ]
+    },
+    {
+        "id":  133,
+        "prompt":  "A person you met in an online study group avoids video calls, asks for gift cards, and pushes for personal details. What should you do?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Send a small amount once to build trust, then ask for ID."
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Share limited personal data but decline any money requests."
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Move the conversation to a private app to talk one-on-one."
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Stop the conversation, block the account, and report it to the platform."
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D"
+                           ]
+    },
+    {
+        "id":  134,
+        "prompt":  "Your friends are teasing you. They say you have all the symptoms of FOMO. For each statement about FOMO, select Yes if the statement is true or No if it is false.",
+        "type":  "YES_NO_MATRIX",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "FOMO is a disorder caused by wearing a face mask while using social media.",
+                            "answer":  "No"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "FOMO is the \"Feeling of Missing Out\".",
+                            "answer":  "No"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Although FOMO isn\u0027t considered a mental health disorder, it is caused by a very real set of emotions and carries real effects.",
+                            "answer":  "Yes"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:No",
+                               "B:No",
+                               "C:Yes"
+                           ]
+    },
+    {
+        "id":  135,
+        "prompt":  "Which two are community resources that could teach you to use a feature in a software program? (Choose 2.)",
+        "type":  "MULTIPLE CHOICE",
+        "answersRequired":  2,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Forums"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Wikipedia"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Installation instructions"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Blogs"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A",
+                               "D"
+                           ]
+    },
+    {
+        "id":  136,
+        "prompt":  "Which setting changes the application\u0027s interface language?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Screen brightness"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Printer tray"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "File size"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Interface language"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "D"
+                           ]
+    },
+    {
+        "id":  137,
+        "prompt":  "Which two actions reduce the risk of being deceived in online relationships? (Choose 2.)",
+        "type":  "MULTIPLE CHOICE",
+        "answersRequired":  2,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Sending money immediately"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Not sharing sensitive data with strangers"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Verifying identity through an independent source"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Believing every profile photo"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "B",
+                               "C"
+                           ]
+    },
+    {
+        "id":  138,
+        "prompt":  "For each statement about shared documents, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "A comment can point out an issue without changing the main text.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "All participants are required to edit simultaneously.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Version history can show previous changes.",
+                            "answer":  "True"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:True",
+                               "B:False",
+                               "C:True"
+                           ]
+    },
+    {
+        "id":  139,
+        "prompt":  "Match each collaboration mode on the left with its description on the right.",
+        "type":  "MATCHING",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Synchronous editing -\u003e Changes made at the same time"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Asynchronous editing -\u003e Changes made at different times"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Co-authoring -\u003e Multiple authors for a single piece of content"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Comment review -\u003e Feedback attached to the content"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A",
+                               "B",
+                               "C",
+                               "D"
+                           ]
+    },
+    {
+        "id":  140,
+        "prompt":  "Which function shows changes made by different authors?",
+        "type":  "SINGLE CHOICE",
+        "answersRequired":  1,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Track Changes"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Preview only"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Splash screen"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Volume control"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A"
+                           ]
+    },
+    {
+        "id":  141,
+        "prompt":  "For each of the four statements about cultural sensitivity online, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Be aware of time zone differences.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Use humor to make everyone comfortable.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Assume everyone celebrates the same holidays.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Avoid stereotypes in communication.",
+                            "answer":  "True"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:True",
+                               "B:False",
+                               "C:False",
+                               "D:True"
+                           ]
+    },
+    {
+        "id":  142,
+        "prompt":  "For each of the four statements about creating calendar events, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "You can add a location for an event.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "You can schedule events for a recurring date and time.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "You can add links to a calendar event.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "You must delete an event to change its time.",
+                            "answer":  "False"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:True",
+                               "B:True",
+                               "C:True",
+                               "D:False"
+                           ]
+    },
+    {
+        "id":  143,
+        "prompt":  "For each of the four statements about image editing, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  4,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "Rotating an image 90 degrees clockwise produces the same result as flipping it horizontally.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Exporting a JPEG at a higher compression level reduces file size with no impact on visual quality.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "Resizing an image with \"lock aspect ratio\" prevents distortion.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "D",
+                            "text":  "Increasing contrast can make a dim photo brighter, but overdoing it can lose detail.",
+                            "answer":  "True"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:False",
+                               "B:False",
+                               "C:True",
+                               "D:True"
+                           ]
+    },
+    {
+        "id":  144,
+        "prompt":  "For each of the three statements about catfishing, select True or False.",
+        "type":  "TRUE_FALSE_MATRIX",
+        "answersRequired":  3,
+        "options":  [
+                        {
+                            "id":  "A",
+                            "text":  "One example of catfishing is a legitimate-looking link that leads to a fake banking site for stealing users\u0027 passwords.",
+                            "answer":  "False"
+                        },
+                        {
+                            "id":  "B",
+                            "text":  "Catfishing involves creating a fake online identity to gain trust and trick users out of money or personal information.",
+                            "answer":  "True"
+                        },
+                        {
+                            "id":  "C",
+                            "text":  "You can check for possible catfishing by asking for a quick live video call and running a reverse image search on profile photos.",
+                            "answer":  "True"
+                        }
+                    ],
+        "correctAnswers":  [
+                               "A:False",
+                               "B:True",
+                               "C:True"
                            ]
     }
 ];
