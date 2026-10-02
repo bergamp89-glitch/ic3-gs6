@@ -58,12 +58,12 @@ export async function getFaceDescriptor(imageInput) {
  */
 function toFloat32Array(val) {
   if (!val) return null;
-  if (val instanceof Float32Array) return val;
-  if (Array.isArray(val)) return new Float32Array(val);
+  if (val instanceof Float32Array && val.length >= 128) return val;
+  if (Array.isArray(val) && val.length >= 128) return new Float32Array(val);
   if (typeof val === 'string' && val.trim().startsWith('[') && val.trim().endsWith(']')) {
     try {
       const arr = JSON.parse(val);
-      if (Array.isArray(arr)) return new Float32Array(arr);
+      if (Array.isArray(arr) && arr.length >= 128) return new Float32Array(arr);
     } catch (e) {}
   }
   if (typeof val === 'object' && val !== null) {

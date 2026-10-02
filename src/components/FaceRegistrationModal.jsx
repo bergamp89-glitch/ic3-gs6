@@ -592,7 +592,11 @@ function FaceRegistrationModal({
         return;
       }
 
-      const approvedTarget = adminApprovedDescriptorRef.current || adminApprovedPhotoRef.current;
+      let approvedTarget = adminApprovedDescriptorRef.current;
+      if (!approvedTarget || (Array.isArray(approvedTarget) && approvedTarget.length < 128)) {
+        approvedTarget = adminApprovedPhotoRef.current;
+      }
+
       if (!approvedTarget) {
         isScanningRef.current = false;
         setIsScanning(false);
@@ -605,7 +609,20 @@ function FaceRegistrationModal({
 
       try {
         // Tezkor biometrik solishtirish: bazadagi 128-vektor yoki rasm bilan
-        const result = await compareFaces(approvedTarget, livePhoto, 52);
+        let result = await compareFaces(approvedTarget, livePhoto, 52);
+
+        // Agar vektor orqali mos kelmasa va fotosurat mavjud bo'lsa, fotosurat orqali qayta solishtirish
+        if ((!result.match || result.error) && approvedTarget !== adminApprovedPhotoRef.current && adminApprovedPhotoRef.current) {
+          try {
+            const photoResult = await compareFaces(adminApprovedPhotoRef.current, livePhoto, 52);
+            if (photoResult.match || (photoResult.confidence && photoResult.confidence > result.confidence)) {
+              result = photoResult;
+            }
+          } catch (fallbackErr) {
+            console.warn("Fallback photo comparison error:", fallbackErr);
+          }
+        }
+
         setVerifyConfidence(result.confidence);
         setIsScanning(false);
 

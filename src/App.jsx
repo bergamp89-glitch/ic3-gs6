@@ -950,7 +950,7 @@ function App() {
               firstName: trimmedFirstName, 
               lastName: trimmedLastName, 
               email: trimmedEmail, 
-              level: `${selectedLevel} (${language.toUpperCase()})`,
+              level: selectedLevel.includes('(') ? selectedLevel : `${selectedLevel} (${language.toUpperCase()})`,
               language: language,
               photo: verifiedPhoto
             }, 
