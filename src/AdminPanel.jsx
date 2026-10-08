@@ -564,7 +564,7 @@ function AdminPanel({
                                .map((item, idx) => {
                                  const globalIdx = (leaderboardPage - 1) * 30 + idx + 1;
                                  const pct = item.score || 0;
-                                 const isPassed = pct >= 70;
+                                 const isPassed = pct >= 95;
                                  const dateStr = item.created_at ? new Date(item.created_at).toLocaleString() : '-';
 
                                  return (

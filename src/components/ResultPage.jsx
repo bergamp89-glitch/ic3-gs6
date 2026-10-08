@@ -5,7 +5,7 @@ function ResultPage({ questions = [], correctCount = 0, handleRestartExam }) {
   const score = Math.round((correctCount / total) * 100);
   const reviewed = total - correctCount;
 
-  const isPassed = score >= 70;
+  const isPassed = score >= 95;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#e6ebf0] p-4">
@@ -42,10 +42,10 @@ function ResultPage({ questions = [], correctCount = 0, handleRestartExam }) {
               <div className="font-bold text-sm">
                 {isPassed 
                   ? 'Tabriklaymiz! Siz IC3 GS6 talab qilingan o\'tish balidan muvaffaqiyatli o\'tdingiz.' 
-                  : 'Siz talab qilingan minimal 70% o\'tish balini to\'play olmadingiz.'}
+                  : 'Siz talab qilingan minimal 95% o\'tish balini to\'play olmadingiz.'}
               </div>
               <div className="text-xs opacity-90 mt-0.5">
-                Minimal o'tish talabi: 70% | Sizning natijangiz: {score}%
+                Minimal o'tish talabi: 95% | Sizning natijangiz: {score}%
               </div>
             </div>
           </div>
