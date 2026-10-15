@@ -18,7 +18,7 @@ const loadImage = (src) => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => resolve(img);
-    img.onerror = (err) => reject(new Error("Rasm yuklanmadi: " + err));
+    img.onerror = () => reject(new Error("Rasm yuklanmadi: " + String(src).substring(0, 100)));
     img.src = src;
   });
 };
@@ -58,19 +58,23 @@ export async function getFaceDescriptor(imageInput) {
  */
 function toFloat32Array(val) {
   if (!val) return null;
-  if (val instanceof Float32Array && val.length >= 128) return val;
-  if (Array.isArray(val) && val.length >= 128) return new Float32Array(val);
+  if (val instanceof Float32Array && val.length === 128) return val;
+  if (Array.isArray(val) && val.length === 128) return new Float32Array(val);
   if (typeof val === 'string' && val.trim().startsWith('[') && val.trim().endsWith(']')) {
     try {
       const arr = JSON.parse(val);
-      if (Array.isArray(arr) && arr.length >= 128) return new Float32Array(arr);
-    } catch (e) {}
+      if (Array.isArray(arr) && arr.length === 128) return new Float32Array(arr);
+    } catch (e) {
+      console.warn("JSON descriptor parse warning:", e);
+    }
   }
-  if (typeof val === 'object' && val !== null) {
+  if (typeof val === 'object' && val !== null && !(val instanceof Float32Array) && !Array.isArray(val)) {
     try {
       const values = Object.values(val);
-      if (values.length >= 128) return new Float32Array(values);
-    } catch (e) {}
+      if (values.length === 128 && values.every(n => typeof n === 'number')) return new Float32Array(values);
+    } catch (e) {
+      console.warn("Object descriptor conversion warning:", e);
+    }
   }
   return null;
 }
@@ -79,7 +83,7 @@ function toFloat32Array(val) {
  * Asosiy Biometrik Taqqoslash Funksiyasi (AI Face Comparison)
  * @param {string|Array|Float32Array|object} approvedPhotoOrDescriptor Admin tasdiqlagan rasm (Base64) yoki 128-vektor
  * @param {string|Array|Float32Array|object} livePhotoOrDescriptor Kameradan olingan rasm (Base64) yoki 128-vektor
- * @param {number} threshold Qabul qilish chegarasi (default: 58%)
+ * @param {number} threshold Qabul qilish chegarasi (default: 52%)
  * @returns {Promise<{ match: boolean, confidence: number, distance: number, error?: string }>}
  */
 export async function compareFaces(approvedPhotoOrDescriptor, livePhotoOrDescriptor, threshold = 52) {
@@ -135,7 +139,7 @@ export async function compareFaces(approvedPhotoOrDescriptor, livePhotoOrDescrip
       confidence = Math.round(Math.max(0, 55 - ((distance - 0.60) / 0.40) * 55));
     }
 
-    const isMatch = distance <= 0.61 && confidence >= threshold;
+    const isMatch = distance <= 0.60 && confidence >= threshold;
 
     return {
       match: isMatch,

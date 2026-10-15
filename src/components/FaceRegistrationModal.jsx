@@ -417,7 +417,7 @@ function FaceRegistrationModal({
       } finally {
         isDetectingRef.current = false;
       }
-    }, 180);
+    }, 280);
   };
 
 
@@ -573,13 +573,16 @@ function FaceRegistrationModal({
     setScanProgress(25);
 
     let progress = 25;
-    const progressTimer = setInterval(() => {
+    let progressTimer = setInterval(() => {
       progress += 15;
       setScanProgress(Math.min(90, progress));
     }, 100);
 
     setTimeout(async () => {
-      clearInterval(progressTimer);
+      if (progressTimer) {
+        clearInterval(progressTimer);
+        progressTimer = null;
+      }
       const livePhoto = captureFrame();
 
       if (!livePhoto) {

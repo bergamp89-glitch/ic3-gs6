@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { supabase } from './supabase';
 
 function AdminPanel({ 
@@ -51,11 +51,47 @@ function AdminPanel({
     });
   };
 
-  const pendingRequests = requests.filter(r => r.status === 'pending');
-  const filteredPendingRequests = filterRequests(pendingRequests, pendingSearch);
+  const pendingRequests = useMemo(() => requests.filter(r => r.status === 'pending'), [requests]);
+  const filteredPendingRequests = useMemo(() => filterRequests(pendingRequests, pendingSearch), [pendingRequests, pendingSearch]);
 
-  const approvedRequests = requests.filter(r => r.status === 'approved');
-  const filteredApprovedRequests = filterRequests(approvedRequests, approvedSearch);
+  const approvedRequests = useMemo(() => requests.filter(r => r.status === 'approved'), [requests]);
+  const filteredApprovedRequests = useMemo(() => filterRequests(approvedRequests, approvedSearch), [approvedRequests, approvedSearch]);
+
+  const fetchRequests = useCallback(async (isBackground = false) => {
+    if (!isBackground) setIsRefreshingRequests(true);
+    try {
+      const { data, error } = await supabase
+        .from('requests')
+        .select('*')
+        .in('status', ['pending', 'approved'])
+        .order('created_at', { ascending: false });
+      if (error) {
+        console.error("fetchRequests database error:", error);
+      } else if (data) {
+        setRequests(data);
+      }
+    } catch (err) {
+      console.error("fetchRequests error:", err);
+    } finally {
+      if (!isBackground) setIsRefreshingRequests(false);
+    }
+  }, []);
+
+  const fetchLeaderboard = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from('leaderboard')
+        .select('id, username, level_num, score, created_at')
+        .order('created_at', { ascending: false });
+      if (error) {
+        console.error("fetchLeaderboard database error:", error);
+      } else if (data) {
+        setLeaderboardResults(data);
+      }
+    } catch (err) {
+      console.error("fetchLeaderboard error:", err);
+    }
+  }, []);
 
   useEffect(() => {
     if (activeTab === 'dashboard') {
@@ -75,39 +111,7 @@ function AdminPanel({
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
-  }, [activeTab]);
-
-  const fetchRequests = async (isBackground = false) => {
-    if (!isBackground) setIsRefreshingRequests(true);
-    try {
-      const { data, error } = await supabase
-        .from('requests')
-        .select('*')
-        .in('status', ['pending', 'approved'])
-        .order('created_at', { ascending: false });
-      if (!error && data) {
-        setRequests(data);
-      }
-    } catch (err) {
-      console.error("fetchRequests error:", err);
-    } finally {
-      if (!isBackground) setIsRefreshingRequests(false);
-    }
-  };
-
-  const fetchLeaderboard = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('leaderboard')
-        .select('id, username, level_num, score, created_at')
-        .order('created_at', { ascending: false });
-      if (!error && data) {
-        setLeaderboardResults(data);
-      }
-    } catch (err) {
-      console.error("fetchLeaderboard error:", err);
-    }
-  };
+  }, [activeTab, fetchRequests, fetchLeaderboard]);
 
   const deleteLeaderboardEntry = async (id) => {
     setLeaderboardResults(prev => prev.filter(item => item.id !== id));
@@ -145,13 +149,19 @@ function AdminPanel({
     }
   };
 
-  const filteredLeaderboard = leaderboardResults.filter(item => {
-    if (!resultsSearch || !resultsSearch.trim()) return true;
-    const q = resultsSearch.trim().toLowerCase();
-    const name = (item.username || '').toLowerCase();
-    const lvl = `level ${item.level_num || ''}`.toLowerCase();
-    return name.includes(q) || lvl.includes(q);
-  });
+  useEffect(() => {
+    setLeaderboardPage(1);
+  }, [resultsSearch]);
+
+  const filteredLeaderboard = useMemo(() => {
+    return leaderboardResults.filter(item => {
+      if (!resultsSearch || !resultsSearch.trim()) return true;
+      const q = resultsSearch.trim().toLowerCase();
+      const name = (item.username || '').toLowerCase();
+      const lvl = `level ${item.level_num || ''}`.toLowerCase();
+      return name.includes(q) || lvl.includes(q);
+    });
+  }, [leaderboardResults, resultsSearch]);
 
   return (
     <div className="min-h-screen bg-[#e6ebf0] p-4 md:p-6">
@@ -677,8 +687,14 @@ function AdminPanel({
 
        {/* Face Photo Verification Modal */}
        {selectedPhotoUser && (
-         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
-           <div className="bg-white rounded-lg shadow-2xl max-w-md w-full overflow-hidden border border-gray-100">
+         <div 
+           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm"
+           onClick={() => setSelectedPhotoUser(null)}
+         >
+           <div 
+             className="bg-white rounded-lg shadow-2xl max-w-md w-full overflow-hidden border border-gray-100"
+             onClick={(e) => e.stopPropagation()}
+           >
              <div className="bg-[#1a446b] px-5 py-4 text-white flex justify-between items-center">
                <h3 className="font-bold text-base flex items-center gap-2">
                  <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

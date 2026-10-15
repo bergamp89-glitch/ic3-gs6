@@ -43,10 +43,10 @@ function AdminLoginModal({ isOpen, onClose, onSuccess, adminCreds }) {
       }
 
       const inputUser = (username || '').trim().toLowerCase();
-      const inputPass = (password || '').trim().toLowerCase();
+      const inputPass = (password || '').trim();
 
       const expectedUser = (targetCreds.firstName || 'admin').trim().toLowerCase();
-      const expectedPass = (targetCreds.email || '0807').trim().toLowerCase();
+      const expectedPass = (targetCreds.email || '0807').trim();
 
       if (inputUser === expectedUser && inputPass === expectedPass) {
         setIsLoading(false);
@@ -63,7 +63,10 @@ function AdminLoginModal({ isOpen, onClose, onSuccess, adminCreds }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fadeIn">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fadeIn"
+      onClick={onClose}
+    >
       <div 
         className="bg-white rounded-md shadow-2xl max-w-md w-full overflow-hidden border border-gray-200 animate-scaleUp"
         onClick={(e) => e.stopPropagation()}

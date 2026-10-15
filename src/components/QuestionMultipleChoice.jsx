@@ -47,7 +47,7 @@ function QuestionMultipleChoice({ currentQ, isEvaluated, toggleOption }) {
           <div 
            key={opt.id} 
            className={`w-full text-left px-3.5 py-2.5 sm:py-3 border rounded-md mb-2 flex items-start gap-3 transition-all duration-200 ease-in-out ${!isEvaluated ? 'cursor-pointer hover:shadow-sm' : ''} ${boxClass}`}
-           onClick={() => toggleOption(opt.id)}
+           onClick={() => !isEvaluated && toggleOption(opt.id)}
           >
             <div className={`w-7 h-7 rounded-md border flex items-center justify-center text-xs flex-shrink-0 mt-0.5 transition-all duration-200 ${letterClass}`}>
                {String.fromCharCode(65 + optIdx)}

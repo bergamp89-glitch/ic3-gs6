@@ -28,7 +28,6 @@
 
 img, canvas, svg, a {
   -webkit-user-drag: none;
-  user-drag: none;
 }
 
 

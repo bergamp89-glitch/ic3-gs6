@@ -1,6 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 function QuestionInstructionSet({ currentQ, isEvaluated, openDropdownId, setOpenDropdownId, handleSelectAnswer }) {
+  useEffect(() => {
+    const handleGlobalClick = (e) => {
+      if (!e.target.closest('.dropdown-container')) {
+        setOpenDropdownId(null);
+      }
+    };
+    document.addEventListener('click', handleGlobalClick);
+    return () => document.removeEventListener('click', handleGlobalClick);
+  }, [setOpenDropdownId]);
   const statements = currentQ?.statements || [];
   const userAnswers = (currentQ?.userAnswers && typeof currentQ.userAnswers === 'object' && !Array.isArray(currentQ.userAnswers))
     ? currentQ.userAnswers

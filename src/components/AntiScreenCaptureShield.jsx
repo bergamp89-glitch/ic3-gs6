@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-export default function AntiScreenCaptureShield({ registration = {} }) {
+const DEFAULT_REGISTRATION = {};
+
+export default function AntiScreenCaptureShield({ registration = DEFAULT_REGISTRATION }) {
   const [isShieldActive, setIsShieldActive] = useState(false);
   const [shieldReason, setShieldReason] = useState('');
   const triggerTimeoutRef = useRef(null);
 
-  const activateShield = (reason) => {
+  const activateShield = React.useCallback((reason) => {
     setShieldReason(reason);
     setIsShieldActive(true);
     // Clear clipboard immediately on any suspicion
@@ -14,12 +16,12 @@ export default function AntiScreenCaptureShield({ registration = {} }) {
         navigator.clipboard.writeText('');
       }
     } catch (e) {}
-  };
+  }, []);
 
-  const deactivateShield = () => {
+  const deactivateShield = React.useCallback(() => {
     setIsShieldActive(false);
     setShieldReason('');
-  };
+  }, []);
 
   useEffect(() => {
     // 1. Ekran yozishni (getDisplayMedia) to'sib qo'yish (Neutralize browser screen recording)
@@ -119,7 +121,7 @@ export default function AntiScreenCaptureShield({ registration = {} }) {
         navigator.mediaDevices.getDisplayMedia = originalGetDisplayMedia;
       }
     };
-  }, []);
+  }, [activateShield]);
 
   const fullName = `${registration.firstName || ''} ${registration.lastName || ''}`.trim() || 'Nomzod';
   const email = registration.email || '';

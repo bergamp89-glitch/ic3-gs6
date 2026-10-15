@@ -1,11 +1,12 @@
 import React from 'react';
 
-function ResultPage({ questions = [], correctCount = 0, handleRestartExam }) {
-  const total = questions.length || 1;
-  const score = Math.round((correctCount / total) * 100);
-  const reviewed = total - correctCount;
+function ResultPage({ questions = [], correctCount = 0, handleRestartExam, passingScore = 95 }) {
+  const actualTotal = questions.length;
+  const total = actualTotal > 0 ? actualTotal : 1;
+  const score = actualTotal > 0 ? Math.round((correctCount / total) * 100) : 0;
+  const incorrectCount = actualTotal > 0 ? Math.max(0, actualTotal - correctCount) : 0;
 
-  const isPassed = score >= 95;
+  const isPassed = score >= passingScore;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#e6ebf0] p-4">
@@ -63,18 +64,22 @@ function ResultPage({ questions = [], correctCount = 0, handleRestartExam }) {
               <div className="text-5xl font-bold text-[#047857]">{correctCount}</div>
             </div>
 
-            {/* Reviewed Tasks Box */}
+            {/* Incorrect Tasks Box */}
             <div className="border border-gray-200 rounded-sm p-6">
-              <div className="text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-4">Reviewed Tasks</div>
-              <div className="text-5xl font-bold text-[#e11d48]">{reviewed}</div>
+              <div className="text-[11px] font-bold text-[#6f93b5] uppercase tracking-widest mb-4">Incorrect Tasks</div>
+              <div className="text-5xl font-bold text-[#e11d48]">{incorrectCount}</div>
             </div>
           </div>
 
           <div className="border border-gray-200 rounded-sm p-5 mb-8 bg-gray-50/30">
-            <p className="text-[15px] text-gray-700 font-medium">You answered {correctCount} out of {questions.length} tasks correctly.</p>
+            <p className="text-[15px] text-gray-700 font-medium">You answered {correctCount} out of {actualTotal} tasks correctly.</p>
           </div>
 
-          <button onClick={handleRestartExam} className="bg-[#1a446b] text-white px-8 py-3.5 rounded-sm font-semibold tracking-wide hover:bg-[#153655] transition-colors text-sm shadow-sm">
+          <button 
+            type="button"
+            onClick={() => handleRestartExam && handleRestartExam()} 
+            className="bg-[#1a446b] text-white px-8 py-3.5 rounded-sm font-semibold tracking-wide hover:bg-[#153655] transition-colors text-sm shadow-sm"
+          >
             RESTART EXAM
           </button>
         </div>

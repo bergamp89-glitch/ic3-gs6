@@ -37,8 +37,10 @@ async function uploadData() {
     return questions.map(q => {
       // id, prompt, type larni ajratib, qolgan hamma narsani (options, answersRequired va hk) data ichiga solamiz
       const { id, prompt, type, ...data } = q;
+      const parsedId = Number.parseInt(id, 10);
+      const safeId = Number.isNaN(parsedId) ? Math.floor(Math.random() * 9000) + 1000 : parsedId;
       return {
-        id: levelNum * 10000 + parseInt(id), // ID lar takrorlanmasligi uchun (masalan 1-level 1-savol -> 10001)
+        id: levelNum * 10000 + safeId, // ID lar takrorlanmasligi uchun
         level_num: levelNum,
         type: type,
         prompt: prompt,

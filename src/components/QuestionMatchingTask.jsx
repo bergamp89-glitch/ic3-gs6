@@ -68,9 +68,7 @@ function QuestionMatchingTask({
             {targetAreas.map(tgt => {
                const placedSourceId = userAnswers[tgt.id];
                const placedSource = placedSourceId ? sourceItems.find(s => s.id === placedSourceId) : null;
-               
-               const matchingEquivalent = targetAreas.find(t => t.correctAnswer === placedSourceId);
-               const isCorrectAnswer = isEvaluated && (placedSourceId === tgt.correctAnswer || (matchingEquivalent && matchingEquivalent.label === tgt.label));
+               const isCorrectAnswer = isEvaluated && placedSourceId === tgt.correctAnswer;
                const isWrongAnswer = isEvaluated && placedSourceId && !isCorrectAnswer;
 
                let dropZoneClass = 'border-dashed border-gray-300 text-gray-400 bg-gray-50/50 hover:border-[#1a446b]/40 hover:bg-[#f8fbff]';

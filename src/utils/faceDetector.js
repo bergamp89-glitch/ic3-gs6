@@ -33,9 +33,8 @@ export async function loadFaceModels() {
     } catch (err) {
       console.error("Face-API modellarini yuklashda xatolik:", err);
       modelsLoaded = false;
-      throw err;
-    } finally {
       modelLoadingPromise = null;
+      throw err;
     }
   })();
 
@@ -272,7 +271,8 @@ export async function detectFaceInVideo(video, { isProctoring = false, isVerifyi
     // Gorizontal simmetriya (boshni yonga burish)
     const distLeftToNose = Math.abs(leftEyeCenter.x - noseTip.x);
     const distRightToNose = Math.abs(rightEyeCenter.x - noseTip.x);
-    const symmetryRatio = distLeftToNose / (distRightToNose || 1);
+    const safeDenominator = Math.max(0.001, distRightToNose);
+    const symmetryRatio = distLeftToNose / safeDenominator;
 
     if (symmetryRatio < 0.52 || symmetryRatio > 1.9) {
       return {

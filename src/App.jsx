@@ -261,12 +261,20 @@ function App() {
 
   useEffect(() => {
     async function loadSettings() {
-      const { data } = await supabase.from('settings').select('*');
-      if (data) {
-        const levels = data.find(d => d.key === 'levels_status');
-        const admin = data.find(d => d.key === 'admin_creds');
-        if (levels) setLevelsStatus(levels.value);
-        if (admin) setAdminCreds(admin.value);
+      try {
+        const { data, error } = await supabase.from('settings').select('*');
+        if (error) {
+          console.warn("Could not load settings from database:", error);
+          return;
+        }
+        if (data) {
+          const levels = data.find(d => d.key === 'levels_status');
+          const admin = data.find(d => d.key === 'admin_creds');
+          if (levels && levels.value) setLevelsStatus(levels.value);
+          if (admin && admin.value) setAdminCreds(admin.value);
+        }
+      } catch (err) {
+        console.warn("loadSettings error:", err);
       }
     }
     loadSettings();
@@ -408,47 +416,56 @@ function App() {
     let intervalId;
     if (appState === 'WAITING' && requestId) {
       intervalId = setInterval(async () => {
-        const { data } = await supabase
-          .from('requests')
-          .select('*')
-          .eq('id', requestId)
-          .single();
-          
-        if (data) {
-          if (data.status === 'approved') {
-            clearInterval(intervalId);
-            setQuestions([]);
-            setCurrentIndex(0);
-            const approvedLang = data.language || (data.level?.includes('(RU)') ? 'ru' : 'en') || language;
-            const approvedCredentials = {
-              firstName: data.firstName,
-              lastName: data.lastName,
-              email: (data.email || '').trim().toLowerCase(),
-              level: data.level,
-              language: approvedLang,
-              photo: data.photo
-            };
-            setLanguage(approvedLang);
-            setRegistration(approvedCredentials);
-            const { data: newSession } = await supabase
-              .from('exam_sessions')
-              .insert([{ 
-                email: approvedCredentials.email, 
-                registration: approvedCredentials, 
-                app_state: 'EXAM' 
-              }])
-              .select();
-            if (newSession && newSession.length > 0) {
-              setSessionId(newSession[0].id);
-            }
-            setAppState('EXAM');
-          } else if (data.status === 'rejected') {
-            alert('Sizning so\'rovingiz admin tomonidan rad etildi.');
-            setAppState('HOME');
-            clearInterval(intervalId);
+        try {
+          const { data, error } = await supabase
+            .from('requests')
+            .select('*')
+            .eq('id', requestId)
+            .single();
+            
+          if (error) {
+            console.warn("Polling request check warning:", error.message);
+            return;
           }
+
+          if (data) {
+            if (data.status === 'approved') {
+              clearInterval(intervalId);
+              setQuestions([]);
+              setCurrentIndex(0);
+              const approvedLang = data.language || (data.level?.includes('(RU)') ? 'ru' : 'en');
+              const approvedCredentials = {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                email: (data.email || '').trim().toLowerCase(),
+                level: data.level,
+                language: approvedLang,
+                photo: data.photo
+              };
+              setLanguage(approvedLang);
+              setRegistration(approvedCredentials);
+              const { data: newSession } = await supabase
+                .from('exam_sessions')
+                .insert([{ 
+                  email: approvedCredentials.email, 
+                  registration: approvedCredentials, 
+                  app_state: 'EXAM' 
+                }])
+                .select();
+              if (newSession && newSession.length > 0) {
+                setSessionId(newSession[0].id);
+              }
+              setAppState('EXAM');
+            } else if (data.status === 'rejected') {
+              alert('Sizning so\'rovingiz admin tomonidan rad etildi.');
+              setAppState('HOME');
+              clearInterval(intervalId);
+            }
+          }
+        } catch (err) {
+          console.warn("Polling interval unexpected error:", err);
         }
-      }, 2000);
+      }, 3000);
     }
     return () => {
       if (intervalId) clearInterval(intervalId);
@@ -627,9 +644,10 @@ function App() {
       const finalCorrectCount = questions.filter(q => q.status === 'Correct').length;
       const finalScore = Math.round((finalCorrectCount / (questions.length || 1)) * 100);
       let levelNum = 1;
-      if (registration.level === '1-Level') levelNum = 1;
-      if (registration.level === '2-Level') levelNum = 2;
-      if (registration.level === '3-Level') levelNum = 3;
+      const regLevel = String(registration.level || '');
+      if (regLevel.startsWith('1-Level')) levelNum = 1;
+      else if (regLevel.startsWith('2-Level')) levelNum = 2;
+      else if (regLevel.startsWith('3-Level')) levelNum = 3;
       
       try {
         await supabase.from('leaderboard').insert([{
@@ -722,7 +740,8 @@ function App() {
     setCurrentIndex(0);
     setSessionId(null);
     setRequestId(null);
-    setRegistration({ firstName: '', lastName: '', email: '', level: '' });
+    setRegistration({ firstName: '', lastName: '', email: '', level: '', language: 'en' });
+    setLanguage('en');
     window.location.hash = '#/home';
     setAppState('HOME');
   };
@@ -1306,7 +1325,7 @@ function App() {
              </div>
           </div>
 
-          <div className="bg-white border border-gray-200 rounded-sm shadow-sm p-3.5 sm:p-4.5 min-h-[220px] flex flex-col">
+          <div className="bg-white border border-gray-200 rounded-sm shadow-sm p-3.5 sm:p-4 md:p-5 min-h-[220px] flex flex-col">
              <div className="bg-[#f5f8fa] p-2.5 sm:p-3 rounded-sm border border-gray-200 mb-3 flex-shrink-0">
                 <div className="text-[9.5px] font-bold text-[#6f93b5] uppercase tracking-widest mb-1">Task Prompt</div>
                 <p className="text-[13.5px] sm:text-[14.5px] text-gray-800 font-medium leading-relaxed">{currentQ?.prompt}</p>

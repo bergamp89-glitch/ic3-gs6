@@ -2,6 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import { detectFaceInVideo, loadFaceModels } from '../utils/faceDetector';
 
 export default function FaceProctoringWidget({ studentName, onWarning }) {
+  const onWarningRef = useRef(onWarning);
+  useEffect(() => {
+    onWarningRef.current = onWarning;
+  }, [onWarning]);
+
   const [isMinimized, setIsMinimized] = useState(false);
   const [status, setStatus] = useState('checking'); // 'checking' | 'active' | 'warning' | 'error'
   const [statusMessage, setStatusMessage] = useState('Proctoring faollashtirilmoqda...');
@@ -37,7 +42,9 @@ export default function FaceProctoringWidget({ studentName, onWarning }) {
           };
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      console.warn("Could not load proctor position from localStorage:", e);
+    }
     return getDefaultPosition();
   });
 
@@ -157,13 +164,13 @@ export default function FaceProctoringWidget({ studentName, onWarning }) {
                 setStatus('warning');
                 setStatusMessage(res.message || 'Yuz aniqlanmadi!');
                 setWarningCount(prev => prev + 1);
-                if (onWarning) onWarning(res.message);
+                if (onWarningRef.current) onWarningRef.current(res.message);
               }
             } else if (res.quality === 'multiple') {
               setStatus('warning');
               setStatusMessage('Begona shaxs aniqlandi!');
               setWarningCount(prev => prev + 1);
-              if (onWarning) onWarning('Kadrda bir nechta shaxs bor');
+              if (onWarningRef.current) onWarningRef.current('Kadrda bir nechta shaxs bor');
             } else {
               missedFramesRef.current = 0;
               setStatus('active');

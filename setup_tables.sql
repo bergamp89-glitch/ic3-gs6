@@ -66,10 +66,6 @@ CREATE TABLE IF NOT EXISTS requests (
   created_at timestamp with time zone DEFAULT now()
 );
 
-ALTER TABLE requests ADD COLUMN IF NOT EXISTS photo text;
-ALTER TABLE requests ADD COLUMN IF NOT EXISTS descriptor jsonb;
-
-
 ALTER TABLE requests ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "requests_anon_read" ON requests;

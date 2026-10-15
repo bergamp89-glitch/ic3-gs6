@@ -31,9 +31,11 @@ function QuestionSimulatedUI({ currentQ, isEvaluated, toggleOption }) {
             {options.map(opt => {
               const isSelected = userAnswers.includes(opt.id);
               const isCorrectAnswer = correctAnswers.includes(opt.id);
-              
-              const mainText = opt.text.split('(')[0].trim();
-              const subText = opt.text.includes('(') ? opt.text.substring(opt.text.indexOf('(') + 1, opt.text.lastIndexOf(')')) : '';
+              const rawText = opt?.text || '';
+              const openIdx = rawText.indexOf('(');
+              const closeIdx = rawText.lastIndexOf(')');
+              const mainText = (openIdx !== -1 ? rawText.substring(0, openIdx) : rawText).trim();
+              const subText = (openIdx !== -1 && closeIdx > openIdx) ? rawText.substring(openIdx + 1, closeIdx).trim() : '';
 
               let btnClass = 'border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:border-gray-400';
               let icon = null;
