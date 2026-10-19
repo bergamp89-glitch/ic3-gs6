@@ -1331,6 +1331,16 @@ function App() {
                 <p className="text-[13.5px] sm:text-[14.5px] text-gray-800 font-medium leading-relaxed">{currentQ?.prompt}</p>
              </div>
 
+             {currentQ?.image && (
+               <div className="mb-3.5 flex justify-center bg-gray-50 border border-gray-200 rounded p-2 flex-shrink-0">
+                 <img 
+                   src={currentQ.image.startsWith('/') ? currentQ.image : `/${currentQ.image}`} 
+                   alt="Task Illustration" 
+                   className="max-h-[300px] max-w-full object-contain rounded shadow-sm"
+                 />
+               </div>
+             )}
+
              <div className="w-full">
                 {currentQ?.type === 'MULTIPLE CHOICE' && (
                   <QuestionMultipleChoice currentQ={currentQ} isEvaluated={isEvaluated} toggleOption={toggleOption} />
