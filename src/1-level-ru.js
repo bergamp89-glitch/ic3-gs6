@@ -983,7 +983,8 @@ export const examQuestions = [
       "A",
       "B",
       "C"
-    ]
+    ],
+    "image": "/images/q37.jpg"
   },
   {
     "id": 35,
@@ -1072,7 +1073,8 @@ export const examQuestions = [
     ],
     "correctAnswers": [
       "D"
-    ]
+    ],
+    "image": "/images/q17.jpg"
   },
   {
     "id": 38,

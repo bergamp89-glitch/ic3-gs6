@@ -2100,36 +2100,6 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 72,
-    "prompt": "Match each step in the media creation process with its description:",
-    "type": "MATCHING",
-    "answersRequired": 4,
-    "options": [
-      {
-        "id": "A",
-        "text": "Scripting, storyboarding, and location scouting -> Pre-production"
-      },
-      {
-        "id": "B",
-        "text": "Capturing and recording video and audio -> Production"
-      },
-      {
-        "id": "C",
-        "text": "Editing, applying effects, and adding captions -> Post-production"
-      },
-      {
-        "id": "D",
-        "text": "Uploading media to the desired platform -> Distribution"
-      }
-    ],
-    "correctAnswers": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ]
-  },
-  {
     "id": 73,
     "prompt": "You plan to get a job in information technology. You need to stay current with the latest digital technologies. What should you do?",
     "type": "SINGLE CHOICE",
@@ -5330,41 +5300,6 @@ export const examQuestions = [
     "correctAnswers": [
       "A",
       "C"
-    ]
-  },
-  {
-    "id": 185,
-    "prompt": "You need to plan a project that will use a cyclical design process. Move each task on the left to its correct step in the order on the right.",
-    "type": "MATCHING",
-    "answersRequired": 5,
-    "options": [
-      {
-        "id": "A",
-        "text": "Identify project requirements -> Step 1"
-      },
-      {
-        "id": "B",
-        "text": "Generate ideas -> Step 2"
-      },
-      {
-        "id": "C",
-        "text": "Develop the prototype -> Step 3"
-      },
-      {
-        "id": "D",
-        "text": "Test the prototype -> Step 4"
-      },
-      {
-        "id": "E",
-        "text": "Refine the prototype -> Step 5"
-      }
-    ],
-    "correctAnswers": [
-      "A",
-      "B",
-      "C",
-      "D",
-      "E"
     ]
   },
   {

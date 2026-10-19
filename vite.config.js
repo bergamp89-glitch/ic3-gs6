@@ -8,9 +8,9 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('1-level.js')) return 'questions-level-1';
-          if (id.includes('2-level.js')) return 'questions-level-2';
-          if (id.includes('3-level.js')) return 'questions-level-3';
+          if (id.includes('1-level')) return 'questions-level-1';
+          if (id.includes('2-level')) return 'questions-level-2';
+          if (id.includes('3-level')) return 'questions-level-3';
           if (id.includes('node_modules')) {
             if (id.includes('@supabase')) return 'vendor-supabase';
             if (id.includes('@vladmandic') || id.includes('face-api')) return 'vendor-face-api';

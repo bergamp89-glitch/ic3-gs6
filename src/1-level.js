@@ -2145,36 +2145,6 @@ export const examQuestions = [
     ]
   },
   {
-    "id": 75,
-    "prompt": "You need to identify the functions managed by the operating system (not by an app). For each task, select OS or App.",
-    "type": "MATCHING",
-    "answersRequired": 4,
-    "options": [
-      {
-        "id": "A",
-        "text": "Edits text files -> App"
-      },
-      {
-        "id": "B",
-        "text": "Searches the internet -> App"
-      },
-      {
-        "id": "C",
-        "text": "Allocates hardware resources -> OS"
-      },
-      {
-        "id": "D",
-        "text": "Communicates with peripheral devices -> OS"
-      }
-    ],
-    "correctAnswers": [
-      "A",
-      "B",
-      "C",
-      "D"
-    ]
-  },
-  {
     "id": 76,
     "prompt": "Which three elements must you include in a citation that references a printed book? (Choose 3.)",
     "type": "MULTIPLE CHOICE",
@@ -2519,33 +2489,6 @@ export const examQuestions = [
     "correctAnswers": [
       "A",
       "C"
-    ]
-  },
-  {
-    "id": 88,
-    "prompt": "You see a post on social media with an article about a current event. You want to evaluate the credibility of the article. Which factor is most important?",
-    "type": "SINGLE CHOICE",
-    "answersRequired": 1,
-    "options": [
-      {
-        "id": "A",
-        "text": "The number of pictures included in the article"
-      },
-      {
-        "id": "B",
-        "text": "The number of likes and shares the article has received"
-      },
-      {
-        "id": "C",
-        "text": "The length of the article and the details it covers"
-      },
-      {
-        "id": "D",
-        "text": "The news outlet's reputation and trustworthiness"
-      }
-    ],
-    "correctAnswers": [
-      "D"
     ]
   },
   {
@@ -3286,104 +3229,6 @@ export const examQuestions = [
       "A:True",
       "B:False",
       "C:True"
-    ]
-  },
-  {
-    "id": 115,
-    "prompt": "You plan to purchase a portable computing device. The device must run on battery power and have a built-in physical keyboard. (Choose 2.)",
-    "type": "MULTIPLE CHOICE",
-    "answersRequired": 2,
-    "options": [
-      {
-        "id": "A",
-        "text": "Windows All-in-One computer"
-      },
-      {
-        "id": "B",
-        "text": "Mac desktop computer"
-      },
-      {
-        "id": "C",
-        "text": "Chromebook"
-      },
-      {
-        "id": "D",
-        "text": "Windows laptop computer"
-      },
-      {
-        "id": "E",
-        "text": "Android tablet"
-      },
-      {
-        "id": "F",
-        "text": "Android smartphone"
-      }
-    ],
-    "correctAnswers": [
-      "C",
-      "D"
-    ]
-  },
-  {
-    "id": 116,
-    "prompt": "For each statement about images protected by Creative Commons licenses (not in the public domain), select True or False.",
-    "type": "TRUE_FALSE_MATRIX",
-    "answersRequired": 3,
-    "options": [
-      {
-        "id": "A",
-        "text": "You can use the image for free",
-        "answer": "True"
-      },
-      {
-        "id": "B",
-        "text": "You can use the image unconditionally",
-        "answer": "False"
-      },
-      {
-        "id": "C",
-        "text": "If you use the image, you must cite its source",
-        "answer": "True"
-      }
-    ],
-    "correctAnswers": [
-      "A:True",
-      "B:False",
-      "C:True"
-    ]
-  },
-  {
-    "id": 117,
-    "prompt": "You need to identify the standard features of the taskbar in a Windows operating system. For each action, select Yes if you can perform it from the taskbar or No if you can't.",
-    "type": "YES_NO_MATRIX",
-    "answersRequired": 4,
-    "options": [
-      {
-        "id": "A",
-        "text": "Start the Task Manager",
-        "answer": "Yes"
-      },
-      {
-        "id": "B",
-        "text": "Adjust the audio output volume",
-        "answer": "Yes"
-      },
-      {
-        "id": "C",
-        "text": "Display network connection settings",
-        "answer": "Yes"
-      },
-      {
-        "id": "D",
-        "text": "Minimize all open programs to display the desktop",
-        "answer": "Yes"
-      }
-    ],
-    "correctAnswers": [
-      "A:Yes",
-      "B:Yes",
-      "C:Yes",
-      "D:Yes"
     ]
   },
   {
