@@ -294,16 +294,31 @@ function App() {
     if (sessionId && appState !== 'HOME' && appState !== 'ADMIN') {
       const timer = setTimeout(async () => {
         try {
+          // Xotirani 98% tejash: bazaga savollar matni va variantlari emas, faqat holati va tanlangan javoblari saqlanadi
+          const compactQuestions = (questions || []).map(q => ({
+            id: q.id,
+            status: q.status || 'Not Started',
+            userAnswers: q.userAnswers || null
+          }));
+
+          const cleanReg = registration ? {
+            firstName: registration.firstName,
+            lastName: registration.lastName,
+            email: registration.email,
+            level: registration.level,
+            language: registration.language
+          } : null;
+
           await supabase.from('exam_sessions').update({
-            questions,
+            questions: compactQuestions,
             current_index: currentIndex,
             app_state: appState,
-            registration
+            registration: cleanReg
           }).eq('id', sessionId);
         } catch (e) {
           console.error("Session sync error:", e);
         }
-      }, 800);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [questions, currentIndex, appState, registration, sessionId]);
@@ -417,20 +432,31 @@ function App() {
     if (appState === 'WAITING' && requestId) {
       intervalId = setInterval(async () => {
         try {
-          const { data, error } = await supabase
+          // Ortiqcha trafikni 99% tejash: kutish paytida har 3 soniyada butun rasm emas, faqat 'status' tekshiriladi
+          const { data: statusCheck, error: statusErr } = await supabase
             .from('requests')
-            .select('*')
+            .select('status')
             .eq('id', requestId)
             .single();
             
-          if (error) {
-            console.warn("Polling request check warning:", error.message);
+          if (statusErr) {
+            console.warn("Polling request check warning:", statusErr.message);
             return;
           }
 
-          if (data) {
-            if (data.status === 'approved') {
+          if (statusCheck) {
+            if (statusCheck.status === 'approved') {
               clearInterval(intervalId);
+              
+              // Faqat admin tasdiqlagandagina to'liq ma'lumotlar bir marta olinadi
+              const { data } = await supabase
+                .from('requests')
+                .select('*')
+                .eq('id', requestId)
+                .single();
+
+              if (!data) return;
+
               setQuestions([]);
               setCurrentIndex(0);
               const approvedLang = data.language || (data.level?.includes('(RU)') ? 'ru' : 'en');
@@ -448,7 +474,13 @@ function App() {
                 .from('exam_sessions')
                 .insert([{ 
                   email: approvedCredentials.email, 
-                  registration: approvedCredentials, 
+                  registration: {
+                    firstName: approvedCredentials.firstName,
+                    lastName: approvedCredentials.lastName,
+                    email: approvedCredentials.email,
+                    level: approvedCredentials.level,
+                    language: approvedCredentials.language
+                  }, 
                   app_state: 'EXAM' 
                 }])
                 .select();
@@ -456,7 +488,7 @@ function App() {
                 setSessionId(newSession[0].id);
               }
               setAppState('EXAM');
-            } else if (data.status === 'rejected') {
+            } else if (statusCheck.status === 'rejected') {
               alert('Sizning so\'rovingiz admin tomonidan rad etildi.');
               setAppState('HOME');
               clearInterval(intervalId);
@@ -955,7 +987,39 @@ function App() {
 
       if (activeSession) {
         setSessionId(activeSession.id);
-        setQuestions(activeSession.questions || []);
+        const savedQList = activeSession.questions || [];
+        // Agar eski formatdagi to'liq savollar bo'lsa
+        if (savedQList.length > 0 && savedQList[0].prompt) {
+          setQuestions(savedQList);
+        } else if (savedQList.length > 0) {
+          // Yangi ixcham format bo'lsa: static savollarga saqlangan holatlarni birlashtiramiz
+          let levelNum = 1;
+          const lvlStr = selectedLevel || '';
+          if (lvlStr.startsWith('1-Level')) levelNum = 1;
+          else if (lvlStr.startsWith('2-Level')) levelNum = 2;
+          else if (lvlStr.startsWith('3-Level')) levelNum = 3;
+          const isRussian = (language === 'ru') || lvlStr.includes('(RU)');
+          const rawList = levelNum === 1 ? (isRussian ? q1Ru : q1) : (levelNum === 2 ? (isRussian ? q2Ru : q2) : (isRussian ? q3Ru : q3));
+          
+          const savedMap = {};
+          savedQList.forEach(sq => { if (sq && sq.id != null) savedMap[sq.id] = sq; });
+
+          const restored = (rawList || []).map((q, idx) => {
+            const id = idx + 1;
+            const sq = savedMap[id];
+            let normalizedQ = JSON.parse(JSON.stringify(q));
+            normalizedQ.id = id;
+            if (normalizedQ.type === 'SINGLE CHOICE') normalizedQ.type = 'MULTIPLE CHOICE';
+            return {
+              ...normalizedQ,
+              userAnswers: sq?.userAnswers || ((normalizedQ.type === 'INSTRUCTION SET' || normalizedQ.type === 'MATCHING TASK') ? {} : []),
+              status: sq?.status || 'Not Started'
+            };
+          });
+          setQuestions(restored);
+        } else {
+          setQuestions([]);
+        }
         setCurrentIndex(activeSession.current_index || 0);
         setAppState(activeSession.app_state || 'EXAM');
       } else {
@@ -970,8 +1034,7 @@ function App() {
               lastName: trimmedLastName, 
               email: trimmedEmail, 
               level: selectedLevel.includes('(') ? selectedLevel : `${selectedLevel} (${language.toUpperCase()})`,
-              language: language,
-              photo: verifiedPhoto
+              language: language
             }, 
             app_state: 'EXAM' 
           }])

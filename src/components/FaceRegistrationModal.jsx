@@ -470,9 +470,9 @@ function FaceRegistrationModal({
     if (vWidth === 0 || vHeight === 0) return null;
 
     const canvas = document.createElement('canvas');
-    // Ixcham va yengil hajm (320x380, ~30-40KB) - DB va tarmoqni to'ldirmaydi
-    const targetW = 320;
-    const targetH = 380;
+    // Ixcham va yengil hajm (240x280, ~10-12KB) - DB va tarmoqni to'ldirmaydi
+    const targetW = 240;
+    const targetH = 280;
     canvas.width = targetW;
     canvas.height = targetH;
     const ctx = canvas.getContext('2d');
@@ -488,7 +488,7 @@ function FaceRegistrationModal({
 
     ctx.drawImage(video, startX, startY, cropW, cropH, 0, 0, targetW, targetH);
 
-    return canvas.toDataURL('image/jpeg', 0.78);
+    return canvas.toDataURL('image/jpeg', 0.55);
   };
 
   // Qo'lda liveness/suratga olishni davom ettirish (agar kamera sekin bo'lsa)
