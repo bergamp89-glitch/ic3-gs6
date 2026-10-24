@@ -22,35 +22,28 @@ import { examQuestions as q3Ru } from './3-level-ru.js';
 
 const getInitialSession = () => {
   try {
-    const hash = typeof window !== 'undefined' ? window.location.hash : '';
     const isAdminAuth = typeof window !== 'undefined' 
       ? sessionStorage.getItem('ic3_admin_auth') === 'true' 
       : false;
     const saved = typeof window !== 'undefined' ? localStorage.getItem('ic3_session') : null;
     const parsed = saved ? JSON.parse(saved) : null;
 
-    // 1. Check URL hash first
-    if (hash.includes('admin')) {
-      if (isAdminAuth) {
+    // URL orqali to'g'ridan-to'g'ri bo'limlarga kirishni bloklash:
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const hash = window.location.hash.toLowerCase();
+      if (hash.includes('admin') && isAdminAuth) {
         return { appState: 'ADMIN', ...(parsed || {}) };
       }
-      // Ssilka orqali kirilganda parol so'rash modalini ochish
-      return { appState: 'HOME', showAdminLogin: true };
+      try {
+        window.history.replaceState(null, '', window.location.pathname);
+      } catch (e) {}
     }
-    if (hash.includes('exam') && parsed && parsed.appState === 'EXAM') {
-      return parsed;
-    }
-    if (hash.includes('waiting') && parsed && parsed.appState === 'WAITING') {
-      return parsed;
-    }
-    if (hash.includes('result') && parsed && parsed.appState === 'RESULT') {
+
+    // Faqat haqiqiy faol imtihon sessiyasi bo'lsa (F5 yangilanganda tiklanadi)
+    if (parsed && parsed.appState === 'EXAM' && parsed.sessionId && parsed.registration?.email) {
       return parsed;
     }
 
-    // 2. If no matching hash or on root URL, check saved session or admin auth
-    if (parsed && parsed.appState && parsed.appState !== 'HOME') {
-      return parsed;
-    }
     if (isAdminAuth) {
       return { appState: 'ADMIN' };
     }
@@ -146,67 +139,54 @@ function App() {
     }
   }, [appState, sessionId, requestId, questions, currentIndex, registration]);
 
-  // Synchronize appState with URL hash
+  // URL orqali bo'limlarga kirishni bloklash va URL manzilini toza root (/) da saqlash
   useEffect(() => {
     if (appState === 'ADMIN') {
       sessionStorage.setItem('ic3_admin_auth', 'true');
-      const currentTab = localStorage.getItem('ic3_admin_tab') || 'dashboard';
-      if (!window.location.hash.includes('admin')) {
-        window.location.hash = `#/admin?tab=${currentTab}`;
-      }
-    } else if (appState === 'EXAM') {
-      if (!window.location.hash.includes('exam')) {
-        window.location.hash = '#/exam';
-      }
-    } else if (appState === 'WAITING') {
-      if (!window.location.hash.includes('waiting')) {
-        window.location.hash = '#/waiting';
-      }
-    } else if (appState === 'RESULT') {
-      if (!window.location.hash.includes('result')) {
-        window.location.hash = '#/result';
-      }
-    } else if (appState === 'HOME') {
-      if (!showAdminLoginModal && window.location.hash && window.location.hash !== '#/' && window.location.hash !== '#/home' && !window.location.hash.includes('admin')) {
-        window.location.hash = '#/home';
+    } else {
+      // EXAM, WAITING, RESULT yoki HOME holatida URL manzilida hech qanday ssilka ko'rsatilmaydi
+      // Bu foydalanuvchilar ssilkani nusxalab yoki URL orqali kirishiga yo'l qo'ymaydi
+      if (typeof window !== 'undefined' && window.location.hash) {
+        try {
+          window.history.replaceState(null, '', window.location.pathname);
+        } catch (e) {}
       }
     }
-  }, [appState, showAdminLoginModal]);
+  }, [appState]);
 
-  // Listen for browser navigation (back, forward, hash change)
+  // Listen for browser navigation (URL o'zgarishi va orqaga/oldinga tugmalarini tutish)
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash;
+      const hash = (window.location.hash || '').toLowerCase();
       const isAdminAuth = sessionStorage.getItem('ic3_admin_auth') === 'true';
 
-      if (hash.includes('admin')) {
-        if (isAdminAuth) {
-          setAppState('ADMIN');
-          setShowAdminLoginModal(false);
-        } else {
-          // Ssilka orqali to'g'ridan to'g'ri kirganda parol so'rash oynasini ochish
-          setAppState('HOME');
-          setShowAdminLoginModal(true);
-        }
-      } else if (hash.includes('exam')) {
+      // Faqat avtorizatsiyadan o'tgan admingagina ruxsat
+      if (hash.includes('admin') && isAdminAuth) {
+        setAppState('ADMIN');
         setShowAdminLoginModal(false);
-        const saved = localStorage.getItem('ic3_session');
-        if (saved) {
-          try {
-            const p = JSON.parse(saved);
-            if (p.appState === 'EXAM') setAppState('EXAM');
-          } catch (e) {}
-        }
-      } else if (hash.includes('waiting')) {
-        setShowAdminLoginModal(false);
-        setAppState('WAITING');
-      } else if (hash.includes('result')) {
-        setShowAdminLoginModal(false);
-        setAppState('RESULT');
-      } else if (hash.includes('home') || !hash || hash === '#/') {
-        setShowAdminLoginModal(false);
-        setAppState('HOME');
+        return;
       }
+
+      // Ruxsatsiz har qanday URL urinishini (masalan #/exam, #/waiting, #/result, #/admin) darhol tozalaymiz
+      try {
+        window.history.replaceState(null, '', window.location.pathname);
+      } catch (err) {}
+
+      // Faqat haqiqiy faol va tasdiqlangan imtihon sessiyasi bo'lsagina EXAM holatida qoladi
+      const saved = localStorage.getItem('ic3_session');
+      if (saved) {
+        try {
+          const p = JSON.parse(saved);
+          if (p.appState === 'EXAM' && p.sessionId && p.registration?.email) {
+            setAppState('EXAM');
+            return;
+          }
+        } catch (err) {}
+      }
+
+      // Boshqa barcha URL orqali kirish urinishlari qat'iy bloklanadi va HOME ga o'tkaziladi
+      setShowAdminLoginModal(false);
+      setAppState('HOME');
     };
 
     window.addEventListener('hashchange', handleHashChange);
@@ -774,7 +754,7 @@ function App() {
     setRequestId(null);
     setRegistration({ firstName: '', lastName: '', email: '', level: '', language: 'en' });
     setLanguage('en');
-    window.location.hash = '#/home';
+    try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
     setAppState('HOME');
   };
 
@@ -853,7 +833,7 @@ function App() {
         level: selectedLevel,
         language: language
       });
-      window.location.hash = '#/exam';
+      try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
       setAppState('EXAM');
       return;
     }
@@ -1081,7 +1061,7 @@ function App() {
         language: language,
         photo: capturedPhoto
       });
-      window.location.hash = '#/exam';
+      try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
       setAppState('EXAM');
       setIsSubmitting(false);
       return;
@@ -1170,9 +1150,7 @@ function App() {
 
   const handleAdminLoginClose = () => {
     setShowAdminLoginModal(false);
-    if (window.location.hash.includes('admin')) {
-      window.location.hash = '#/home';
-    }
+    try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
   };
 
   // --- Render Home Screen ---

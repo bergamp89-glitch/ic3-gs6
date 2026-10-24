@@ -27,7 +27,7 @@ function WaitingPage({ registration, setAppState }) {
          <button 
            onClick={() => {
              localStorage.removeItem('ic3_session');
-             window.location.hash = '#/home';
+             try { window.history.replaceState(null, '', window.location.pathname); } catch (e) {}
              setAppState('HOME');
            }} 
            className="bg-transparent border border-[#1a446b] text-[#1a446b] px-6 py-2 rounded-sm font-semibold hover:bg-blue-50 transition-colors w-full"
